@@ -16,11 +16,11 @@ x2_scaled The matrix \code{x2} rescaled to have the same median
    radius as \code{x1}.
 }
 \description{
-When making a biplot, the scales of the two sets of points don't
-   aren't comparable -- only the *directions* of the projections of feature
-   variables are meaningful. This helper rescales the points in the matrix
-   \code{x2} to have radius comparable to the points in x1. Specifically, we
-   rescale \code{x2} so it's median radius is equal to the median radius of
-   the \code{x1} points.
+When making a biplot, the scales of the two sets of points
+   aren't always comparable -- only the *directions* of the projections of
+   feature variables are meaningful. This helper rescales the points in the
+   matrix \code{x2} to have radius comparable to the points in x1.
+   Specifically, we rescale \code{x2} so it's median radius is equal to the
+   median radius of the \code{x1} points.
 }
 

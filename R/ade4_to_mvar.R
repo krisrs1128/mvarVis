@@ -1,6 +1,3 @@
-
-# ade4-to-mvar ------------------------------------------------------------
-
 #' @title Convert an ade4 object into class mVarTable
 #'
 #' @param ade4_object The output of a call to dudi.* from package \code{ade4}.

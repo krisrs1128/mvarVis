@@ -1,11 +1,11 @@
 #' @title Scale one table to the median radius of another
 #'
-#' @description When making a biplot, the scales of the two sets of points don't
-#'    aren't comparable -- only the *directions* of the projections of feature
-#'    variables are meaningful. This helper rescales the points in the matrix
-#'    \code{x2} to have radius comparable to the points in x1. Specifically, we
-#'    rescale \code{x2} so it's median radius is equal to the median radius of
-#'    the \code{x1} points.
+#' @description When making a biplot, the scales of the two sets of points
+#'    aren't always comparable -- only the *directions* of the projections of
+#'    feature variables are meaningful. This helper rescales the points in the
+#'    matrix \code{x2} to have radius comparable to the points in x1.
+#'    Specifically, we rescale \code{x2} so it's median radius is equal to the
+#'    median radius of the \code{x1} points.
 #' @param x1 The reference matrix used to rescale \code{x2}.
 #' @param x2 The matrix to rescale.
 #' @return x2_scaled The matrix \code{x2} rescaled to have the same median
@@ -15,6 +15,21 @@ scale_to_median_radius <- function(x1, x2) {
   x2_radius <-sqrt(rowSums(x2 ^ 2))
   x1_med_radius <- median(x1_radius)
   x2_scaled <- x2 * x1_med_radius / median(x2_radius)
+  return (x2_scaled)
+}
+
+#' @title Scale one table to the max radius of another
+#'
+#' @param x1 The reference matrix used to rescale \code{x2}.
+#' @param x2 The matrix to rescale.
+#' @param q We rescale to this fraction of the maximum radius in x1.
+#'
+#' @return x2_scaled The rescaled matrix \code{x2}.
+scale_to_max_radius <- function(x1, x2, q = 0.9) {
+  x1_radius <- sqrt(rowSums(x1 ^ 2))
+  x2_radius <-sqrt(rowSums(x2 ^ 2))
+  x1_max_radius <- max(x1_radius)
+  x2_scaled <- q * x2 * x1_max_radius / max(x2_radius)
   return (x2_scaled)
 }
 
@@ -35,7 +50,7 @@ scale_to_median_radius <- function(x1, x2) {
 #'
 #' @export
 mvar_annotate <- function(mvar_object, annotations_list) {
-  stopifnot(length(annotations_list) != length(mvar_object@table))
+  stopifnot(length(annotations_list) == length(mvar_object@table))
   for(ann_ix in 1:length(annotations_list)) {
     mvar_object@table[[ann_ix]]@annotation <- cbind(
       mvar_object@table[[ann_ix]]@annotation,

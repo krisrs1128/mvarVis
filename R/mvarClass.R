@@ -3,6 +3,8 @@
 #' @description A class for storing a single projection of a data set.
 #'
 #' @rdname mvarAxis-class
+#'
+#' @importFrom methods setClass
 #' @export
 setClass("mvarAxis",
          representation(
@@ -16,6 +18,8 @@ setClass("mvarAxis",
 #' @description A class for storing multiple projections of a data set.
 #'
 #' @rdname mvarTable-class
+#'
+#' @importFrom methods setClass
 #' @export
 setClass("mvarTable",
          representation(
