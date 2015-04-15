@@ -7,28 +7,22 @@
 #'    \code{eig} slot. The annotation slots of each mVarAxis are the row names
 #'    of the projected coordinates.
 #'
-#' @examples
-#'
 #' @importFrom vegan scores
 #'
 #'  @export
 vegan_to_mvar <- function(vegan_object) {
 
   mvar_axis_list <- list()
-  scores_list <- vegan::scores(vegan_object)
-
-  # In case of one table, we need to convert to a list to be consistent with
-  # multitable case below
-  if(is.matrix(scores_list)) {
-    scores_list <- list(scores_list)
-  }
+  site_scores <- vegan::scores(vegan_object, display = "site")
+  species_scores <- vegan::scores(vegan_object, display = "species")
+  scores_list <- list("site" = site_scores, "species" = species_scores)
 
   # Build an mvarAxis object for each
-  for(cur_table in scores_list) {
+  for(cur_table in names(scores_list)) {
 
     # Convert coordinates into a matrix
-    vegan_subset <- cur_table
-    vegan_subset_mat <- as.matrix(ade4_subset)
+    vegan_subset <- scores_list[[cur_table]]
+    vegan_subset_mat <- as.matrix(vegan_subset)
     dimnames(vegan_subset_mat) <- NULL
 
     # Annotation defaults to projection matrix rownames
@@ -42,7 +36,7 @@ vegan_to_mvar <- function(vegan_object) {
   if(!is.null(vegan_object$CA$eig)) {
     cur_eig <- vegan_object$CA$eig
   } else {
-    cur_eig <- NULL
+    cur_eig <- as.numeric(NA)
   }
 
   # Combined tables mvarTable object
