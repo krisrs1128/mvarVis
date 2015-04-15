@@ -3,7 +3,7 @@ Title: Visualize multivariate analysis results.
 Version: 0.0.0
 Authors@R: person("Kris", "Sankaran", , "kriss1@stanford.edu", role = c("aut", "cre"))
 Description: Visualize multivariate analysis results, more details forthcoming.
-Depends: R (>= 3.1.2)
+Depends: R (>= 3.1.2), htmlwidgets, vegan
 Imports: ggplot2, methods
 Suggests: ade4
 License: GPL
