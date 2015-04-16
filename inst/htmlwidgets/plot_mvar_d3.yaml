@@ -1,0 +1,9 @@
+ dependencies:
+  - name: d3
+    version: 3.5.2
+    src: "htmlwidgets/lib/d3/"
+    script: d3.min.js
+  - name: ordination_css
+    version: 0.0.0
+    src: "htmlwidgets/lib/plot_mvar_css"
+    stylesheet: plot_mvar.css
