@@ -18,8 +18,10 @@ plot_mvar_d3 <- function(mvar_object, rescaling_ix = 2, rescaling_ref = 1,
       cur_coord <- scale_to_max_radius(ref_coord, cur_coord)
     }
 
+    vis_info <- data.frame(display = TRUE, layer_ix = table_ix - 1)
+
     # Combined df of both coordinates and annoation
-    x[[table_ix]] <- cbind(cur_coord, cur_ann)
+    x[[table_ix]] <- cbind(cur_coord, cur_ann, vis_info)
 
   }
 
