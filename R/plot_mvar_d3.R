@@ -27,7 +27,7 @@ plot_mvar_d3 <- function(mvar_object, rescaling_ix = 2, rescaling_ref = 1,
 
   htmlwidgets::createWidget(
     name = "plot_mvar_d3",
-    x,
+    x = x,
     width = width,
     height = height,
     package = "mvarVis"
