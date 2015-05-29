@@ -42,7 +42,7 @@ ade4_to_mvar <- function(ade4_object, tables_to_include=c("li", "co")) {
     # Convert coordinates into a matrix
     ade4_subset <- ade4_object[[cur_table]]
     ade4_subset_mat <- as.matrix(ade4_subset)
-    dimnames(ade4_subset_mat) <- NULL
+    dimnames(ade4_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(ade4_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(ade4_subset))

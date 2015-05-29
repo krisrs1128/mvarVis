@@ -23,7 +23,7 @@ vegan_to_mvar <- function(vegan_object) {
     # Convert coordinates into a matrix
     vegan_subset <- scores_list[[cur_table]]
     vegan_subset_mat <- as.matrix(vegan_subset)
-    dimnames(vegan_subset_mat) <- NULL
+    dimnames(vegan_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(vegan_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(vegan_subset))
