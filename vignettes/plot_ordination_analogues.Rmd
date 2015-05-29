@@ -70,18 +70,19 @@ to use this package with ```vegan```.
 gp1_nmds <- vegan::metaMDS(GP1@otu_table, dist = "bray")
 gp1_nmds_mvar <- vegan_to_mvar(gp1_nmds)
 gp1_nmds_mvar <- mvar_annotate(gp1_nmds_mvar, list(GP1@tax_table, GP1@sam_data))
-p <- plot_mvar(gp1_nmds_mvar, color_vars = list("Phylum", NULL),
-               arrow_ix = numeric(0), text_ix = 2, text_vars = list(NULL, "SampleType"),
-               shape_vars = list(NULL, "human"))
+
+sample_plot_opts <- list(aes_list = list(color = "Phylum"))
+variable_plot_opts <- list(aes_list = list(label = "SampleType"),
+                           layers_list = list(point = FALSE, text = TRUE))
+plot_mvar(gp1_nmds_mvar, list(sample_plot_opts, variable_plot_opts))
 
 # DCA
 gp1_dca <- vegan::decorana(GP1@otu_table)
 gp1_dca_mvar <- vegan_to_mvar(gp1_dca)
 gp1_dca_mvar <- mvar_annotate(gp1_dca_mvar, list(GP1@tax_table, GP1@sam_data))
-p <- plot_mvar(gp1_dca_mvar, color_vars = list("Phylum", NULL),
-               arrow_ix = numeric(0), text_ix = 2, text_vars = list(NULL, "SampleType"),
-               shape_vars = list(NULL, "human"))
-p
+plot_mvar(gp1_dca_mvar, list(sample_plot_opts, variable_plot_opts))
+
+
 # cca
 gp1_cca <- vegan::cca(GP1@otu_table)
 gp1_cca_mvar <- vegan_to_mvar(gp1_cca)
