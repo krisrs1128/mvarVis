@@ -18,6 +18,28 @@ merge_table_plot_opts <- function(opts = list()) {
   return (opts)
 }
 
+#' @title Construct Aesthetics List
+#'
+#'
+build_opts <- function(mvar_object, layers_list = NULL, x = "axis_1",
+                       y = "axis_2", col = NULL, shape = NULL, size = NULL,
+                       label = NULL, facet_vector = NULL) {
+  n_tables <- length(mvar_object@table)
+  opts <- rep(list(list()), n_tables)
+  if(is.null(layers_list)) {
+    layers_list <- rep(list(list(point = TRUE)), n_tables)
+  }
+  for(cur_table in 1:n_tables) {
+    cur_colnames <- colnames(mvar_object@table[[cur_table]]@annotation)
+    cur_aes_list <- list(col = col, shape = shape, size = size, label = label)
+    cur_ix <- which(cur_aes_list %in% cur_colnames)
+    opts[[cur_table]]$facet_vector <- facet_vector
+    opts[[cur_table]]$layers_list <- layers_list[[cur_table]]
+    opts[[cur_table]]$aes_list <- cur_aes_list[cur_ix]
+  }
+  return (opts)
+}
+
 #' @title Plot an element of class mvarAxis
 #'
 #' @param table_slot An object of class mvarAxis
@@ -58,13 +80,17 @@ plot_table <- function(table_slot, opts = list(), p = ggplot()) {
     p <- p + geom_segment(data = data, table_aes, arrow = arrow(length = unit(0.5, "cm")))
   }
   if(!is.null(opts$facet_vector)) {
-    facet_fmla <- formula(paste0(opts$facet_vector, collapse = "~"))
-    p <- p + facet_grid(facet_fmla)
+    if(length(opts$facet_vector) == 1) {
+      facet_fmla_string <- paste0(opts$facet_vector, "~ .")
+    } else {
+      facet_fmla_string <- paste0(opts$facet_vector, collapse = "~")
+    }
+    p <- p + facet_grid(formula(facet_fmla_string))
   }
   return (p)
 }
 
-#' @title Plot an mvar object
+#' @title Plot an mvar object from options list
 #'
 #' @description \code{plot_mvar} helps plot multiple projection layers
 #' associated with an mvar object, using \code{ggplot2} with various options to
@@ -81,7 +107,10 @@ plot_table <- function(table_slot, opts = list(), p = ggplot()) {
 #' @importFrom ggplot2 geom_point aes_string geom_segment geom_text ggtitle ggplot
 #'
 #' @export
-plot_mvar <- function(mvar_object, opts) {
+plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
+  if(is.null(opts)) {
+    opts <- rep(list(list()), length(mvar_object@table))
+  }
   for(cur_table in 1:length(mvar_object@table)) {
     if(cur_table == 1) {
       p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]])
@@ -89,5 +118,17 @@ plot_mvar <- function(mvar_object, opts) {
       p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p)
     }
   }
+  return (p)
+}
+
+#' @title Plot an mvar object from annotation names
+#'
+#'
+plot_mvar <- function(mvar_object, layers_list = NULL, x = "axis_1", y = "axis_2",
+                      col = NULL, shape = NULL, size = NULL, label = NULL,
+                      facet_vector = NULL) {
+  opts <- build_opts(mvar_object, layers_list, x, y, col, shape, size, label,
+                     facet_vector)
+  p <- plot_mvar_from_opts(mvar_object, opts)
   return (p)
 }
