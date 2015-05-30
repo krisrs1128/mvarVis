@@ -63,42 +63,15 @@ sample_data(GP1)$human <- factor(human)
 
 ### ```vegan``` methods
 
-This is a ```vegan_to_mvar``` object that should make it easy
-to use this package with ```vegan```.
-
 ```{r}
-gp1_nmds <- vegan::metaMDS(GP1@otu_table, dist = "bray")
-gp1_nmds_mvar <- vegan_to_mvar(gp1_nmds)
-gp1_nmds_mvar <- mvar_annotate(gp1_nmds_mvar, list(GP1@tax_table, GP1@sam_data))
-
-sample_plot_opts <- list(aes_list = list(color = "Phylum"))
-variable_plot_opts <- list(aes_list = list(label = "SampleType"),
-                           layers_list = list(point = FALSE, text = TRUE))
-plot_mvar(gp1_nmds_mvar, list(sample_plot_opts, variable_plot_opts))
+gp1_nmds <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data,
+                           method = "metaMDS", dist_method = "bray")
+plot_mvar(gp1_nmds, col = "Phylum", shape = "human")
 
 # DCA
-gp1_dca <- vegan::decorana(GP1@otu_table)
-gp1_dca_mvar <- vegan_to_mvar(gp1_dca)
-gp1_dca_mvar <- mvar_annotate(gp1_dca_mvar, list(GP1@tax_table, GP1@sam_data))
-plot_mvar(gp1_dca_mvar, list(sample_plot_opts, variable_plot_opts))
-
-
-# cca
-gp1_cca <- vegan::cca(GP1@otu_table)
-gp1_cca_mvar <- vegan_to_mvar(gp1_cca)
-gp1_cca_mvar <- mvar_annotate(gp1_cca_mvar, list(GP1@tax_table, GP1@sam_data))
-p <- plot_mvar(gp1_cca_mvar, color_vars = list("Phylum", NULL),
-               arrow_ix = numeric(0), text_ix = 2, text_vars = list(NULL, "SampleType"),
-               shape_vars = list(NULL, "human"))
-p
-# rda
-gp1_rda <- vegan::rda(GP1@otu_table)
-gp1_rda_mvar <- vegan_to_mvar(gp1_rda)
-gp1_rda_mvar <- mvar_annotate(gp1_rda_mvar, list(GP1@tax_table, GP1@sam_data))
-p <- plot_mvar(gp1_rda_mvar, color_vars = list("Phylum", NULL),
-               arrow_ix = numeric(0), text_ix = 2, text_vars = list(NULL, "SampleType"),
-               shape_vars = list(NULL, "human"))
-p
+gp1_dca <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data,
+                           method = "decorana")
+plot_mvar(gp1_dca, col = "Phylum", shape = "human")
 ```
 
 ### ```ade4``` methods
@@ -108,19 +81,27 @@ There is an analogous function for ```ade4```.
 ```{r}
 # DPCoA
 patristicDist <- cailliez(as.dist(cophenetic.phylo(phy_tree(GP1))))
-gp1_dpcoa <- dpcoa(data.frame(GP1@otu_table), patristicDist, scannf = F, nf = 2)
-gp1_dpcoa_mvar <- ade4_to_mvar(gp1_dpcoa, tables_to_include = c("l1", "l2"))
-gp1_dpcoa_mvar <- mvar_annotate(gp1_dpcoa_mvar, list(GP1@tax_table, GP1@sam_data))
-plot_mvar(gp1_dpcoa_mvar, color_vars = list("Phylum", NULL), arrow_ix = numeric(0),
-          text_ix = 2, text_vars = list(NULL, "SampleType"), shape_vars = list(NULL, "human"))
+gp1_dpcoa <- ordinate_table(GP1@otu_table, patristicDist, GP1@tax_table,
+                            GP1@sam_data, method = "dpcoa", 
+                            tables_to_include = c("l1", "c1"), 
+                            scannf = F)
+plot_mvar(gp1_dpcoa, col = "Phylum")
+
+# PCA
+gp1_pca <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data, 
+                          method = "pca", tables_to_include = c("li", "co"), scannf = F, 
+                          nf = 10)
+plot_mvar(gp1_pca, col = "Phylum", facet_vector = c("SampleType", "Phylum"))
 
 # MDS
-gp1_mds <- dudi.pco(dist(GP1@otu_table), scannf = F, nf = 2)
-gp1_mds_mvar <- ade4_to_mvar(gp1_mds)
-gp1_mds_mvar <- mvar_annotate(gp1_mds_mvar, list(GP1@tax_table, GP1@sam_data))
-plot_mvar(gp1_mds_mvar, color_vars = list("Phylum", NULL), arrow_ix = numeric(0),
-          text_ix = 2, text_vars = list(NULL, "SampleType"), shape_vars = list(NULL, "human"))
+gp1_mds <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data, 
+                          method = "pco", dist_method = "euclidean", 
+                          scannf = F)
+layers_list <- list(list(), list(text = TRUE))
+plot_mvar(gp1_mds, col = "Phylum", shape = "human", 
+          label = "SampleType", layers_list = layers_list)
 ```
 
 I haven't implemented the pcoa example yet, since this needs a conversion
 from an ```ape``` specific format.
+
