@@ -1,6 +1,6 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "\code{ade4} Examples"
+author: "Kris Sankaran"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -18,8 +18,8 @@ library("ade4")
 
 ```{r}
 data(deug)
-deug_pca <- ordinate(deug$tab, rows_annot = data.frame(res = deug$result),
-                       method = "pca", scannf = F)
+deug_pca <- ordi(deug$tab, rows_annot = data.frame(res = deug$result),
+                 method = "pca", scannf = F)
 plot_mvar(deug_pca, list(list(), list(point = F, text = T, arrow = T)), col = "res",
           label = "label")
 ```
@@ -28,16 +28,16 @@ plot_mvar(deug_pca, list(list(), list(point = F, text = T, arrow = T)), col = "r
 
 ```{r}
 data(banque)
-banque_acm <- ordinate(banque[, -c(1:4)], rows_annot = banque[, 1:4],
+banque_acm <- ordi(banque[, -c(1:4)], rows_annot = banque[, 1:4],
                        method = "acm", scannf = F)
-plot_mvar(gp1_acm, col = "age")
+plot_mvar(banque_acm, col = "age")
 ```
 
 ## coa
 
 ```{r}
 data(bordeaux)
-bordeaux_coa <- ordinate(bordeaux, method = "coa", scannf = F)
+bordeaux_coa <- ordi(bordeaux, method = "coa", scannf = F)
 layers_list <- list(list(text = T, point = F), list(text = T, point = F))
 plot_mvar(bordeaux_coa, label = "label", layers_list)
 ```
@@ -47,7 +47,7 @@ plot_mvar(bordeaux_coa, label = "label", layers_list)
 ```{r}
 data(bsetal97)
 w <- prep.fuzzy.var(bsetal97$biol, bsetal97$biol.blo)
-bsetal_fpca <- ordinate(w, method = "fpca", rows_annot = data.frame(species = bsetal97$species.names), scannf = F)
+bsetal_fpca <- ordi(w, method = "fpca", rows_annot = data.frame(species = bsetal97$species.names), scannf = F)
 plot_mvar(bsetal_fpca, label = "species", layers_list = list(list(text = T), list()))
 ```
 
@@ -56,7 +56,7 @@ plot_mvar(bsetal_fpca, label = "species", layers_list = list(list(text = T), lis
 ```{r}
 data(dunedata)
 attributes(dunedata$envir$use)$class <- "factor"
-dunedata_hillsmith <- ordinate(dunedata$envir, method = "hillsmith", 
+dunedata_hillsmith <- ordi(dunedata$envir, method = "hillsmith", 
                                rows_annot = dunedata$veg, scannf = F)
 plot_mvar(dunedata_hillsmith, col = "Ach.mil")
 ```
@@ -65,7 +65,7 @@ plot_mvar(dunedata_hillsmith, col = "Ach.mil")
 
 ```{r}
 data(dunedata)
-dunedata_mix <- ordinate(dunedata$envir, method = "mix", 
+dunedata_mix <- ordi(dunedata$envir, method = "mix", 
                          rows_annot = dunedata$veg, scannf = F)
 plot_mvar(dunedata_mix, col = "Ach.mil")
 ```
@@ -74,6 +74,6 @@ plot_mvar(dunedata_mix, col = "Ach.mil")
 
 ```{r}
 data(housetasks)
-housetasks_nsc <- ordinate(housetasks, method = "nsc", scannf = F)
+housetasks_nsc <- ordi(housetasks, method = "nsc", scannf = F)
 plot_mvar(housetasks_nsc, list(list(text = T, point = F), list(text = T, point = F, arrow = T)), label = "label")
 ```
