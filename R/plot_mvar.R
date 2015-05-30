@@ -58,6 +58,8 @@ build_opts <- function(mvar_object, layers_list = NULL, x = "axis_1",
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #'
 #' @importFrom grid arrow unit
+#' @importFrom ggplot2 ggplot geom_point geom_segment geom_text aes_string
+#'    facet_grid
 #'
 #' @export
 plot_table <- function(table_slot, opts = list(), p = ggplot()) {
@@ -104,8 +106,6 @@ plot_table <- function(table_slot, opts = list(), p = ggplot()) {
 #'
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #'
-#' @importFrom ggplot2 geom_point aes_string geom_segment geom_text ggtitle ggplot
-#'
 #' @export
 plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
   if(is.null(opts)) {
@@ -124,6 +124,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
 #' @title Plot an mvar object from annotation names
 #'
 #'
+#' @export
 plot_mvar <- function(mvar_object, layers_list = NULL, x = "axis_1", y = "axis_2",
                       col = NULL, shape = NULL, size = NULL, label = NULL,
                       facet_vector = NULL) {

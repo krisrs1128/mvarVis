@@ -1,33 +1,37 @@
 
-# ordinate-without-annotation ---------------------------------------------
+# ordi-without-annotation ---------------------------------------------
 
-ordinate_wrapper <- function(X = NULL, D = NULL, method = "pca",
-                             dist_method = "euclidean", ...) {
-  # perform ordination
+#' @title Wrapper for vegan and ade4 ordi methods
+#'
+#' @export
+ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
+  # perform ordi
   if(method %in% c("pca", "pco", "acm", "coa", "fpca",
                    "hillsmith", "mix", "nsc")) {
     # Methods that need to be called as dudi."name"
-    ordination_method <- eval(parse(text=paste0("dudi.", method)))
+    ordi_method <- eval(parse(text=paste0("dudi.", method)))
   } else {
     # Methods that can be called directly
-    ordination_method <- eval(parse(text=method))
+    ordi_method <- eval(parse(text=method))
   }
 
   if(method %in% c("pca", "acm", "coa", "fca",
                    "fpca", "hillsmith", "mix", "nsc")) {
     # Methods that can be called on a single data frame X
-    X_ord <- ordination_method(X, ...)
+    X_ord <- ordi_method(X, ...)
   } else if(method %in% c("pco", "dpcoa")) {
-    # Methods that require a distance matrix (and possibly X)
-    if(is.null(D)) {
-      D <- vegdist(X, method = dist_method)
-    }
     if(method %in% c("pco")) {
-      # Methods that are called on just D
-      X_ord <- ordination_method(D, ...)
+      # Methods that are called on just a distance matrix
+      if(!is.dist(X)) {
+        X <- vegdist(X, method = dist_method)
+      }
+      X_ord <- ordi_method(X, ...)
     } else if(method %in% c("dpcoa")) {
-      # Methods called on both D and X
-      X_ord <- ordination_method(data.frame(X), D, ...)
+      # Methods called on both  data frame and a distance matrix
+      if(!is.dist(X[[2]])) {
+        X[[2]]  <- vegdist(X, method = dist_method)
+      }
+      X_ord <- ordi_method(data.frame(X[[1]]), X[[2]], ...)
     }
   }
   return (X_ord)
@@ -35,6 +39,9 @@ ordinate_wrapper <- function(X = NULL, D = NULL, method = "pca",
 
 # convert-class -----------------------------------------------------------
 
+#' @title Convert vegan and ade4 objects to class mvar
+#'
+#' @export
 convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
   # convert to mvar class
   cur_class <- class(X_ord)
@@ -46,7 +53,7 @@ convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
 
     available_tables <- intersect(names(X_ord), table_names)
     if(length(available_tables) != length(table_names)) {
-      warning(cat("The following tables are not returned by the specified ordination method: ",
+      warning(cat("The following tables are not returned by the specified ordi method: ",
                   setdiff(table_names, names(X_ord))))
     }
     X_mvar <- ade4_to_mvar(X_ord, table_names)
@@ -57,6 +64,9 @@ convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
 
 # get-annotation ----------------------------------------------------------
 
+#' @title Get Annotation to combine with mvarVis Object
+#'
+#' @export
 get_annotation_list <- function(X_mvar, rows_annot = NULL,
                                 cols_annot = NULL) {
   annotation_list <- list()
@@ -73,21 +83,21 @@ get_annotation_list <- function(X_mvar, rows_annot = NULL,
   return(annotation_list)
 }
 
-# ordination-wrapper ------------------------------------------------------
+# ordi-wrapper ------------------------------------------------------
 
-#' @title Wrapper for ade4 and vegan ordination functions
+#' @title Wrapper for ade4 and vegan ordi functions
 #'
 #' @importFrom ade4 dudi.pca
-ordinate <- function(X = NULL, D = NULL, rows_annot = NULL,
+#' @export
+ordi <- function(X, rows_annot = NULL,
                      cols_annot = NULL, method = "pca",
                      dist_method = "euclidean", table_names = list("li", "co"), ...) {
-  stopifnot(!(is.null(X) & is.null(D)))
   implemented_methods <- c("pca", "acm", "coa", "fca", "fpca", "pco",
                            "hillsmith","mix","nsc", "pca", "pco",
                            "dpcoa", "decorana", "metaMDS", "isomap",
                            "isoMDS")
   method <- match.arg(method, implemented_methods)
-  X_ord <- ordinate_wrapper(X, D, method, dist_method, ...)
+  X_ord <- ordi_wrapper(X, method, dist_method, ...)
   X_mvar <- convert_to_mvar(X_ord, table_names)
   annotation_list <- get_annotation_list(X_mvar, rows_annot,
                                          cols_annot)
