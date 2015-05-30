@@ -1,28 +1,44 @@
+#' @title Search Vegan and ade4 for matching method
+#'
+#'
+#' @importFrom ade4 dudi.pca dudi.pco dudi.acm dudi.coa dudi.fpca dudi.hillsmith
+#'    dudi.mix dudi.nsc dpcoa cca
+#' @importFrom vegan cca
+match_ordi_method <- function(method) {
+  # determine the function to be called
+  if(method %in% c("pca", "pco", "acm", "coa", "fpca",
+                   "hillsmith", "mix", "nsc")) {
+    # Methods that need to be called as dudi."name"
+    ordi_method <- eval(parse(text=paste0("dudi.", method)))
+  } else if(method %in% "vegan_cca") {
+    ordi_method <- eval(parse(text = "vegan::cca"))
+  } else if(method %in% "ade4_cca") {
+    ordi_method <- eval(parse(text = "ade4::cca"))
+  } else {
+    # Methods that can be called directly
+    ordi_method <- eval(parse(text=method))
+  }
+  return (ordi_method)
+}
 
 # ordi-without-annotation ---------------------------------------------
 
 #' @title Wrapper for vegan and ade4 ordi methods
 #'
+#' @importFrom vegan vegdist
 #' @export
 ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
-  # perform ordi
-  if(method %in% c("pca", "pco", "acm", "coa", "fpca",
-                   "hillsmith", "mix", "nsc")) {
-    # Methods that need to be called as dudi."name"
-    ordi_method <- eval(parse(text=paste0("dudi.", method)))
-  } else {
-    # Methods that can be called directly
-    ordi_method <- eval(parse(text=method))
-  }
 
-  if(method %in% c("pca", "acm", "coa", "fca",
-                   "fpca", "hillsmith", "mix", "nsc")) {
+  ordi_method <- match_ordi_method(method)
+  if(method %in% c("pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix",
+                   "nsc")) {
     # Methods that can be called on a single data frame X
     X_ord <- ordi_method(X, ...)
-  } else if(method %in% c("pco", "dpcoa")) {
-    if(method %in% c("pco")) {
+  } else if(method %in% c("pco", "isomap", "dpcoa")) {
+    # Methods that require a distance matrix
+    if(method %in% c("pco", "isomap")) {
       # Methods that are called on just a distance matrix
-      if(!is.dist(X)) {
+      if(class(X) != "dist") {
         X <- vegdist(X, method = dist_method)
       }
       X_ord <- ordi_method(X, ...)
@@ -33,6 +49,12 @@ ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
       }
       X_ord <- ordi_method(data.frame(X[[1]]), X[[2]], ...)
     }
+  } else if(method %in% c("vegan_cca", "rda")) {
+    # Methods that require a formula + data
+    X_ord <- ordi_method(formula = X$fmla, data = X$data)
+  } else if(method %in% c("CCorA", "ade4_cca")) {
+    # Methods that require a pair of data frames
+    X_ord <- do.call(ordi_method, X, ...)
   }
   return (X_ord)
 }
@@ -45,10 +67,7 @@ ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
 convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
   # convert to mvar class
   cur_class <- class(X_ord)
-  if(any(c("rda", "cca", "decorana") %in% cur_class)) {
-    # Vegan classes
-    X_mvar <- vegan_to_mvar(X_ord)
-  } else if(any(c("dpcoa", "dudi") %in% cur_class)) {
+  if(any(c("dpcoa", "dudi") %in% cur_class)) {
     # ade4 classes
 
     available_tables <- intersect(names(X_ord), table_names)
@@ -57,8 +76,10 @@ convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
                   setdiff(table_names, names(X_ord))))
     }
     X_mvar <- ade4_to_mvar(X_ord, table_names)
+  } else if(any(c("rda", "cca", "decorana", "CCorA") %in% cur_class)) {
+    # Vegan classes
+    X_mvar <- vegan_to_mvar(X_ord)
   }
-
   return (X_mvar)
 }
 
@@ -75,6 +96,12 @@ get_annotation_list <- function(X_mvar, rows_annot = NULL,
       annotation_list[[cur_table]] <- rows_annot
     } else if(cur_table %in% c("co", "l2", "species") & !is.null(cols_annot)) {
       annotation_list[[cur_table]] <- cols_annot
+
+    # For multitable methods, need column and row annotation lists, not just data frames
+    } else if(cur_table %in% c("corr.X.Cx", "corr.X.Cy")) {
+      annotation_list[[cur_table]] <- cols_annot[["X"]]
+    } else if(cur_table %in% c("corr.Y.Cx", "corr.Y.Cy")) {
+      annotation_list[[cur_table]] <- cols_annot[["Y"]]
     } else {
       n_points <- nrow(X_mvar@table[[cur_table]]@annotation)
       annotation_list[[cur_table]] <- data.frame(ix = 1:n_points)
@@ -89,13 +116,13 @@ get_annotation_list <- function(X_mvar, rows_annot = NULL,
 #'
 #' @importFrom ade4 dudi.pca
 #' @export
-ordi <- function(X, rows_annot = NULL,
-                     cols_annot = NULL, method = "pca",
-                     dist_method = "euclidean", table_names = list("li", "co"), ...) {
+ordi <- function(X, rows_annot = NULL, cols_annot = NULL, method = "pca",
+                 dist_method = "euclidean", table_names = list("li", "co"),
+                 ...) {
   implemented_methods <- c("pca", "acm", "coa", "fca", "fpca", "pco",
                            "hillsmith","mix","nsc", "pca", "pco",
                            "dpcoa", "decorana", "metaMDS", "isomap",
-                           "isoMDS")
+                           "isoMDS", "vegan_cca", "ade4_cca", "rda", "CCorA")
   method <- match.arg(method, implemented_methods)
   X_ord <- ordi_wrapper(X, method, dist_method, ...)
   X_mvar <- convert_to_mvar(X_ord, table_names)
