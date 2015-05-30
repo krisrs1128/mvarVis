@@ -11,11 +11,23 @@
 #'
 #'  @export
 vegan_to_mvar <- function(vegan_object) {
-
   mvar_axis_list <- list()
-  site_scores <- vegan::scores(vegan_object, display = "site")
-  species_scores <- vegan::scores(vegan_object, display = "species")
-  scores_list <- list("site" = site_scores, "species" = species_scores)
+  scores_list <- list()
+
+  # site or species scores may or may not be available
+  for(cur_display in c("site", "species")) {
+    cur_scores <- try(scores(vegan_object, display = cur_display), silent = TRUE)
+    if(class(cur_scores) != "try-error") {
+    scores_list[[cur_display]] <- cur_scores
+    }
+  }
+
+  # canonical correlations analysis has a different structure
+  if(class(vegan_object) == "CCorA") {
+    for(cur_display in c("corr.X.Cx", "corr.X.Cy", "corr.Y.Cx", "corr.Y.Cy")) {
+      scores_list[[cur_display]] <- vegan_object[[cur_display]]
+    }
+  }
 
   # Build an mvarAxis object for each
   for(cur_table in names(scores_list)) {
@@ -35,6 +47,8 @@ vegan_to_mvar <- function(vegan_object) {
   # Add eigenvalues, if the current vegan call computed this
   if(!is.null(vegan_object$CA$eig)) {
     cur_eig <- vegan_object$CA$eig
+  } else if(!is.null(vegan_object$Eigenvalues)) {
+    cur_eig <- vegan_object$Eigenvalues
   } else {
     cur_eig <- as.numeric(NA)
   }
