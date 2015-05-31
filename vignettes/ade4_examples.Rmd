@@ -22,6 +22,7 @@ deug_pca <- ordi(deug$tab, rows_annot = data.frame(res = deug$result),
                  method = "pca", scannf = F)
 plot_mvar(deug_pca, list(list(), list(point = F, text = T, arrow = T)), col = "res",
           label = "label")
+plot_mvar(deug_pca)
 ```
 
 ## acm
@@ -76,4 +77,20 @@ plot_mvar(dunedata_mix, col = "Ach.mil")
 data(housetasks)
 housetasks_nsc <- ordi(housetasks, method = "nsc", scannf = F)
 plot_mvar(housetasks_nsc, list(list(text = T, point = F), list(text = T, point = F, arrow = T)), label = "label")
+```
+
+## procustes
+
+```{r}
+data(macaca)
+macaca_procuste <- ordi(macaca, method = "procuste")
+plot_mvar(macaca_procuste)
+```
+
+## coinertia
+
+```{r}
+data(doubs)
+doubs_coin <- ordi(list(doubs$env, doubs$fish), method = "coinertia")
+plot_mvar(doubs_coin)
 ```
