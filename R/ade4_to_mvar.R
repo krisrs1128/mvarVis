@@ -7,9 +7,7 @@
 #' @param tables_to_include A character vector specifying which projections in
 #'    the \code{ade4} object to store in the mVarTable object. This vector can
 #'    have arbitrary length, the only requirement is that calling
-#'    \code{ade4_object[tables_to_include[i]]} should be a data frame. Defaults
-#'    to \code{c("li", "co")}, the row and column projections in a call to
-#'    \code{dudi.pca()}.
+#'    \code{ade4_object[tables_to_include[i]]} should be a data frame.
 #'
 #' @return mvar_table An object of class mvarTable, storing the tables specified
 #'    in \code{tables_to_include} and the eigenvalues from the \code{ade4}
@@ -33,7 +31,7 @@
 #'  ade4_to_mvar(coin1, tables_to_include = c("li", "co", "aX", "aY"))
 #'
 #'  @export
-ade4_to_mvar <- function(ade4_object, tables_to_include=c("li", "co")) {
+ade4_to_mvar <- function(ade4_object, tables_to_include) {
   mvar_axis_list <- list()
 
   # Build an mvarAxis object for each
@@ -51,7 +49,16 @@ ade4_to_mvar <- function(ade4_object, tables_to_include=c("li", "co")) {
                                        annotation = cur_annotation)
   }
 
+  # Get eigenvalues
+  if(!is.null(ade4_object$eig)) {
+    eig  <-  ade4_object$eig
+  } else if(!is.null(ade4_object$d)) {
+    eig  <-  ade4_object$d
+  } else {
+    eig <- NA
+  }
+
   # Combined tables mvarTable object
-  mvar_table <- new("mvarTable", table = mvar_axis_list, eig = ade4_object$eig)
+  mvar_table <- new("mvarTable", table = mvar_axis_list, eig = eig)
   return (mvar_table)
 }
