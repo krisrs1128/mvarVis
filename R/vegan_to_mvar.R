@@ -23,7 +23,7 @@ vegan_to_mvar <- function(vegan_object) {
   }
 
   # canonical correlations analysis has a different structure
-  if(class(vegan_object) == "CCorA") {
+  if("CCorA" %in% class(vegan_object)) {
     for(cur_display in c("corr.X.Cx", "corr.X.Cy", "corr.Y.Cx", "corr.Y.Cy")) {
       scores_list[[cur_display]] <- vegan_object[[cur_display]]
     }

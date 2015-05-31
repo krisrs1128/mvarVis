@@ -6,8 +6,8 @@
 #' @importFrom vegan cca
 match_ordi_method <- function(method) {
   # determine the function to be called
-  if(method %in% c("pca", "pco", "acm", "coa", "fpca",
-                   "hillsmith", "mix", "nsc")) {
+  paste_dudi <- c("pca", "pco", "acm", "coa", "fpca","hillsmith", "mix", "nsc")
+  if(method %in% paste_dudi) {
     # Methods that need to be called as dudi."name"
     ordi_method <- eval(parse(text=paste0("dudi.", method)))
   } else if(method %in% "vegan_cca") {
@@ -25,15 +25,21 @@ match_ordi_method <- function(method) {
 
 #' @title Wrapper for vegan and ade4 ordi methods
 #'
-#' @importFrom vegan vegdist
+#' @importFrom vegan vegdist cca decorana metaMDS isomap rda CCorA
+#' @importFrom ade4 dudi.pca dudi.acm dudi.coa dudi.fca dudi.fpca dudi.hillsmith
+#'    dudi.mix dudi.nsc dudi.pco dpcoa procuste cca
 #' @export
 ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
-
   ordi_method <- match_ordi_method(method)
-  if(method %in% c("pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix", "nsc")) {
+  direct_methods <- c("pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix", "nsc")
+  dist_methods <- c("pco", "isomap", "dpcoa", "metaMDS")
+  formula_methods <- c("vegan_cca", "rda")
+  df_list_methods <- c("CCorA", "ade4_cca", "procuste")
+
+  if(method %in% direct_methods) {
     # Methods that can be called on a single data frame X
     X_ord <- ordi_method(X, ...)
-  } else if(method %in% c("pco", "isomap", "dpcoa")) {
+  } else if(method %in% dist_methods) {
     # Methods that require a distance matrix
     if(method %in% c("pco", "isomap")) {
       # Methods that are called on just a distance matrix
@@ -41,17 +47,20 @@ ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
         X <- vegdist(X, method = dist_method)
       }
       X_ord <- ordi_method(X, ...)
+    } else if(method  %in% "metaMDS") {
+      # This is a distance method which requires some automatic preprocessing
+      X_ord <- ordi_method(X, distance = dist_method, ...)
     } else if(method %in% c("dpcoa")) {
       # Methods called on both  data frame and a distance matrix
-      if(!is.dist(X[[2]])) {
+      if(class(X[[2]]) != "dist") {
         X[[2]]  <- vegdist(X, method = dist_method)
       }
       X_ord <- ordi_method(data.frame(X[[1]]), X[[2]], ...)
     }
-  } else if(method %in% c("vegan_cca", "rda")) {
+  } else if(method %in% formula_methods) {
     # Methods that require a formula + data
     X_ord <- ordi_method(formula = X$fmla, data = X$data)
-  } else if(method %in% c("CCorA", "ade4_cca", "procuste")) {
+  } else if(method %in% df_list_methods) {
     # Methods that require a list of data frames
      X_ord <- ordi_method(X[[1]], X[[2]], ...)
   } else if(method %in% c("coinertia")) {
@@ -71,7 +80,10 @@ ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
 convert_to_mvar <- function(X_ord, table_names) {
   # convert to mvar class
   cur_class <- class(X_ord)
-  if(any(c("dpcoa", "procuste", "dudi") %in% cur_class)) {
+  vegan_classes <- c("rda", "cca", "isomap", "decorana", "CCorA", "metaMDS", "monoMDS")
+  ade4_classes <- c("dpcoa", "procuste", "dudi")
+
+  if(any(ade4_classes %in% cur_class)) {
     # ade4 classes
     available_tables <- intersect(names(X_ord), table_names)
     if(length(available_tables) != length(table_names)) {
@@ -82,8 +94,7 @@ convert_to_mvar <- function(X_ord, table_names) {
       }
     }
     X_mvar <- ade4_to_mvar(X_ord, table_names)
-  } else if(any(c("rda", "cca", "decorana", "CCorA") %in% cur_class)) {
-    # Vegan classes
+  } else if(any(vegan_classes %in% cur_class)) {
     X_mvar <- vegan_to_mvar(X_ord)
   }
   return (X_mvar)
