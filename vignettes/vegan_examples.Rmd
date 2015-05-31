@@ -18,15 +18,13 @@ library("vegan")
 
 ```{r}
 data(BCI)
-dis <- vegdist(BCI)
+dis <- vegdist(BCI, method = "euclidean")
 bci_isomap <- ordi(dis, method = "isomap", k = 10)
-plot_mvar(bci_isomap, layers_list = list(list(text = T, point = F)), 
-          label = "label")
+plot_mvar(bci_isomap, "text")
 
 # or, we could have just passed in the data frame and given a distance
 bci_isomap_2 <- ordi(BCI, method = "isomap", dist_method = "bray", k = 10)
-plot_mvar(bci_isomap_2, layers_list = list(list(text = T, point = F)), 
-          label = "label")
+plot_mvar(bci_isomap_2, "text")
 ```
 
 # cca
@@ -38,7 +36,7 @@ data(varechem)
 cca_fmla <- formula("varespec ~ Al + P * (K + Baresoil)")
 X <- list(fmla = cca_fmla, data = varechem)
 vare_cca <- ordi(X, method = "vegan_cca", rows_annot = varespec[, 1:10])
-plot_mvar(vare_cca, col = "Callvulg", label = "label")
+plot_mvar(vare_cca, col = "Callvulg")
 ```
 
 ## rda
@@ -48,7 +46,7 @@ data(dune)
 data(dune.env)
 X <- list(fmla = formula("dune ~ Manure"), data = dune.env)
 dune_rda <- ordi(X, method = "rda")
-plot_mvar(dune_rda, label = "label", layers_list = list(list(text = T), list(text = T)))
+plot_mvar(dune_rda, "text")
 ```
 
 ## decorana
@@ -61,6 +59,7 @@ plot_mvar(vare_decorana)
 ## CCorA
 
 ```{r}
+# Taken from the vegan ccora help page
 data(mite)
 group.1 <- c(1,2,4:8,10:15,17,19:22,24,26:30)
 group.2 <- c(3,9,16,18,23,25,31:35)
@@ -71,6 +70,6 @@ rownames(mite.hel.1) = paste("S",1:nrow(mite),sep="")
 rownames(mite.hel.2) = paste("S",1:nrow(mite),sep="")
 
 mite_ccora <- ordi(list(mite.hel.1, mite.hel.2), method = "CCorA", 
-                   cols_annot = list("Y" = t(mite.hel.1), "X" = t(mite.hel.2)))
+                   cols_annot = list(t(mite.hel.2), t(mite.hel.1)))
 plot_mvar(mite_ccora, col = "S68")
 ```

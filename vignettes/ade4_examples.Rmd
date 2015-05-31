@@ -20,18 +20,15 @@ library("ade4")
 data(deug)
 deug_pca <- ordi(deug$tab, rows_annot = data.frame(res = deug$result),
                  method = "pca", scannf = F)
-plot_mvar(deug_pca, list(list(), list(point = F, text = T, arrow = T)), col = "res",
-          label = "label")
-plot_mvar(deug_pca)
+plot_mvar(deug_pca, "point-text", col = "res")
 ```
 
 ## acm
 
 ```{r}
 data(banque)
-banque_acm <- ordi(banque[, -c(1:4)], rows_annot = banque[, 1:4],
-                       method = "acm", scannf = F)
-plot_mvar(banque_acm, col = "age")
+banque_acm <- ordi(banque[, -c(1:4)], rows_annot = banque[, 1:4],  method = "acm", scannf = F)
+plot_mvar(banque_acm, "point", col = "age")
 ```
 
 ## coa
@@ -39,8 +36,7 @@ plot_mvar(banque_acm, col = "age")
 ```{r}
 data(bordeaux)
 bordeaux_coa <- ordi(bordeaux, method = "coa", scannf = F)
-layers_list <- list(list(text = T, point = F), list(text = T, point = F))
-plot_mvar(bordeaux_coa, label = "label", layers_list)
+plot_mvar(bordeaux_coa, "text")
 ```
 
 ## fpca
@@ -49,7 +45,7 @@ plot_mvar(bordeaux_coa, label = "label", layers_list)
 data(bsetal97)
 w <- prep.fuzzy.var(bsetal97$biol, bsetal97$biol.blo)
 bsetal_fpca <- ordi(w, method = "fpca", rows_annot = data.frame(species = bsetal97$species.names), scannf = F)
-plot_mvar(bsetal_fpca, label = "species", layers_list = list(list(text = T), list()))
+plot_mvar(bsetal_fpca, "point-text", label = "species")
 ```
 
 ## hillsmith
@@ -57,18 +53,16 @@ plot_mvar(bsetal_fpca, label = "species", layers_list = list(list(text = T), lis
 ```{r}
 data(dunedata)
 attributes(dunedata$envir$use)$class <- "factor"
-dunedata_hillsmith <- ordi(dunedata$envir, method = "hillsmith", 
-                               rows_annot = dunedata$veg, scannf = F)
-plot_mvar(dunedata_hillsmith, col = "Ach.mil")
+dunedata_hillsmith <- ordi(dunedata$envir, method = "hillsmith", rows_annot = dunedata$veg, scannf = F)
+plot_mvar(dunedata_hillsmith, "point-text", col = "Ach.mil")
 ```
 
 ## mix
 
 ```{r}
 data(dunedata)
-dunedata_mix <- ordi(dunedata$envir, method = "mix", 
-                         rows_annot = dunedata$veg, scannf = F)
-plot_mvar(dunedata_mix, col = "Ach.mil")
+dunedata_mix <- ordi(dunedata$envir, method = "mix", rows_annot = dunedata$veg, scannf = F)
+plot_mvar(dunedata_mix, "point-text-arrow", col = "Ach.mil")
 ```
 
 ## nsc
@@ -76,7 +70,7 @@ plot_mvar(dunedata_mix, col = "Ach.mil")
 ```{r}
 data(housetasks)
 housetasks_nsc <- ordi(housetasks, method = "nsc", scannf = F)
-plot_mvar(housetasks_nsc, list(list(text = T, point = F), list(text = T, point = F, arrow = T)), label = "label")
+plot_mvar(housetasks_nsc, "text")
 ```
 
 ## procustes
@@ -84,13 +78,13 @@ plot_mvar(housetasks_nsc, list(list(text = T, point = F), list(text = T, point =
 ```{r}
 data(macaca)
 macaca_procuste <- ordi(macaca, method = "procuste")
-plot_mvar(macaca_procuste)
+plot_mvar(macaca_procuste, "text")
 ```
 
 ## coinertia
 
 ```{r}
 data(doubs)
-doubs_coin <- ordi(list(doubs$env, doubs$fish), method = "coinertia")
-plot_mvar(doubs_coin)
+doubs_coin <- ordi(list(doubs$env, doubs$fish), method = "coinertia", scannf = F)
+plot_mvar(doubs_coin, "text")
 ```

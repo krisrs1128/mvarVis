@@ -64,42 +64,35 @@ sample_data(GP1)$human <- factor(human)
 ### ```vegan``` methods
 
 ```{r}
-gp1_nmds <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data,
-                           method = "metaMDS", dist_method = "bray")
+gp1_nmds <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "metaMDS")
 plot_mvar(gp1_nmds, col = "Phylum", shape = "human")
 
 # DCA
-gp1_dca <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data,
-                           method = "decorana")
+gp1_dca <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "decorana")
 plot_mvar(gp1_dca, col = "Phylum", shape = "human")
 ```
 
 ### ```ade4``` methods
 
-There is an analogous function for ```ade4```.
+There is an analogous function for ```ade4```. Note that we can pass in ```ade4```
+arguments through ```ordi``` (as in the ```scannf = F``` below).
 
 ```{r}
 # DPCoA
 patristicDist <- cailliez(as.dist(cophenetic.phylo(phy_tree(GP1))))
-gp1_dpcoa <- ordinate_table(GP1@otu_table, patristicDist, GP1@tax_table,
-                            GP1@sam_data, method = "dpcoa", 
-                            tables_to_include = c("l1", "c1"), 
-                            scannf = F)
-plot_mvar(gp1_dpcoa, col = "Phylum")
+gp1_dpcoa <- ordi(list(GP1@otu_table, patristicDist), GP1@tax_table, GP1@sam_data, 
+                  method = "dpcoa", scannf = F)
+plot_mvar(gp1_dpcoa, "point-text", col = "Phylum")
 
 # PCA
-gp1_pca <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data, 
-                          method = "pca", tables_to_include = c("li", "co"), scannf = F, 
-                          nf = 10)
+gp1_pca <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pca", 
+                scannf = F, nf = 10)
 plot_mvar(gp1_pca, col = "Phylum", facet_vector = c("SampleType", "Phylum"))
 
 # MDS
-gp1_mds <- ordinate_table(GP1@otu_table, D = NULL, GP1@tax_table, GP1@sam_data, 
-                          method = "pco", dist_method = "euclidean", 
-                          scannf = F)
-layers_list <- list(list(), list(text = TRUE))
-plot_mvar(gp1_mds, col = "Phylum", shape = "human", 
-          label = "SampleType", layers_list = layers_list)
+gp1_mds <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pco", 
+                dist_method = "euclidean", scannf = F)
+plot_mvar(gp1_mds, col = "Phylum", shape = "human")
 ```
 
 I haven't implemented the pcoa example yet, since this needs a conversion
