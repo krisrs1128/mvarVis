@@ -45,8 +45,8 @@ vegan_to_mvar <- function(vegan_object) {
   }
 
   # Add eigenvalues, if the current vegan call computed this
-  if(!is.null(vegan_object$CA$eig)) {
-    cur_eig <- vegan_object$CA$eig
+  if(!is.null(vegan_object$CCA$eig)) {
+    cur_eig <- vegan_object$CCA$eig
   } else if(!is.null(vegan_object$Eigenvalues)) {
     cur_eig <- vegan_object$Eigenvalues
   } else {

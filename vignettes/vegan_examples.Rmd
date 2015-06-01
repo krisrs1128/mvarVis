@@ -1,5 +1,5 @@
 ---
-title: "\code{vegan} Functions"
+title: "vegan Functions"
 author: "Kris Sankaran"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -12,6 +12,27 @@ vignette: >
 ```{r}
 library("mvarVis")
 library("vegan")
+library("ggplot2")
+```
+
+
+## coldf
+
+```{r}
+data(coldf)
+sample_data <- data.frame(Color = rownames(coldf),
+                          Depth = rowSums(coldf),
+                          row.names = rownames(coldf))
+X <- list(fmla = formula("coldf ~ ."), data = sample_data)
+coldf_cca <- ordi(X, rows_annot = sample_data, method = "vegan_cca")
+
+# compare with usual cca
+plot(cca(coldf ~ ., data = sample_data))
+plot_mvar(coldf_cca, "text", col = "Color", size = 6) + 
+  scale_colour_manual(name = "Color", values = rownames(coldf))
+coldf_cca@table$species <- NULL
+plot_mvar(coldf_cca, "text", col = "Color", size = 6) + 
+  scale_colour_manual(name = "Color", values = rownames(coldf))
 ```
 
 # Isomap
@@ -38,6 +59,7 @@ X <- list(fmla = cca_fmla, data = varechem)
 vare_cca <- ordi(X, method = "vegan_cca", rows_annot = varespec[, 1:10])
 plot_mvar(vare_cca, col = "Callvulg")
 ```
+
 
 ## rda
 

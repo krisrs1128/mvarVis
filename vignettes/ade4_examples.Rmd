@@ -1,5 +1,5 @@
 ---
-title: "\code{ade4} Examples"
+title: "ade4 Examples"
 author: "Kris Sankaran"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

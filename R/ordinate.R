@@ -1,6 +1,5 @@
 #' @title Search Vegan and ade4 for matching method
 #'
-#'
 #' @importFrom ade4 dudi.pca dudi.pco dudi.acm dudi.coa dudi.fpca dudi.hillsmith
 #'    dudi.mix dudi.nsc dpcoa cca
 #' @importFrom vegan cca
