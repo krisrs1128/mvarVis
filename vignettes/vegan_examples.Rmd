@@ -4,7 +4,7 @@ author: "Kris Sankaran"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{vegan functions}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -14,7 +14,6 @@ library("mvarVis")
 library("vegan")
 library("ggplot2")
 ```
-
 
 ## coldf
 
@@ -27,7 +26,7 @@ X <- list(fmla = formula("coldf ~ ."), data = sample_data)
 coldf_cca <- ordi(X, rows_annot = sample_data, method = "vegan_cca")
 
 # compare with usual cca
-plot(cca(coldf ~ ., data = sample_data))
+plot(vegan::cca(coldf ~ ., data = sample_data))
 plot_mvar(coldf_cca, "text", col = "Color", size = 6) + 
   scale_colour_manual(name = "Color", values = rownames(coldf))
 coldf_cca@table$species <- NULL

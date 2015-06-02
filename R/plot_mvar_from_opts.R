@@ -19,7 +19,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
     p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
   }
   if(!is.na(mvar_object@eig[1])) {
-    p <- add_eigenvalue_info(p, opts)
+    p <- add_eigenvalue_info(mvar_object@eig, p, opts)
   }
   return (p)
 }

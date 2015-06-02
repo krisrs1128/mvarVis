@@ -18,10 +18,10 @@
 #'  library("ade4")
 #'  data(USArrests)
 #'  arrests_pca <- dudi.pca(USArrests, scannf = FALSE, nf = 2)
-#'  ade4_to_mvar(arrests_pca)
+#'  ade4_to_mvar(arrests_pca, c("li", "co"))
 #'
 #'  arrests_pco <- dudi.pco(dist(USArrests), scannf = FALSE, nf = 2)
-#'  ade4_to_mvar(arrests_pco)
+#'  ade4_to_mvar(arrests_pco, c("li", "co"))
 #'
 #'  # Example taken from coinertia() in ade4 package
 #'  data(doubs)

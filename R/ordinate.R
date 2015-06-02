@@ -16,18 +16,17 @@
 #'  second element is a distance between the rows on that data frame.
 #'  \code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
 #'  data frames.
-#'
-#' @param method The method among those listed above that will perform the
-#'  required ordination.
-#'
-#' @param dist_method If a distance matrix is used by the specified method and
-#'  \code{X} is not a distance object, we will call \code{vegdist} on the
-#'  \code{X} using this string as the distance.#' @param rows_annot
 #' @param rows_annot For one table methods, a data.frame whose j^th row
 #'  describes the j^th sample in the coordinates matrices corresponding to
 #'  row scores. For procustes and CCorA, we require a list of dataframes, one
 #'  for each of the directions.
 #' @param cols_annot The analogous object for column scores.
+#' @param method The method among those listed above that will perform the
+#'  required ordination.
+#' @param dist_method If a distance matrix is used by the specified method and
+#'  \code{X} is not a distance object, we will call \code{vegdist} on the
+#'  \code{X} using this string as the distance.#' @param rows_annot
+
 #' @param table_names A vector of strings specifying which tables to extract, for
 #'
 #' @importFrom ade4 dudi.pca

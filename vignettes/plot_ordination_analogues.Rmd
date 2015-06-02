@@ -4,7 +4,7 @@ author: "Vignette Author"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{analogues to plot ordination}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -17,18 +17,6 @@ points easily. ```plot_ordination``` implements this idea in the case that
 the ordination has features from a ```phyloseq``` object, but the idea 
 can be applied more generally.
 
-To work in this wider context, we currently have a 3-step pipeline
-
-- Convert the result of an ```ade4``` or ```vegan``` ordination into a
-class ```mvarTable```. Having this class means we don't have to rewrite 
-plotting or annotation code for every kind of ordination package.
-- Annotate the results of the ordination. By this we mean give covariates
-that describe each of the projected points (like Phylum in the microbiome
-context).
-- Plot the annotated ```mvarTable``` object. The goal is to provide
-flexibility in mapping aesthetic attributes without requiring too much
-work from the user.
-
 #```plot_ordination``` analogues
 
 To get an idea for how this package works, here are some examples 
@@ -38,7 +26,6 @@ re-implementing the methods in ```plot_ordination``` from the
 ##Loading / reshaping data
 
 First we load the data from the linked page.
-
 
 ```{r}
 library("ape")
@@ -74,15 +61,15 @@ plot_mvar(gp1_dca, col = "Phylum", shape = "human")
 
 ### ```ade4``` methods
 
-There is an analogous function for ```ade4```. Note that we can pass in ```ade4```
-arguments through ```ordi``` (as in the ```scannf = F``` below).
+Note that we can pass in ```ade4``` arguments through ```ordi``` (as in the 
+```scannf = F``` below).
 
 ```{r}
 # DPCoA
 patristicDist <- cailliez(as.dist(cophenetic.phylo(phy_tree(GP1))))
 gp1_dpcoa <- ordi(list(GP1@otu_table, patristicDist), GP1@tax_table, GP1@sam_data, 
                   method = "dpcoa", scannf = F)
-plot_mvar(gp1_dpcoa, "point-text", col = "Phylum")
+plot_mvar(gp1_dpcoa, "point-text", col = "Phylum", size = 3)
 
 # PCA
 gp1_pca <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pca", 

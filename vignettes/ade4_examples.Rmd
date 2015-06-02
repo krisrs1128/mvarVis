@@ -4,7 +4,7 @@ author: "Kris Sankaran"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{ade4 examples}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
@@ -20,7 +20,8 @@ library("ade4")
 data(deug)
 deug_pca <- ordi(deug$tab, rows_annot = data.frame(res = deug$result),
                  method = "pca", scannf = F)
-plot_mvar(deug_pca, "point-text", col = "res")
+plot_mvar(deug_pca, "point", col = "res")
+plot_mvar(deug_pca, "point-text-arrow", col = "res")
 ```
 
 ## acm
@@ -28,7 +29,7 @@ plot_mvar(deug_pca, "point-text", col = "res")
 ```{r}
 data(banque)
 banque_acm <- ordi(banque[, -c(1:4)], rows_annot = banque[, 1:4],  method = "acm", scannf = F)
-plot_mvar(banque_acm, "point", col = "age")
+plot_mvar(banque_acm, col = "age")
 ```
 
 ## coa
@@ -54,7 +55,7 @@ plot_mvar(bsetal_fpca, "point-text", label = "species")
 data(dunedata)
 attributes(dunedata$envir$use)$class <- "factor"
 dunedata_hillsmith <- ordi(dunedata$envir, method = "hillsmith", rows_annot = dunedata$veg, scannf = F)
-plot_mvar(dunedata_hillsmith, "point-text", col = "Ach.mil")
+plot_mvar(dunedata_hillsmith, "point-text", col = "Ach.mil", size = 3)
 ```
 
 ## mix
@@ -62,7 +63,7 @@ plot_mvar(dunedata_hillsmith, "point-text", col = "Ach.mil")
 ```{r}
 data(dunedata)
 dunedata_mix <- ordi(dunedata$envir, method = "mix", rows_annot = dunedata$veg, scannf = F)
-plot_mvar(dunedata_mix, "point-text-arrow", col = "Ach.mil")
+plot_mvar(dunedata_mix, "point-text-arrow", col = "Ach.mil", size = 3)
 ```
 
 ## nsc
