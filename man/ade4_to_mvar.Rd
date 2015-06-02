@@ -4,7 +4,7 @@
 \alias{ade4_to_mvar}
 \title{Convert an ade4 object into class mVarTable}
 \usage{
-ade4_to_mvar(ade4_object, tables_to_include = c("li", "co"))
+ade4_to_mvar(ade4_object, tables_to_include)
 }
 \arguments{
 \item{ade4_object}{The output of a call to dudi.* from package \code{ade4}.
@@ -15,9 +15,7 @@ of interest. Calling \code{class(ade4_object)} should show
 \item{tables_to_include}{A character vector specifying which projections in
    the \code{ade4} object to store in the mVarTable object. This vector can
    have arbitrary length, the only requirement is that calling
-   \code{ade4_object[tables_to_include[i]]} should be a data frame. Defaults
-   to \code{c("li", "co")}, the row and column projections in a call to
-   \code{dudi.pca()}.}
+   \code{ade4_object[tables_to_include[i]]} should be a data frame.}
 }
 \value{
 mvar_table An object of class mvarTable, storing the tables specified
@@ -32,10 +30,10 @@ Convert an ade4 object into class mVarTable
 library("ade4")
  data(USArrests)
  arrests_pca <- dudi.pca(USArrests, scannf = FALSE, nf = 2)
- ade4_to_mvar(arrests_pca)
+ ade4_to_mvar(arrests_pca, c("li", "co"))
 
  arrests_pco <- dudi.pco(dist(USArrests), scannf = FALSE, nf = 2)
- ade4_to_mvar(arrests_pco)
+ ade4_to_mvar(arrests_pco, c("li", "co"))
 
  # Example taken from coinertia() in ade4 package
  data(doubs)

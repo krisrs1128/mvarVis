@@ -2,77 +2,64 @@
 % Please edit documentation in R/plot_mvar.R
 \name{plot_mvar}
 \alias{plot_mvar}
-\title{Plot an mvar object}
+\title{Plot an mvar object from annotation names}
 \usage{
-plot_mvar(mvar_object, point_ix = 1:length(mvar_object@table),
-  text_ix = numeric(0), arrow_ix = 2, rescaling_ix = 2,
-  rescaling_ref = 1, text_vars = rep(list(NULL), length(mvar_object@table)),
-  proj_axes = 1:2, color_vars = rep(list(NULL), length(mvar_object@table)),
-  point_size_vars = rep(2, length(mvar_object@table)),
-  text_size_vars = rep(list(NULL), length(mvar_object@table)),
-  shape_vars = rep(list(NULL), length(mvar_object@table)))
+plot_mvar(mvar_object, layers_list = "point", x = "axis_1", y = "axis_2",
+  col = NULL, shape = NULL, size = NULL, label = NULL,
+  facet_vector = NULL)
 }
 \arguments{
-\item{mvar_object}{An object of class \code{mvarTable} that we want to
-visualize. Each \code{mvarAxis} component can be visualized as a
-different \code{ggplot2} layer; the \code{coord} slot is needed to provide
-the point positions while the \code{annotation} slot is used to map
-aesthetics to these points.}
+\item{mvar_object}{An object of class \code{mvarAxis} that we want to
+visualize.}
 
-\item{point_ix}{A vector giving the indices of the axes in the
-\code{mvar_object}'s \code{tables} component that we want to plot as
-points. Specifically, for each element $i$ of \code{point_ix}, we look up
-the i^th element in the \code{mvar_object} \code{table} slot, extract the
- \code{coord} slot, and plot each row as a separate point}
+\item{layers_list}{Either a list of lists containing detailed plotting
+layer options, or a character string matching one of a few defaults.
+If a list of lists is provided, we expect the i^th component to be a list
+whose names are any of "point", "text", and "arrow", and whose corresponding
+values are TRUE if that layer is to be added to the plot and FALSE otherwise.
+If a character is provided, we expect one of the following presets:
+  points: We plot points for each layer. If no color aesthetic associated
+    with row or column annotation is provided, each layer of points will
+    be a different color. This is the default plot.
+  text: This plots text for every layer.
+  point-text: This plots points for the first layer and text for the second
+    layer. Only applies to tables with two layers.
+  text-point: This plots text for the first layer and points for the second.
+  points-and-text: This shows both points and slightly offset points for
+    every layer.
+  point-text-arrow: This plots points for the first layer, and both text
+    and arrows for the second layer.}
 
-\item{text_ix}{A vector analogous to \code{point_ix}, execpt that it gives
-the elements that we plot as text labels. The actual text that appears
-will default to the \code{$label} element in the \code{annotation} slot,
-but this can be customized using the \code{text_vars} component.}
+\item{x}{The name of the column in the coord data to use as the x-axis in
+the desired plot. This will default to the first axis in the ordination.}
 
-\item{arrow_ix}{A vector analogous to \code{point_ix} and \code{text_ix},
-giving the elements for which we plot arrows connecting the origin to
-the \code{coord} position.}
+\item{y}{The name of the column in the coord data to use as the y-axis in
+the desired plot. This will default to the second axis in the ordination.}
 
-\item{rescaling_ix}{When making a biplot, the scales of the two sets of
-points aren't always comparable -- only the *directions* of the
-projections of feature variables are meaningful. This vector indexes the
-tables whose coordinate values we will rescale to match those of a
-reference projection's values, see \code{rescaling_ref}.}
+\item{col}{The color to use for points or text in the plot. This can either
+be a column in one or more of the annotation objects, in which case the
+values from that annotation will be used for coloring, or a string specifying
+the actual color to use.}
 
-\item{rescaling_ref}{The index within the \code{mvar_object} \code{table}
-list of the projection to use as a reference when rescaling other
-projection values. For example, in a biplot including samples and
-features, we could plot the actual values for the samples, and scale the
-feature coordinates to be about the same magnitude as the samples.}
+\item{shape}{The points to use for points in the plot. This can either
+be a column in one or more of the annotation objects, in which case the
+values from that annotation will be used for coloring, or a string specifying
+the actual color to use.}
 
-\item{text_vars}{A list the same length as the \code{mvar_object}
-\code{table} list whose i^th element either (1) gives the column name in
-the associated annotation table to which map to text, or (2) is NULL,
-meaning that table does not have a text label.}
+\item{size}{The size of points in the plot. This can either be a column in
+one or more of the annotation objects, in which case the values from that
+annotation will be used for coloring, or a string specifying the actual color
+to use.}
 
-\item{proj_axes}{Which columns in each \code{coord} object should we use to
-do the projections? Defaults to 1-2, the two axes explaining the most
-variability.}
-
-\item{color_vars}{A list with the same format as \code{text_vars}, but for
-mapping color aesthetics of each layer.}
-
-\item{point_size_vars}{A list with the same format as \code{text_vars}, but
-for mapping the point size aesthetics of each layer.}
-
-\item{text_size_vars}{A list with the same format as \code{text_vars}, but
-for mapping the text size aesthetics of each layer.}
-
-\item{shape_vars}{A list with the same format as \code{text_vars}, but for
-   mapping the shape aesthetic of each layer.}
+\item{label}{The label to use for text in the plot. This can either be a column in
+one or more of the annotation objects, in which case the values from that
+annotation will be used for coloring, or a string specifying the actual color
+to use.}
 }
 \value{
 p A ggplot object mapping the layers specified in the arguments.
 }
 \description{
-\code{plot_mvar} helps plot multiple projection layers
-associated with an mvar object, using \code{ggplot2} with various options to
-customize the plot's appearance.
+Plot an mvar object from annotation names
 }
 
