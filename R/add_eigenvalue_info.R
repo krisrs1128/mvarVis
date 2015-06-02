@@ -10,7 +10,6 @@
 #'  ratio fixed by the ratio of eigenvalues.
 add_eigenvalue_info <- function(p, opts = list()) {
   # add eigenvalue labels for the axis specified by the first element in the aes list
-  if(!is.na(mvar_object@eig[1])) {
     merged_aes <- merge_table_plot_opts(opts)$aes_list
     x_axis  <- as.numeric(gsub("axis_", "", merged_aes$x))
     y_axis <- as.numeric(gsub("axis_", "", merged_aes$y))

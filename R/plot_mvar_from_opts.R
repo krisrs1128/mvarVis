@@ -18,6 +18,8 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
   for(cur_table in 1:length(mvar_object@table)) {
     p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
   }
-  p <- add_eigenvalue_info(p, opts)
+  if(!is.na(mvar_object@eig[1])) {
+    p <- add_eigenvalue_info(p, opts)
+  }
   return (p)
 }
