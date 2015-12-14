@@ -1,6 +1,6 @@
-#' @title Plot an element of class mvarAxis
+#' @title Plot an element of class mvarLayer
 #'
-#' @param table_slot An object of class mvarAxis
+#' @param table_slot An object of class mvarLayer
 #' @param opts A list of lists, giving directions for the aesthetic mapping.
 #'    We expect three component lists, though they will be filled in with
 #'    default values, so they only need to be partially specified.

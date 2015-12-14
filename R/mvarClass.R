@@ -1,12 +1,12 @@
-#' @title mvarAxis-class
+#' @title mvarLayer-class
 #'
 #' @description A class for storing a single projection of a data set.
 #'
-#' @rdname mvarAxis-class
+#' @rdname mvarLayer-class
 #'
 #' @importFrom methods setClass
 #' @export
-setClass("mvarAxis",
+setClass("mvarLayer",
          representation(
            coord = "matrix",
            annotation = "data.frame"
@@ -29,10 +29,10 @@ setClass("mvarTable",
          )
 
 check_table <- function(object) {
-  # Check that table is a list of mvarAxis objects
-  class_is_mvaraxis <- lapply(object, function(x) class(x)=="mvarAxis")
+  # Check that table is a list of mvarLayer objects
+  class_is_mvar_layer <- lapply(object, function(x) class(x)=="mvarLayer")
   if(!all(class_is_mvaraxis)) {
-    errors <- paste0("Elements ", which(!class_is_mvaraxis), " are not valid mvarAxis objects.")
+    errors <- paste0("Elements ", which(!class_is_mvaraxis), " are not valid mvarLayer objects.")
   }
-  return (errors)
+  errors
 }

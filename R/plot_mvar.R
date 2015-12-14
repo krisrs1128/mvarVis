@@ -1,6 +1,6 @@
 #' @title Plot an mvar object from annotation names
 #'
-#' @param mvar_object An object of class \code{mvarAxis} that we want to
+#' @param mvar_object An object of class \code{mvarLayer} that we want to
 #'  visualize.
 #' @param layers_list Either a list of lists containing detailed plotting
 #'  layer options, or a character string matching one of a few defaults.

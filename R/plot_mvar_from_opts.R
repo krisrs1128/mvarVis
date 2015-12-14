@@ -3,7 +3,7 @@
 #' @description \code{plot_mvar} helps plot multiple projection layers
 #' associated with an mvar object, using \code{ggplot2} with various options to
 #' customize the plot's appearance.
-#' @param mvar_object An object of class \code{mvarAxis} that we want to
+#' @param mvar_object An object of class \code{mvarLayer} that we want to
 #'    visualize.
 #' @param opts A list whose i^th component contains the opts argument for the
 #'    i^th table in the \code{mvar_object}. See \code{plot_table()} for a

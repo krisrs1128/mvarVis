@@ -4,14 +4,14 @@
 #'
 #' @return mvar_table An object of class \code{mvarTable}, storing the site
 #'    and species tables in the \code{table} slot and the eigenvalues in the
-#'    \code{eig} slot. The annotation slots of each mVarAxis are the row names
+#'    \code{eig} slot. The annotation slots of each mVarLayer are the row names
 #'    of the projected coordinates.
 #'
 #' @importFrom vegan scores
 #'
 #'  @export
 vegan_to_mvar <- function(vegan_object) {
-  mvar_axis_list <- list()
+  mvar_layer_list <- list()
   scores_list <- list()
 
   # site or species scores may or may not be available
@@ -29,18 +29,18 @@ vegan_to_mvar <- function(vegan_object) {
     }
   }
 
-  # Build an mvarAxis object for each
+  # Build an mvarLayer object for each
   for(cur_table in names(scores_list)) {
 
     # Convert coordinates into a matrix
     vegan_subset <- scores_list[[cur_table]]
     vegan_subset_mat <- as.matrix(vegan_subset)
-    dimnames(vegan_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(vegan_subset_mat)))
+    dimnames(vegan_subset_mat) <- list(NULL, paste0("layer_", 1:ncol(vegan_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(vegan_subset))
 
-    mvar_axis_list[[cur_table]] <- new("mvarAxis", coord = vegan_subset_mat,
+    mvar_layer_list[[cur_table]] <- new("mvarLayer", coord = vegan_subset_mat,
                                        annotation = cur_annotation)
   }
 
@@ -54,6 +54,6 @@ vegan_to_mvar <- function(vegan_object) {
   }
 
   # Combined tables mvarTable object
-  mvar_table <- new("mvarTable", table = mvar_axis_list, eig = cur_eig)
+  mvar_table <- new("mvarTable", table = mvar_layer_list, eig = cur_eig)
   return (mvar_table)
 }

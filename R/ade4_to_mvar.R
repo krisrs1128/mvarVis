@@ -11,7 +11,7 @@
 #'
 #' @return mvar_table An object of class mvarTable, storing the tables specified
 #'    in \code{tables_to_include} and the eigenvalues from the \code{ade4}
-#'    decomposition. The annotation slots of each mVarAxis are the row names of
+#'    decomposition. The annotation slots of each mVarLayer are the row names of
 #'    the projected coordinates.
 #'
 #' @examples
@@ -32,20 +32,20 @@
 #'
 #'  @export
 ade4_to_mvar <- function(ade4_object, tables_to_include) {
-  mvar_axis_list <- list()
+  mvar_layer_list <- list()
 
-  # Build an mvarAxis object for each
+  # Build an mvarLayer object for each
   for(cur_table in tables_to_include) {
 
     # Convert coordinates into a matrix
     ade4_subset <- ade4_object[[cur_table]]
     ade4_subset_mat <- as.matrix(ade4_subset)
-    dimnames(ade4_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(ade4_subset_mat)))
+    dimnames(ade4_subset_mat) <- list(NULL, paste0("layer_", 1:ncol(ade4_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(ade4_subset))
 
-    mvar_axis_list[[cur_table]] <- new("mvarAxis", coord = ade4_subset_mat,
+    mvar_layer_list[[cur_table]] <- new("mvarLayer", coord = ade4_subset_mat,
                                        annotation = cur_annotation)
   }
 
@@ -59,6 +59,6 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
   }
 
   # Combined tables mvarTable object
-  mvar_table <- new("mvarTable", table = mvar_axis_list, eig = eig)
+  mvar_table <- new("mvarTable", table = mvar_layer_list, eig = eig)
   return (mvar_table)
 }
