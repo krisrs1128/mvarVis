@@ -33,3 +33,11 @@ plot_mvar_d3 <- function(mvar_object, rescaling_ix = 2, rescaling_ref = 1,
     package = "mvarVis"
   )
 }
+
+#' @importFrom htmlwidgets createWidget
+#' @export
+plot_layer <- function(mvar_layer, width = 400, height = 400) {
+  x <- data.frame(mvar_layer@coord, mvar_layer@annotation)
+  createWidget(name = "plot_layer", x = x, width = width,
+               height = height, package = "mvarVis")
+}
