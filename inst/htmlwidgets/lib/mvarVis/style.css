@@ -1,0 +1,50 @@
+#graph body {
+  margin: 0;
+  font-size: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  color: #292929;
+}
+
+.circle {
+    fill: #3399ff;
+    opacity: 0.8;
+}
+
+.arrowhead {
+    stroke: #9109E6;
+}
+
+.line {
+    stroke: #9109E6;
+    stroke-width: 2;
+    opacity: 0.8;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #8C8C8C;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-size: 8px;
+}
+
+table.fixed {
+    table-layout:fixed;
+    width: 500px;
+    font-size: 11px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+th {
+    text-align: left;
+}
+
+select {
+    border-radius: 0;
+    border: 0px solid;
+    font-family: 'Open Sans', sans-serif;
+    background-color: #ADDFF0
+}
