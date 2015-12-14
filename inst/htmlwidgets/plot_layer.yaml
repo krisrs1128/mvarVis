@@ -8,7 +8,6 @@
     src: "htmlwidgets/lib/mvarVis"
     stylesheet: style.css
     script:
-      - bact_data.js
       - setup.js
       - helpers.js
       - scatter.js
