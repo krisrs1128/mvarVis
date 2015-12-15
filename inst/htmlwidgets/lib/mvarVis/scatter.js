@@ -8,8 +8,15 @@ drawScatter = function(x, index) {
     var selectedIndex = select.property("selectedIndex")
     var curCol = options[0][selectedIndex].__data__;
     var colorDomain = uniqueValues(x, curCol)
-    var colorScale = d3.scale.category20b()
-	.domain(colorDomain);
+    if(isNumeric(colorDomain[0])) {
+	var colorScale = d3.scale
+	    .quantize([d3.min(colorDomain), d3.max(colorDomain)])
+	    .range(colorbrewer.YlGn[5])
+    } else {
+	var colorScale = d3.scale.ordinal()
+	    .domain(colorDomain)
+	    .range(colorbrewer.Set3[d3.min([colorDomain.length, 12])]) // limit on number of ordinal colors
+    }
 
     // draw the circles
     var svg = group.select("svg")
