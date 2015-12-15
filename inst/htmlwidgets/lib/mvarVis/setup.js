@@ -12,12 +12,11 @@ var getScales = function(domain, width, height) {
 }
 
 var getDomain = function(x) {
-    var axis1 = x.map(function(z) { return z.axis1 })
-    var axis2 = x.map(function(z) { return z.axis2 })
-    var axis1_max = 1.2 * d3.max([Math.abs(d3.min(axis1)), Math.abs(d3.max(axis1))])
-    var axis2_max = 1.2 * d3.max([Math.abs(d3.min(axis2)), Math.abs(d3.max(axis2))])
-    return {"x_domain": [-axis1_max, axis1_max],
-	    "y_domain": [-axis2_max, axis2_max]}
+    var axis1 = x.map(function(z) { return Math.abs(z.axis1) })
+    var axis2 = x.map(function(z) { return Math.abs(z.axis2) })
+    var axis_max = 1.2 * d3.max(axis1.concat(axis2))
+    return {"x_domain": [-axis_max, axis_max],
+	    "y_domain": [-axis_max, axis_max]}
 }
 
 var setupSVG = function(el, x, width, height, index, number) {
