@@ -1,19 +1,24 @@
 
-drawCircles = function(x, index, colInfo) {
+var drawSetup = function(index) {
     var group = d3.selectAll("div")
 	.filter(function(d) { return d == index; });
 
     // draw the circles
     var svg = group.select("svg")
     var scales = getScales(svg.attr("width"), svg.attr("height"));
-    svg.append("g")
+    return {"group": group, "svg": svg, "scales": scales};
+}
+
+drawCircles = function(x, index, colInfo) {
+    var setup = drawSetup(index);
+    setup.svg.append("g")
 	.attr("class", "circle")
 	.selectAll("circle")
 	.data(x)
 	.enter()
 	.append("circle")
-	.attr({cx: function (d) { return scales.xScale(d.axis1); },
-               cy: function (d) { return scales.yScale(d.axis2); },
+	.attr({cx: function (d) { return setup.scales.xScale(d.axis1); },
+               cy: function (d) { return setup.scales.yScale(d.axis2); },
                r: 4,
 	       fill: function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	       opacity: 0.7,
@@ -41,17 +46,47 @@ drawCircles = function(x, index, colInfo) {
 }
 
 updateCircles = function(x, index){
-    console.log("updating circles")
     var group = d3.selectAll("div")
 	.filter(function(d) { return d == index; })
-    console.log("getting colors...")
     var colInfo = getColorInfo(x, index);
-    console.log(colInfo);
     group.selectAll("circle")
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }
 
-drawScatter = function(x, index) {
+drawText = function(x, index, colInfo) {
+    var setup = drawSetup(index);
+    setup.svg.append("g")
+	.attr("class", "mvar_text")
+	.selectAll("text")
+	.data(x)
+	.enter()
+	.append("text")
+	.text(function(d) {
+	    return d.label;
+	})
+	.attr({
+	    x: function(d) { return setup.scales.xScale(d.axis1); },
+	    y: function(d) { return setup.scales.yScale(d.axis2); },
+	    fill: function(d) { return colInfo.colorScale(d[colInfo.curCol]); }
+	});
+}
+
+updateText = function(x, index) {
+    var group = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
     var colInfo = getColorInfo(x, index);
-    drawCircles(x, index, colInfo);
+    group.selectAll("text")
+	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
+}
+
+drawScatter = function(x, index, type) {
+    var colInfo = getColorInfo(x, index);
+    switch(type) {
+      case "point":
+  	drawCircles(x, index, colInfo);
+	break;
+      case "text":
+	drawText(x, index, colInfo);
+	break;
+    }
 }
