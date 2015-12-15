@@ -1,0 +1,99 @@
+---
+title: "Plot d3 examples"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{plot_d3_examples}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+library("knitr")
+opts_chunk$set(fig.width = 10, fig.height = 10, warning = FALSE)
+```
+
+
+This is an example from `MFA()` in the `FactoMineR` package, but done
+using our wrapper. The first two columns are supplementary variables.
+
+
+```{r}
+library("mvarVis")
+library("FactoMineR")
+data(wine)
+wine_mfa <- ordi(wine[, -c(1:2)], "MFA", wine[, 1:2], group = c(5,3,10,9,2),
+                 type = rep("s",5), ncp = 3, graph = F)
+```
+
+
+We can plot the results d3.
+
+
+```{r}
+plot_mvar_d3(wine_mfa)
+```
+
+
+We can choose between `point`, `text`, and `arrow` for each layer
+(though only one at a time, at least for now).
+
+
+```{r}
+plot_mvar_d3(wine_mfa, c("text", "arrow"), height = 500)
+```
+
+
+If we want, we can have as many panels as we want. This splits the MFA
+variables by group. The splitting code isn't pretty, but it shouldnt'
+be too hard to write some helpers to streamline things.
+
+
+```{r}
+split_layer <- function(x, start, finish) {
+  new("mvarLayer", coord = x@coord[start:finish, ],
+      annotation = x@annotation[start:finish, ])
+}
+
+wine_quanti <- wine_mfa@table[["quanti.var"]]
+wine_mfa_split <- new(
+  "mvarTable",
+  table = list(
+    new("mvarLayer", coord = wine_mfa@table[["ind"]]@coord,
+        annotation = wine_mfa@table[["ind"]]@annotation),
+    split_layer(wine_quanti, 1, 5),
+    split_layer(wine_quanti, 6, 8),
+    split_layer(wine_quanti, 9, 18),
+    split_layer(wine_quanti, 19, 27),
+    split_layer(wine_quanti, 28, 29)
+  ),
+  eig = wine_mfa@eig
+)
+
+plot_mvar_d3(wine_mfa_split, c("point", rep("text", 5)))
+```
+
+
+We can also have just one panel.
+
+
+```{r}
+wine_pca <- ordi(wine[, -c(1:2)], "factominer_pca",
+                 table_names = "ind",
+                 ncp = 3, graph = F)
+plot_mvar_d3(wine_pca)
+```
+
+
+Here's an MCA example. Notice we can customize width / height.
+
+
+```{r}
+data(hobbies)
+hobbies_mca <- ordi(hobbies[, 1:18], method = "MCA",
+                    rows_annot = hobbies[, 19:23], graph = F, ncp = 3)
+```
+
+```{r}
+plot_mvar_d3(hobbies_mca, height = 700)
+```
