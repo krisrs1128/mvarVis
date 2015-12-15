@@ -1,10 +1,13 @@
 
-var makeTable = function(el, x, index) {
+var makeTable = function(width, x, index) {
     // make a table
     var table = d3.selectAll("div")
 	.filter(function(d) { return d == index; } )
 	.append("table")
-	.attr("class", "fixed");
+	.attr({"class": "fixed",
+	       "width": width * .99
+	      })
+	.style("visibility", "hidden")
     var x_keys = Object.keys(x[0]);
 
     table.append("tr")
@@ -18,12 +21,15 @@ var makeTable = function(el, x, index) {
 	.data(x_keys)
 	.enter()
 	.append("td")
-	.attr("id", function(d) { return d; });
+	.attr("id", function(d) { return d; })
 }
 
 var hoverTable = function(d, index) {
     var group = d3.selectAll("div")
 	.filter(function(d) { return d == index; })
+    group.select("table")
+	.style("visibility", "visible");
+
     ids = Object.keys(d)
     ids.forEach(function(x) {
 	if(isNumeric(d[x])) {
@@ -31,7 +37,6 @@ var hoverTable = function(d, index) {
 	} else {
 	    var printVal = d[x]
 	}
-
 	group.select("#" + x)
 	    .html(printVal)
     });

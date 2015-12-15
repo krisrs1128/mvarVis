@@ -8,6 +8,7 @@
     src: htmlwidgets/lib/mvarVis
     stylesheet: style.css
     script:
+      - drawSetup.js
       - setup.js
       - helpers.js
       - circle.js
