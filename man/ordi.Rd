@@ -4,7 +4,7 @@
 \alias{ordi}
 \title{Wrapper for ade4 and vegan ordi functions}
 \usage{
-ordi(X, rows_annot = NULL, cols_annot = NULL, method = "pca",
+ordi(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
   dist_method = "euclidean", table_names = NULL, ...)
 }
 \arguments{
@@ -22,15 +22,15 @@ second element is a distance between the rows on that data frame.
 \code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
 data frames.}
 
+\item{method}{The method among those listed above that will perform the
+required ordination.}
+
 \item{rows_annot}{For one table methods, a data.frame whose j^th row
 describes the j^th sample in the coordinates matrices corresponding to
 row scores. For procustes and CCorA, we require a list of dataframes, one
 for each of the directions.}
 
 \item{cols_annot}{The analogous object for column scores.}
-
-\item{method}{The method among those listed above that will perform the
-required ordination.}
 
 \item{dist_method}{If a distance matrix is used by the specified method and
 \code{X} is not a distance object, we will call \code{vegdist} on the

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ordi_wrapper.R
 \name{ordi_wrapper}
 \alias{ordi_wrapper}
-\title{Wrapper for vegan and ade4 ordi methods}
+\title{Wrapper for vegan / ade4 / factominer  ordination methods}
 \usage{
 ordi_wrapper(X, method = "pca", dist_method = "euclidean", ...)
 }
@@ -25,15 +25,16 @@ data frames.}
 required ordination.}
 
 \item{dist_method}{If a distance matrix is used by the specified method and
- \code{X} is not a distance object, we will call \code{vegdist} on the
- \code{X} using this string as the distance.}
+\code{X} is not a distance object, we will call \code{vegdist} on the
+\code{X} using this string as the distance.}
 }
 \value{
 The result of a call to the specified method, in the original
-\code{ade4} or \code{vegan} classes.
+\code{ade4}, \code{factominer}, or \code{vegan} classes.
 }
 \description{
-Given data X and a string describing a method in \code{ade4} or
- \code{vegan}, return the corresponding ordination object from those packages.
+Given data X and a string describing a method in \code{ade4}, or
+ \code{factominer}, or \code{vegan}, return the corresponding ordination
+object from those packages.
 }
 
