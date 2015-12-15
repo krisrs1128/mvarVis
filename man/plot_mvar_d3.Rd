@@ -9,4 +9,16 @@ plot_mvar_d3(mvar_object, types = NULL, width = NULL, height = 400)
 \description{
 Interactive multivariate analysis plots
 }
+\examples{
+library("FactoMineR")
+data(wine)
+wine_mfa <- ordi(wine[, -c(1:2)], "MFA", wine[, 1:2], group = c(5,3,10,9,2),
+                 type = rep("s",5), graph = F)
+plot_mvar_d3(wine_mfa)
+plot_mvar_d3(wine_mfa, c("text", "arrow"), height = 500)
+data(hobbies)
+hobbies_mca <- ordi(hobbies[, 1:18], method = "MCA",
+                    rows_annot = hobbies[, 19:23], graph = F)
+plot_mvar_d3(hobbies_mca, height = 500)
+}
 
