@@ -3,11 +3,13 @@
     version: 3.5.2
     src: "htmlwidgets/lib/d3/"
     script: d3.min.js
-  - name: plot_mvar
+  - name: mvarVis
     version: 0.0.0
-    src: "htmlwidgets/lib/plot_mvar_css"
-    stylesheet: plot_mvar.css
-  - name: tipsy
-    version: 0.0.0
-    src: "htmlwidgets/lib/tipsy"
-    script: tipsy.js
+    src: "htmlwidgets/lib/mvarVis"
+    stylesheet: style.css
+    script:
+      - setup.js
+      - helpers.js
+      - scatter.js
+      - colorInput.js
+      - table.js
