@@ -31,6 +31,5 @@ var hoverTable = function(d, index) {
     ids.forEach(function(x) {
 	group.select("#" + x)
 	    .html(d[x])
-	console.log(group.select("#" + x))
     });
 }
