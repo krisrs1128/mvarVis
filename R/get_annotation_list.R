@@ -16,9 +16,9 @@
 get_annotation_list <- function(X_mvar, rows_annot = NULL, cols_annot = NULL) {
   annotation_list <- list()
   for(cur_table in names(X_mvar@table)) {
-    if(cur_table %in% c("li", "l1", "site") & !is.null(rows_annot)) {
+    if(cur_table %in% c("li", "l1", "site", "ind", "row") & !is.null(rows_annot)) {
       annotation_list[[cur_table]] <- rows_annot
-    } else if(cur_table %in% c("co", "l2", "species") & !is.null(cols_annot)) {
+    } else if(cur_table %in% c("co", "l2", "species", "var", "col") & !is.null(cols_annot)) {
       annotation_list[[cur_table]] <- cols_annot
 
       # For multitable methods, need column and row annotation lists, not just data frames

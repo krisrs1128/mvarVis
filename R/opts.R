@@ -64,13 +64,13 @@ default_table_names <- function(method) {
          "procuste" = c("scorX", "scorY"),
          "coinertia" = c("li", "co"),
          "factominer_pca" = c("ind", "var"),
-         "MFA" = c("ind", "quanti.var", "quali.var", "group"),
-         "CA" = c("row", "col", "row.sup", "col.sup"),
+         "MFA" = c("ind", "quanti.var"),
+         "CA" = c("row", "col"),
          "DMFA" = c("ind", "var", "group"),
-         "FAMD" = c("ind", "var", "quali.var", "quanti.var"),
-         "HMFA" = c("ind", "quanti.var", "quali.var"),
-         "MCA" = c("ind", "var", "quanti.sup", "quali.sup"),
-         "spMCA" = c("ind", "var", "quali.sup"))
+         "FAMD" = c("ind", "var"),
+         "HMFA" = c("ind", "quanti.var"),
+         "MCA" = c("ind", "var"),
+         "spMCA" = c("ind", "var"))
 }
 
 # plot-opts --------------------------------------------------------------------
