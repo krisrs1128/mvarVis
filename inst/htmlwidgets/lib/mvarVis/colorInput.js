@@ -7,6 +7,7 @@ var createInput = function(el, x, index) {
 	.on("change", function(z) {
 	    updateCircles(x, index);
 	    updateText(x, index);
+	    updateArrows(x, index);
 	});
     var options = select
 	.selectAll("option")

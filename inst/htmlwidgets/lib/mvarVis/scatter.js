@@ -74,7 +74,7 @@ drawText = function(x, index, colInfo) {
 	});
 
     // define interactivity for the circles
-    d3.selectAll("text")
+    d3.selectAll(".mvar_text")
 	.on("mouseover", function(d) {
 	    d3.select(this)
 		.transition()
@@ -83,7 +83,7 @@ drawText = function(x, index, colInfo) {
 		       opacity: 1});
 	    hoverTable(d, d3.select(this).attr("index"));
 	});
-    d3.selectAll("text")
+    d3.selectAll(".mvar_text")
 	.on("mouseout", function(d) {
 	    d3.select(this)
 		.transition()
@@ -102,6 +102,54 @@ updateText = function(x, index) {
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }
 
+drawArrow = function(x, index, colInfo) {
+    var setup = drawSetup(index);
+    setup.svg.append("g")
+	.attr("class", "line")
+	.selectAll("line")
+	.data(x)
+	.enter()
+	.append("line")
+	.attr({
+	    x1: setup.scales.xScale(0),
+	    y1: setup.scales.yScale(0),
+	    x2: function(d) { return setup.scales.xScale(d.axis1); },
+	    y2: function(d) { return setup.scales.yScale(d.axis2); },
+	    "stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol])},
+	    "stroke-width": 3,
+	    "opacity": 0.7,
+	    "index": index
+	});
+
+    // define interactivity for the circles
+    d3.selectAll("line")
+	.on("mouseover", function(d) {
+	    d3.select(this)
+		.transition()
+		.duration(75)
+		.attr({ "opacity": 1,
+			"stroke-width": 6});
+	    hoverTable(d, d3.select(this).attr("index"));
+	});
+    d3.selectAll("line")
+	.on("mouseout", function(d) {
+	    d3.select(this)
+		.transition()
+		.duration(75)
+		.attr({ "opacity": .7,
+			"stroke-width": 3});
+	});
+}
+
+updateArrows = function(x, index) {
+    var group = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
+    var colInfo = getColorInfo(x, index);
+    group.selectAll("line")
+	.attr("stroke", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
+}
+
+
 drawScatter = function(x, index, type) {
     var colInfo = getColorInfo(x, index);
     switch(type) {
@@ -110,6 +158,9 @@ drawScatter = function(x, index, type) {
 	break;
       case "text":
 	drawText(x, index, colInfo);
+	break;
+    case "arrow":
+	drawArrow(x, index, colInfo);
 	break;
     }
 }
