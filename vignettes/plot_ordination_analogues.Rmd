@@ -12,14 +12,14 @@ vignette: >
 
 The main inspiration for the ```mvarVis``` package comes from the
 ```plot_ordination``` command in package ```phyloseq```. Given the result of an
-ordination, we should be able to plot various features onto the projected 
+ordination, we should be able to plot various features onto the projected
 points easily. ```plot_ordination``` implements this idea in the case that
-the ordination has features from a ```phyloseq``` object, but the idea 
+the ordination has features from a ```phyloseq``` object, but the idea
 can be applied more generally.
 
 #```plot_ordination``` analogues
 
-To get an idea for how this package works, here are some examples 
+To get an idea for how this package works, here are some examples
 re-implementing the methods in ```plot_ordination``` from the
 [phyloseq documentation](http://joey711.github.io/phyloseq/plot_ordination-examples).
 
@@ -61,23 +61,12 @@ plot_mvar(gp1_dca, col = "Phylum", shape = "human")
 
 ### ```ade4``` methods
 
-Note that we can pass in ```ade4``` arguments through ```ordi``` (as in the 
+Note that we can pass in ```ade4``` arguments through ```ordi``` (as in the
 ```scannf = F``` below).
 
 ```{r}
-# DPCoA
-patristicDist <- cailliez(as.dist(cophenetic.phylo(phy_tree(GP1))))
-gp1_dpcoa <- ordi(list(GP1@otu_table, patristicDist), GP1@tax_table, GP1@sam_data, 
-                  method = "dpcoa", scannf = F)
-plot_mvar(gp1_dpcoa, "point-text", col = "Phylum", size = 3)
-
-# PCA
-gp1_pca <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pca", 
-                scannf = F, nf = 10)
-plot_mvar(gp1_pca, col = "Phylum", facet_vector = c("SampleType", "Phylum"))
-
 # MDS
-gp1_mds <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pco", 
+gp1_mds <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "pco",
                 dist_method = "euclidean", scannf = F)
 plot_mvar(gp1_mds, col = "Phylum", shape = "human")
 ```
