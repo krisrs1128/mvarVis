@@ -1,43 +1,28 @@
 #' Interactive multivariate analysis plots
-#'
-#' @import htmlwidgets
-#'
+#' @importFrom htmlwidgets createWidget
 #' @export
-plot_mvar_d3 <- function(mvar_object, rescaling_ix = 2, rescaling_ref = 1,
-                         width = 800, height = 800) {
-
+plot_mvar_d3 <- function(mvar_object, width = NULL, height = 400) {
   x <- list()
-  for(table_ix in length(mvar_object@table):1) {
+  for(table_ix in seq_along(mvar_object@table)) {
     cur_coord <- mvar_object@table[[table_ix]]@coord
-    colnames(cur_coord) <- paste0("axis", 1:ncol(cur_coord))
+    colnames(cur_coord) <- paste0("axis", seq_len(ncol(cur_coord)))
     cur_ann <- mvar_object@table[[table_ix]]@annotation
-
-    # Rescale coordinates to a reference, if desired
-    if(table_ix %in% rescaling_ix) {
-      ref_coord <- mvar_object@table[[rescaling_ref]]@coord
-      cur_coord <- scale_to_max_radius(ref_coord, cur_coord)
-    }
-
-    vis_info <- data.frame(display = TRUE, layer_ix = table_ix - 1)
-
-    # Combined df of both coordinates and annoation
-    x[[table_ix]] <- cbind(cur_coord, cur_ann, vis_info)
+    x[[table_ix]] <- data.frame(cur_coord, cur_ann)
 
   }
+  if(is.null(width)) {
+    width <- height * length(mvar_object@table)
+  }
 
-  htmlwidgets::createWidget(
-    name = "plot_mvar_d3",
-    x = x,
-    width = width,
-    height = height,
-    package = "mvarVis"
-  )
+  createWidget(name = "plot_mvar_d3", x = x, width = width, height = height,
+               package = "mvarVis")
+
 }
 
 #' @importFrom htmlwidgets createWidget
 #' @export
 plot_layer <- function(mvar_layer, width = 400, height = 400) {
   x <- data.frame(mvar_layer@coord, mvar_layer@annotation)
-  createWidget(name = "plot_layer", x = x, width = width,
-               height = height, package = "mvarVis")
+  createWidget(name = "plot_layer", x = x, width = width, height = height,
+               package = "mvarVis")
 }
