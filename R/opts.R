@@ -40,28 +40,35 @@ build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
 #' @return If the method is implemented in ade4, the names of the tables that
 #'  give the row and column scores.
 default_table_names <- function(method) {
-  table_names <- switch(method,
-                        "pca" = c("li", "co"),
-                        "acm" = c("li", "co"),
-                        "coa" = c("li", "co"),
-                        "fca" = c("li", "co"),
-                        "fpca" = c("li", "co"),
-                        "pco" = c("li", "co"),
-                        "hillsmith" = c("li", "co"),
-                        "mix" = c("li", "co"),
-                        "nsc" = c("li", "co"),
-                        "dpcoa" = c("l1", "l2"),
-                        "decorana" = c(), # right now we're using scores() from vegan, instead of extracting any tables
-                        "metaMDS"  = c(),
-                        "isomap" = c(),
-                        "isoMDS" = c(),
-                        "vegan_cca" = c(),
-                        "ade4_cca" = c("li", "co"),
-                        "rda" = c(),
-                        "CCorA" = c(),
-                        "procuste" = c("scor1", "scor2"),
-                        "coinertia" = c("li", "co"))
-  return (table_names)
+  switch(method,
+         "pca" = c("li", "co"),
+         "acm" = c("li", "co"),
+         "coa" = c("li", "co"),
+         "fca" = c("li", "co"),
+         "fpca" = c("li", "co"),
+         "pco" = c("li", "co"),
+         "hillsmith" = c("li", "co"),
+         "mix" = c("li", "co"),
+         "nsc" = c("li", "co"),
+         "dpcoa" = c("l1", "l2"),
+         "decorana" = c(), # right now we're using scores() from vegan, instead of extracting any tables
+         "metaMDS"  = c(),
+         "isomap" = c(),
+         "isoMDS" = c(),
+         "vegan_cca" = c(),
+         "ade4_cca" = c("li", "co"),
+         "rda" = c(),
+         "CCorA" = c(),
+         "procuste" = c("scor1", "scor2"),
+         "coinertia" = c("li", "co"),
+         "factominer_pca" = c("ind", "var"),
+         "MFA" = c("ind", "quanti.var", "quali.var", "group"),
+         "CA" = c("row", "col", "row.sup", "col.sup"),
+         "DMFA" = c("ind", "var", "group"),
+         "FAMD" = c("ind", "var", "quali.var", "quanti.var"),
+         "HMFA" = c("ind", "quanti.var", "quali.var"),
+         "MCA" = c("ind", "var", "quanti.sup", "quali.sup"),
+         "spMCA" = c("ind", "var", "quali.sup"))
 }
 
 # plot-opts --------------------------------------------------------------------
@@ -157,7 +164,7 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
   n_tables <- length(mvar_object@table)
   aes_list <- rep(list(list()), n_tables)
   non_aes_list <- rep(list(list()), n_tables)
-  for(cur_table in 1:n_tables) {
+  for(cur_table in seq_len(n_tables)) {
 
     # if the data does not have any color annotation already, set color to be
     # the index of the desired layer.
@@ -176,5 +183,5 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
     non_aes_list[[cur_table]] <- full_aes_list[setdiff(1:length(full_aes_list), any_ix)]
     non_aes_list[[cur_table]][c("x", "y")] <- NULL # x and y can never have non-data-driven aesthetics
   }
-  return (list(aes_list = aes_list, non_aes_list = non_aes_list))
+  list(aes_list = aes_list, non_aes_list = non_aes_list)
 }

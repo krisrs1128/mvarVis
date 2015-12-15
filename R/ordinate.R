@@ -26,10 +26,7 @@
 #' @param dist_method If a distance matrix is used by the specified method and
 #'  \code{X} is not a distance object, we will call \code{vegdist} on the
 #'  \code{X} using this string as the distance.#' @param rows_annot
-
 #' @param table_names A vector of strings specifying which tables to extract, for
-#'
-#' @importFrom ade4 dudi.pca
 #' @export
 ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
                  dist_method = "euclidean", table_names = NULL, ...) {
@@ -37,7 +34,7 @@ ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
                            "hillsmith","mix","nsc", "dpcoa", "decorana",
                            "metaMDS", "isomap", "isoMDS", "vegan_cca",
                            "ade4_cca", "rda", "CCorA", "procuste", "coinertia",
-                           "factominer_pca", "CA", "MFA", "DMFA", "FAMD", "GPA",
+                           "factominer_pca", "CA", "MFA", "DMFA", "FAMD",
                            "HMFA", "MCA", "spMCA")
   method <- match.arg(method, implemented_methods)
 
@@ -53,6 +50,5 @@ ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
 
   # give appropriate annotation
   annotation_list <- get_annotation_list(X_mvar, rows_annot, cols_annot)
-  X_mvar <- mvar_annotate(X_mvar, annotation_list)
-  return (X_mvar)
+  mvar_annotate(X_mvar, annotation_list)
 }
