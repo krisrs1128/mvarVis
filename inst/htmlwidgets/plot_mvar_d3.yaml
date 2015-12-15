@@ -1,11 +1,11 @@
  dependencies:
   - name: d3
     version: 3.5.2
-    src: "htmlwidgets/lib/d3/"
+    src: htmlwidgets/lib/d3/
     script: d3.min.js
   - name: mvarVis
     version: 0.0.0
-    src: "htmlwidgets/lib/mvarVis"
+    src: htmlwidgets/lib/mvarVis
     stylesheet: style.css
     script:
       - setup.js
@@ -13,3 +13,9 @@
       - scatter.js
       - colorInput.js
       - table.js
+  - name: colorbrewer
+    src: htmlwidgets/lib/colorbrewer
+    version: 1.0.0
+    script:
+      - colorbrewer.js
+    style: colorbrewer.css
