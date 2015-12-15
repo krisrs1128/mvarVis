@@ -10,3 +10,8 @@ uniqueValues = function(array, field) {
     }
     return (Object.keys(unique))
 }
+
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
