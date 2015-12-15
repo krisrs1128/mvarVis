@@ -26,7 +26,13 @@ var hoverTable = function(d, index) {
 	.filter(function(d) { return d == index; })
     ids = Object.keys(d)
     ids.forEach(function(x) {
+	if(isNumeric(d[x])) {
+	    var printVal = d3.round(d[x], 2)
+	} else {
+	    var printVal = d[x]
+	}
+
 	group.select("#" + x)
-	    .html(d[x])
+	    .html(printVal)
     });
 }
