@@ -1,5 +1,5 @@
 ---
-title: "Plot d3 examples"
+title: "mvarVis d3 examples"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
 vignette: >
