@@ -102,8 +102,28 @@ updateText = function(x, index) {
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }
 
+// setup the arrow tips
+var marker = function(svg, color) {
+    svg.append("svg:defs").selectAll("marker")
+	.data([color])      // Different link/path types can be defined here
+	.enter().append("svg:marker")    // This section adds in the arrows
+	.attr({ "id": String,
+		"viewBox": "0 -5 10 10",
+		"markerWidth": 4,
+		"markerHeight": 4,
+		"orient": "auto",
+		"fill": color
+	      })
+	.append("svg:path")
+	.attr("d", "M0,-5L10,0L0,5");
+    return "url(#" + color + ")"
+}
+
 drawArrow = function(x, index, colInfo) {
     var setup = drawSetup(index);
+
+
+    // draw the arrows
     setup.svg.append("g")
 	.attr("class", "line")
 	.selectAll("line")
@@ -118,17 +138,19 @@ drawArrow = function(x, index, colInfo) {
 	    "stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol])},
 	    "stroke-width": 3,
 	    "opacity": 0.7,
-	    "index": index
+	    "index": index,
+	    "marker-end": function(d) {
+		return marker(setup.svg, colInfo.colorScale(d[colInfo.curCol]))
+	    }
 	});
 
-    // define interactivity for the circles
+    // define interactivity for the arrow
     d3.selectAll("line")
 	.on("mouseover", function(d) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({ "opacity": 1,
-			"stroke-width": 6});
+		.attr({ "opacity": 1});
 	    hoverTable(d, d3.select(this).attr("index"));
 	});
     d3.selectAll("line")
@@ -136,8 +158,7 @@ drawArrow = function(x, index, colInfo) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({ "opacity": .7,
-			"stroke-width": 3});
+		.attr({ "opacity": .7});
 	});
 }
 
