@@ -16,6 +16,14 @@
       - scatter.js
       - colorInput.js
       - table.js
+  - name: signika
+    version: 0.0.0
+    src: htmlwidgets/lib/font
+    stylesheet: signika.css
+  - name: roboto
+    version: 0.0.0
+    src: htmlwidgets/lib/font
+    stylesheet: roboto.css
   - name: colorbrewer
     src: htmlwidgets/lib/colorbrewer
     version: 1.0.0
