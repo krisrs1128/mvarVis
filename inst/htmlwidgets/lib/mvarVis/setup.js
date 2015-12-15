@@ -1,18 +1,27 @@
 var padding = 20
-var getScales = function(width, height) {
+var getScales = function(domain, width, height) {
     //Create scale functions
     var xScale = d3.scale.linear()
-	.domain([-5, 5])
+	.domain(domain.y_domain)
 	.range([padding, width - padding]);
-
     var yScale = d3.scale.linear()
-	.domain([-5, 5])
+	.domain(domain.y_domain)
 	.range([height - padding, padding]);
     return {"xScale": xScale, "yScale": yScale}
 }
 
-var setupSVG = function(el, width, height, index, number) {
-    var scales = getScales(width / number, height);
+var getDomain = function(x) {
+    var axis1 = x.map(function(z) { return z.axis1 })
+    var axis2 = x.map(function(z) { return z.axis2 })
+    var axis1_max = 1.2 * d3.max([Math.abs(d3.min(axis1)), Math.abs(d3.max(axis1))])
+    var axis2_max = 1.2 * d3.max([Math.abs(d3.min(axis2)), Math.abs(d3.max(axis2))])
+    return {"x_domain": [-axis1_max, axis1_max],
+	    "y_domain": [-axis2_max, axis2_max]}
+}
+
+var setupSVG = function(el, x, width, height, index, number) {
+    var scales = getScales(getDomain(x), width / number, height);
+
     // Define axes
     var xAxis = d3.svg.axis()
 	.scale(scales.xScale)
@@ -20,6 +29,8 @@ var setupSVG = function(el, width, height, index, number) {
     var yAxis = d3.svg.axis()
 	.scale(scales.yScale)
 	.orient("right");
+
+    console.log(xAxis)
 
     //Create SVG element
     var svg = d3.selectAll("div")
@@ -49,4 +60,3 @@ var setupElems = function(el, number, width) {
 	.attr("class", "container")
 	.style("width", width / number + "px");
 }
-

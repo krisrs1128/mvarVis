@@ -13,7 +13,8 @@ HTMLWidgets.widget({
 	for(i in d3.range(x.length)) {
 	    cur_x = HTMLWidgets.dataframeToD3(x[i].data);
 	    createInput(el, cur_x, i);
-	    setupSVG(el, instance.width, instance.height, i, x.length);
+	    console.log("creating svg")
+	    setupSVG(el, cur_x, instance.width, instance.height, i, x.length);
 	    drawScatter(cur_x, i, x[i].type);
 	    console.log(x[i].type);
 	    makeTable(el, cur_x, i);

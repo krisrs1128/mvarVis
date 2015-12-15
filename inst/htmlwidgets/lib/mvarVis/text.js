@@ -1,6 +1,6 @@
 
 var drawText = function(x, index, colInfo) {
-    var setup = drawSetup(index);
+    var setup = drawSetup(x, index);
     setup.svg.append("g")
 	.attr("class", "mvar_text")
 	.selectAll("text")

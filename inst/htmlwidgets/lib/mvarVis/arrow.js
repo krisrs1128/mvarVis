@@ -17,7 +17,7 @@ var marker = function(svg, color) {
 }
 
 var drawArrow = function(x, index, colInfo) {
-    var setup = drawSetup(index);
+    var setup = drawSetup(x, index);
 
     // draw the arrows
     setup.svg.append("g")
