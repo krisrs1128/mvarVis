@@ -18,6 +18,7 @@
 #' @param facet_vector A vector containing column names in the annotation data
 #'  to use for faceting.
 #' @return opts A list that can be input into \code{plot_mvar_from_opts()}.
+#' @export
 build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
                        facet_vector = NULL) {
   n_tables <- length(mvar_object@table)
@@ -29,7 +30,7 @@ build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
     opts[[cur_table]]$aes_list <- aes_list[[cur_table]]
     opts[[cur_table]]$non_aes_list <- non_aes_list[[cur_table]]
   }
-  return (opts)
+  opts
 }
 
 #' @title Get the tables to put into an mvarTable object
@@ -39,9 +40,10 @@ build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
 #'  extract scores.
 #' @return If the method is implemented in ade4, the names of the tables that
 #'  give the row and column scores.
+#' @export
 default_table_names <- function(method) {
   switch(method,
-         "pca" = c("li", "co"),
+         "ade4_pca" = c("li", "co"),
          "acm" = c("li", "co"),
          "coa" = c("li", "co"),
          "fca" = c("li", "co"),
@@ -59,7 +61,7 @@ default_table_names <- function(method) {
          "ade4_cca" = c("li", "co"),
          "rda" = c(),
          "CCorA" = c(),
-         "procuste" = c("scor1", "scor2"),
+         "procuste" = c("scorX", "scorY"),
          "coinertia" = c("li", "co"),
          "factominer_pca" = c("ind", "var"),
          "MFA" = c("ind", "quanti.var", "quali.var", "group"),

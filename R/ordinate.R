@@ -44,7 +44,6 @@ ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
   if(is.null(table_names)) {
     table_names <- default_table_names(method)
   }
-
   # Convert to an mvar object
   X_mvar <- convert_to_mvar(X_ord, table_names)
 

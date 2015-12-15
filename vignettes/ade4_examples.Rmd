@@ -18,8 +18,7 @@ library("ade4")
 
 ```{r}
 data(deug)
-deug_pca <- ordi(deug$tab, rows_annot = data.frame(res = deug$result),
-                 method = "pca", scannf = F)
+deug_pca <- ordi(deug, method = "ade4_pca", scannf = F)
 plot_mvar(deug_pca, "point", col = "res")
 plot_mvar(deug_pca, "point-text-arrow", col = "res")
 ```
