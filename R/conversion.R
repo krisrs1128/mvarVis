@@ -9,7 +9,7 @@
 #' the \code{FactoMineR} object to store in the mVarTable. We expect that
 #' ade4_object[[cur_table]]$coord be nonnull, for every cur_table in
 #' tables_to_include.
-#' @example
+#' @examples
 #' library("FactoMineR")
 #' example(CA)
 #' factominer_to_mvar(res.ca, c("row", "col"))
@@ -57,7 +57,6 @@ factominer_to_mvar <- function(factominer_object, tables_to_include) {
 #'  data(USArrests)
 #'  arrests_pca <- dudi.pca(USArrests, scannf = FALSE, nf = 2)
 #'  ade4_to_mvar(arrests_pca, c("li", "co"))
-#'
 #'  arrests_pco <- dudi.pco(dist(USArrests), scannf = FALSE, nf = 2)
 #'  ade4_to_mvar(arrests_pco, c("li", "co"))
 #'
@@ -67,7 +66,6 @@ factominer_to_mvar <- function(factominer_object, tables_to_include) {
 #'  dudi2 <- dudi.pca(doubs$fish, scale = FALSE, scan = FALSE, nf = 2)
 #'  coin1 <- coinertia(dudi1,dudi2, scan = FALSE, nf = 2)
 #'  ade4_to_mvar(coin1, tables_to_include = c("li", "co", "aX", "aY"))
-#'
 #'  @export
 ade4_to_mvar <- function(ade4_object, tables_to_include) {
   mvar_layer_list <- list()
@@ -153,4 +151,42 @@ vegan_to_mvar <- function(vegan_object) {
   # Combined tables mvarTable object
   mvar_table <- new("mvarTable", table = mvar_layer_list, eig = cur_eig)
   return (mvar_table)
+}
+
+# convert-class -----------------------------------------------------------
+#' @title Convert vegan and ade4 objects to class mvar
+#' @description Convert an \code{ade4} or \code{vegan} object to class
+#' \code{mvar}.
+#' @param X_ord The result of a call to a \code{ade4} or \code{vegan} ordination
+#' method.
+#' @param table_names A vector of strings specifying which tables to extract, for
+#' \code{ade4} objects. Each of these tables will be an element in the resulting
+#' mvar object. Defaults to c("li", "co").
+#' @return An mvar object with the scores and eigenvalues of \code{X_ord}.
+#' @export
+convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
+  # convert to mvar class
+  cur_class <- class(X_ord)
+  vegan_classes <- c("rda", "cca", "isomap", "decorana", "CCorA", "metaMDS", "monoMDS")
+  ade4_classes <- c("dpcoa", "procuste", "dudi")
+  factominer_classes <- c("PCA", "CA", "MFA", "DMFA", "FAMD", "HMFA", "MCA",
+                          "spMCA")
+
+  if(any(ade4_classes %in% cur_class)) {
+    # ade4 classes
+    available_tables <- intersect(names(X_ord), table_names)
+    if(length(available_tables) != length(table_names)) {
+      warning(cat("The following tables are not returned by the specified ordi method: ",
+                  setdiff(table_names, names(X_ord))))
+      if(length(available_tables) > 0) {
+        stop("None of the requested tables are output by the specified ordination method")
+      }
+    }
+    X_mvar <- ade4_to_mvar(X_ord, table_names)
+  } else if(any(vegan_classes %in% cur_class)) {
+    X_mvar <- vegan_to_mvar(X_ord)
+  } else if(any(factominer_classes %in% cur_class)) {
+    X_mvar <- factominer_to_mvar(X_ord, table_names)
+  }
+  X_mvar
 }
