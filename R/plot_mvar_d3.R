@@ -8,6 +8,9 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, height = 400) 
   }
   if(is.null(types)) {
     types <- rep("point", length(mvar_object@table))
+    if(length(types) > 2) {
+      types[2] <- "text"
+    }
   }
 
   x <- list()
