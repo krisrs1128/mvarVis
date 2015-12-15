@@ -48,4 +48,5 @@ select {
 
 .mvar_text {
     font-family: "Open Sans", sans-serif;
+    text-shadow: -.8px 0 black, 0 .8px black, .8px 0 black, 0 -.8px black;
 }
