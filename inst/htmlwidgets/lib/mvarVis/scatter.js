@@ -98,7 +98,7 @@ updateText = function(x, index) {
     var group = d3.selectAll("div")
 	.filter(function(d) { return d == index; })
     var colInfo = getColorInfo(x, index);
-    group.selectAll("text")
+    group.selectAll(".mvar_text")
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }
 
