@@ -1,17 +1,22 @@
 #' Interactive multivariate analysis plots
 #' @importFrom htmlwidgets createWidget
 #' @export
-plot_mvar_d3 <- function(mvar_object, width = NULL, height = 400) {
+plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, height = 400) {
+
+  if(is.null(width)) {
+    width <- height * length(mvar_object@table)
+  }
+  if(is.null(types)) {
+    types <- rep("point", length(mvar_object@table))
+  }
+
   x <- list()
   for(table_ix in seq_along(mvar_object@table)) {
     cur_coord <- mvar_object@table[[table_ix]]@coord
     colnames(cur_coord) <- paste0("axis", seq_len(ncol(cur_coord)))
     cur_ann <- mvar_object@table[[table_ix]]@annotation
-    x[[table_ix]] <- data.frame(cur_coord, cur_ann)
-
-  }
-  if(is.null(width)) {
-    width <- height * length(mvar_object@table)
+    x[[table_ix]] <- list(data = data.frame(cur_coord, cur_ann),
+                          type = types[table_ix])
   }
 
   createWidget(name = "plot_mvar_d3", x = x, width = width, height = height,
