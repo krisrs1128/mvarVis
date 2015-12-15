@@ -24,9 +24,6 @@ var makeTable = function(el, x, index) {
 var hoverTable = function(d, index) {
     var group = d3.selectAll("div")
 	.filter(function(d) { return d == index; })
-
-    console.log(group)
-
     ids = Object.keys(d)
     ids.forEach(function(x) {
 	group.select("#" + x)
