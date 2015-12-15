@@ -1,22 +1,7 @@
 
-drawScatter = function(x, index) {
-    // get the selected color scale
+drawCircles = function(x, index, colInfo) {
     var group = d3.selectAll("div")
-	.filter(function(d) { return d == index; })
-    var select = group.selectAll("select")
-    var options = group.selectAll("option")
-    var selectedIndex = select.property("selectedIndex")
-    var curCol = options[0][selectedIndex].__data__;
-    var colorDomain = uniqueValues(x, curCol)
-    if(isNumeric(colorDomain[0])) {
-	var colorScale = d3.scale
-	    .quantize([d3.min(colorDomain), d3.max(colorDomain)])
-	    .range(colorbrewer.YlGn[5])
-    } else {
-	var colorScale = d3.scale.ordinal()
-	    .domain(colorDomain)
-	    .range(colorbrewer.Set3[d3.min([colorDomain.length, 12])]) // limit on number of ordinal colors
-    }
+	.filter(function(d) { return d == index; });
 
     // draw the circles
     var svg = group.select("svg")
@@ -30,7 +15,8 @@ drawScatter = function(x, index) {
 	.attr({cx: function (d) { return scales.xScale(d.axis1); },
                cy: function (d) { return scales.yScale(d.axis2); },
                r: 4,
-	       fill: function(d) { return colorScale(d[curCol]); },
+	       fill: function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
+	       opacity: 0.7,
 	       index: index
 	      });
 
@@ -40,7 +26,8 @@ drawScatter = function(x, index) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({ r: 8 });
+		.attr({r: 8,
+		       opacity: 1});
 	    hoverTable(d, d3.select(this).attr("index"));
 	});
     d3.selectAll("circle")
@@ -48,6 +35,23 @@ drawScatter = function(x, index) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({ r: 4 })
+		.attr({r: 4,
+		       opacity: 0.7})
 	});
+}
+
+updateCircles = function(x, index){
+    console.log("updating circles")
+    var group = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
+    console.log("getting colors...")
+    var colInfo = getColorInfo(x, index);
+    console.log(colInfo);
+    group.selectAll("circle")
+	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
+}
+
+drawScatter = function(x, index) {
+    var colInfo = getColorInfo(x, index);
+    drawCircles(x, index, colInfo);
 }
