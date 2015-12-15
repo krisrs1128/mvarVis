@@ -1,7 +1,8 @@
 
-var makeTable = function(width, x, index) {
+var makeTable = function(el, width, x, index) {
     // make a table
-    var table = d3.selectAll("div")
+    var table = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; } )
 	.append("table")
 	.attr({"class": "fixed",
@@ -24,8 +25,9 @@ var makeTable = function(width, x, index) {
 	.attr("id", function(d) { return d; })
 }
 
-var hoverTable = function(d, index) {
-    var group = d3.selectAll("div")
+var hoverTable = function(el, d, index) {
+    var group = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
     group.select("table")
 	.style("visibility", "visible");

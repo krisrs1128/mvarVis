@@ -1,6 +1,7 @@
-var padding = 20
+
 var getScales = function(domain, width, height) {
     //Create scale functions
+    var padding = 20
     var xScale = d3.scale.linear()
 	.domain(domain.y_domain)
 	.range([padding, width - padding]);
@@ -31,7 +32,8 @@ var setupSVG = function(el, x, width, height, index, number) {
 	.orient("right");
 
     //Create SVG element
-    var svg = d3.selectAll("div")
+    var svg = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
 	.append("svg")
 	.attr("width", width / number)

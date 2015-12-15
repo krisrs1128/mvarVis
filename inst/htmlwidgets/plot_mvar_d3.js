@@ -13,8 +13,8 @@ HTMLWidgets.widget({
 	    cur_x = HTMLWidgets.dataframeToD3(x[i].data);
 	    createInput(el, cur_x, i);
 	    setupSVG(el, cur_x, instance.width, instance.height, i, x.length);
-	    drawScatter(cur_x, i, x[i].type);
-	    makeTable(instance.width / x.length, cur_x, i);
+	    drawScatter(el, cur_x, i, x[i].type);
+	    makeTable(el, instance.width / x.length, cur_x, i);
 	}
     }
 });

@@ -1,15 +1,24 @@
 
-var drawScatter = function(x, index, type) {
-    var colInfo = getColorInfo(x, index);
+var drawSetup = function(el, x, index) {
+    var group = d3.select(el)
+	.selectAll("div")
+	.filter(function(d) { return d == index; });
+    var svg = group.select("svg")
+    var scales = getScales(getDomain(x), svg.attr("width"), svg.attr("height"));
+    return {"group": group, "svg": svg, "scales": scales};
+}
+
+var drawScatter = function(el, x, index, type) {
+    var colInfo = getColorInfo(el, x, index);
     switch(type) {
       case "point":
-  	drawCircles(x, index, colInfo);
+  	drawCircles(el, x, index, colInfo);
 	break;
       case "text":
-	drawText(x, index, colInfo);
+	drawText(el, x, index, colInfo);
 	break;
     case "arrow":
-	drawArrow(x, index, colInfo);
+	drawArrow(el, x, index, colInfo);
 	break;
     }
 }

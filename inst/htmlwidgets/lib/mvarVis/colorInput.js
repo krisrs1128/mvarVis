@@ -1,13 +1,14 @@
 
 var createInput = function(el, x, index) {
     // create a button for coloring the points
-    var select = d3.selectAll("div")
+    var select = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; } )
 	.append("select")
 	.on("change", function(z) {
-	    updateCircles(x, index);
-	    updateText(x, index);
-	    updateArrows(x, index);
+	    updateCircles(el, x, index);
+	    updateText(el, x, index);
+	    updateArrows(el, x, index);
 	});
     var options = select
 	.selectAll("option")
@@ -17,9 +18,10 @@ var createInput = function(el, x, index) {
 	.text(function(d) { return d; });
 }
 
-var getColorInfo = function(x, index) {
+var getColorInfo = function(el, x, index) {
     // get the selected color scale
-    var group = d3.selectAll("div")
+    var group = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
     var select = group.selectAll("select")
     var options = group.selectAll("option")

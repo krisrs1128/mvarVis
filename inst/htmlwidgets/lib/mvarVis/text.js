@@ -1,6 +1,6 @@
 
-var drawText = function(x, index, colInfo) {
-    var setup = drawSetup(x, index);
+var drawText = function(el, x, index, colInfo) {
+    var setup = drawSetup(el, x, index);
     setup.svg.append("g")
 	.attr("class", "mvar_text")
 	.selectAll("text")
@@ -20,16 +20,16 @@ var drawText = function(x, index, colInfo) {
 	});
 
     // define interactivity for the circles
-    d3.selectAll(".mvar_text > text")
+    setup.svg.selectAll(".mvar_text > text")
 	.on("mouseover", function(d) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
 		.attr({"font-size": 16,
 		       opacity: 1});
-	    hoverTable(d, d3.select(this).attr("index"));
+	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
-    d3.selectAll(".mvar_text > text")
+    setup.svg.selectAll(".mvar_text > text")
 	.on("mouseout", function(d) {
 	    d3.select(this)
 		.transition()
@@ -40,10 +40,11 @@ var drawText = function(x, index, colInfo) {
 	});
 }
 
-var updateText = function(x, index) {
-    var group = d3.selectAll("div")
+var updateText = function(el, x, index) {
+    var group = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
-    var colInfo = getColorInfo(x, index);
+    var colInfo = getColorInfo(el, x, index);
     group.selectAll(".mvar_text > text")
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }

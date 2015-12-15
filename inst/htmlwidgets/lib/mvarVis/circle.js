@@ -1,6 +1,7 @@
 
-var drawCircles = function(x, index, colInfo) {
-    var setup = drawSetup(x, index);
+var drawCircles = function(el, x, index, colInfo) {
+    console.log("setting up...")
+    var setup = drawSetup(el, x, index);
     setup.svg.append("g")
 	.attr("class", "circle")
 	.selectAll("circle")
@@ -16,16 +17,16 @@ var drawCircles = function(x, index, colInfo) {
 	      });
 
     // define interactivity for the circles
-    d3.selectAll("circle")
+    setup.svg.selectAll("circle")
 	.on("mouseover", function(d) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
 		.attr({r: 8,
 		       opacity: 1});
-	    hoverTable(d, d3.select(this).attr("index"));
+	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
-    d3.selectAll("circle")
+    setup.svg.selectAll("circle")
 	.on("mouseout", function(d) {
 	    d3.select(this)
 		.transition()
@@ -35,10 +36,11 @@ var drawCircles = function(x, index, colInfo) {
 	});
 }
 
-var updateCircles = function(x, index){
-    var group = d3.selectAll("div")
+var updateCircles = function(el, x, index){
+    var group = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
-    var colInfo = getColorInfo(x, index);
+    var colInfo = getColorInfo(el, x, index);
     group.selectAll("circle")
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
 }

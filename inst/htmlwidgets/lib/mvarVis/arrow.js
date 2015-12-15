@@ -16,8 +16,8 @@ var marker = function(svg, color) {
     return "url(#" + color + ")"
 }
 
-var drawArrow = function(x, index, colInfo) {
-    var setup = drawSetup(x, index);
+var drawArrow = function(el, x, index, colInfo) {
+    var setup = drawSetup(el, x, index);
 
     // draw the arrows
     setup.svg.append("g")
@@ -41,15 +41,15 @@ var drawArrow = function(x, index, colInfo) {
 	});
 
     // define interactivity for the arrow
-    d3.selectAll(".mvar_arrow > line")
+    setup.svg.selectAll(".mvar_arrow > line")
 	.on("mouseover", function(d) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
 		.attr({ "opacity": 1});
-	    hoverTable(d, d3.select(this).attr("index"));
+	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
-    d3.selectAll(".mvar_arrow > line")
+    setup.svg.selectAll(".mvar_arrow > line")
 	.on("mouseout", function(d) {
 	    d3.select(this)
 		.transition()
@@ -58,10 +58,11 @@ var drawArrow = function(x, index, colInfo) {
 	});
 }
 
-var updateArrows = function(x, index) {
-    var group = d3.selectAll("div")
+var updateArrows = function(el, x, index) {
+    var group = d3.select(el)
+	.selectAll("div")
 	.filter(function(d) { return d == index; })
-    var colInfo = getColorInfo(x, index);
+    var colInfo = getColorInfo(el, x, index);
     group.selectAll(".mvar_arrow > line")
 	.attr({"stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	       "marker-end": function(d) {
