@@ -38,7 +38,7 @@ select {
     background-color: #ADDFF0
 }
 
-.container {
+.mvar_container {
     float: left;
     overflow: hidden;
 }
