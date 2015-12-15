@@ -4,7 +4,10 @@ var createInput = function(el, x, index) {
     var select = d3.selectAll("div")
 	.filter(function(d) { return d == index; } )
 	.append("select")
-	.on("change", function(z) { return updateCircles(x, index); });
+	.on("change", function(z) {
+	    updateCircles(x, index);
+	    updateText(x, index);
+	});
     var options = select
 	.selectAll("option")
 	.data(Object.keys(x[0]))
