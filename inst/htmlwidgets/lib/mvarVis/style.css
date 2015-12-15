@@ -45,3 +45,7 @@ select {
     float: left;
     overflow: hidden;
 }
+
+.mvar_text {
+    font-family: "Open Sans", sans-serif;
+}
