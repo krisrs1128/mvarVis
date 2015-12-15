@@ -10,6 +10,9 @@
     script:
       - setup.js
       - helpers.js
+      - circle.js
+      - arrow.js
+      - text.js
       - scatter.js
       - colorInput.js
       - table.js

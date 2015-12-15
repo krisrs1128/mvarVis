@@ -9,7 +9,7 @@ var drawSetup = function(index) {
     return {"group": group, "svg": svg, "scales": scales};
 }
 
-drawCircles = function(x, index, colInfo) {
+var drawCircles = function(x, index, colInfo) {
     var setup = drawSetup(index);
     setup.svg.append("g")
 	.attr("class", "circle")
@@ -51,19 +51,4 @@ var updateCircles = function(x, index){
     var colInfo = getColorInfo(x, index);
     group.selectAll("circle")
 	.attr("fill", function(d) { return colInfo.colorScale(d[colInfo.curCol]); })
-}
-
-var drawScatter = function(x, index, type) {
-    var colInfo = getColorInfo(x, index);
-    switch(type) {
-      case "point":
-  	drawCircles(x, index, colInfo);
-	break;
-      case "text":
-	drawText(x, index, colInfo);
-	break;
-    case "arrow":
-	drawArrow(x, index, colInfo);
-	break;
-    }
 }
