@@ -22,7 +22,7 @@ factominer_to_mvar <- function(factominer_object, tables_to_include) {
   for(cur_table in tables_to_include) {
     factominer_subset <- factominer_object[[cur_table]]$coord
     factominer_subset <- as.matrix(factominer_subset)
-    colnames(factominer_subset) <- paste0("layer_", 1:ncol(factominer_subset))
+    colnames(factominer_subset) <- paste0("axis_", 1:ncol(factominer_subset))
     cur_annotation <- data.frame(label = rownames(factominer_subset))
     mvar_layer_list[[cur_table]] <- new("mvarLayer", coord = factominer_subset,
                                         annotation = cur_annotation)
@@ -76,7 +76,7 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
     # Convert coordinates into a matrix
     ade4_subset <- ade4_object[[cur_table]]
     ade4_subset_mat <- as.matrix(ade4_subset)
-    dimnames(ade4_subset_mat) <- list(NULL, paste0("layer_", 1:ncol(ade4_subset_mat)))
+    dimnames(ade4_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(ade4_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(ade4_subset))
@@ -130,7 +130,7 @@ vegan_to_mvar <- function(vegan_object) {
     # Convert coordinates into a matrix
     vegan_subset <- scores_list[[cur_table]]
     vegan_subset_mat <- as.matrix(vegan_subset)
-    dimnames(vegan_subset_mat) <- list(NULL, paste0("layer_", 1:ncol(vegan_subset_mat)))
+    dimnames(vegan_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(vegan_subset_mat)))
 
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(vegan_subset))
