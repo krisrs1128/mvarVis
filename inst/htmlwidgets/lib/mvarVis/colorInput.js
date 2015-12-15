@@ -28,11 +28,13 @@ var getColorInfo = function(x, index) {
     var colorDomain = uniqueValues(x, curCol)
     var colorScale;
     if(isNumeric(colorDomain[0])) {
-	colorDomain = colorDomain.map(parseInt)
+	colorDomain = colorDomain.map(parseFloat)
+	console.log(d3.min(colorDomain))
+	console.log(d3.max(colorDomain))
 	colorScale = d3.scale
 	    .quantize()
 	    .domain([d3.min(colorDomain), d3.max(colorDomain)])
-	    .range(colorbrewer.Purples[5])
+	    .range(colorbrewer.RdBu[11])
     } else {
 	if(colorDomain.length < 3) {
 	    colorDomain = colorDomain.concat(["dummyColor1", "dummyColor2"])
