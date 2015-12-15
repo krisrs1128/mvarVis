@@ -1,8 +1,7 @@
-#' @title Wrapper for vegan and ade4 ordi methods
-#'
-#' @description Given data X and a string describing a method in \code{ade4} or
-#'  \code{vegan}, return the corresponding ordination object from those packages.
-#'
+#' @title Wrapper for vegan / ade4 / factominer  ordination methods
+#' @description Given data X and a string describing a method in \code{ade4}, or
+#'  \code{factominer}, or \code{vegan}, return the corresponding ordination
+#' object from those packages.
 #' @param X Either a data frame, a distance object, a list of both a data frame
 #'  and a distance, a formula and a data frame, or a list of data frames,
 #'  depending on the desired method. \code{pcm}, \code{acm}, \code{coa},
@@ -21,18 +20,18 @@
 #'  @param dist_method If a distance matrix is used by the specified method and
 #'  \code{X} is not a distance object, we will call \code{vegdist} on the
 #'  \code{X} using this string as the distance.
-#'
 #' @return The result of a call to the specified method, in the original
-#' \code{ade4} or \code{vegan} classes.
-#'
+#' \code{ade4}, \code{factominer}, or \code{vegan} classes.
 #' @importFrom vegan vegdist cca decorana metaMDS isomap rda CCorA
 #' @importFrom ade4 dudi.pca dudi.acm dudi.coa dudi.fca dudi.fpca dudi.hillsmith
 #'    dudi.mix dudi.nsc dudi.pco dpcoa procuste cca
+#' @importFrom FactoMineR PCA CA DMFA FAMD GPA HMFA MCA spMCA
 #' @export
 ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
   ordi_method <- match_ordi_method(method)
-  direct_methods <- c("pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix",
-                      "nsc", "decorana")
+  direct_methods <- c("ade4_pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix",
+                      "nsc", "decorana", "factominer_pca", "CA", "MFA", "DMFA",
+                      "FAMD", "GPA", "HMFA", "MCA", "spMCA")
   dist_methods <- c("pco", "isomap", "dpcoa", "metaMDS")
   formula_methods <- c("vegan_cca", "rda")
   df_list_methods <- c("CCorA", "ade4_cca", "procuste")

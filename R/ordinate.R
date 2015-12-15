@@ -31,12 +31,14 @@
 #'
 #' @importFrom ade4 dudi.pca
 #' @export
-ordi <- function(X, rows_annot = NULL, cols_annot = NULL, method = "pca",
+ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
                  dist_method = "euclidean", table_names = NULL, ...) {
-  implemented_methods <- c("pca", "acm", "coa", "fca", "fpca", "pco",
+  implemented_methods <- c("ade4_pca", "acm", "coa", "fca", "fpca", "pco",
                            "hillsmith","mix","nsc", "dpcoa", "decorana",
                            "metaMDS", "isomap", "isoMDS", "vegan_cca",
-                           "ade4_cca", "rda", "CCorA", "procuste", "coinertia")
+                           "ade4_cca", "rda", "CCorA", "procuste", "coinertia",
+                           "factominer_pca", "CA", "MFA", "DMFA", "FAMD", "GPA",
+                           "HMFA", "MCA", "spMCA")
   method <- match.arg(method, implemented_methods)
 
   # Perform ordination
