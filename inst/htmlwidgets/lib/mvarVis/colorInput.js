@@ -29,8 +29,6 @@ var getColorInfo = function(x, index) {
     var colorScale;
     if(isNumeric(colorDomain[0])) {
 	colorDomain = colorDomain.map(parseFloat)
-	console.log(d3.min(colorDomain))
-	console.log(d3.max(colorDomain))
 	colorScale = d3.scale
 	    .quantize()
 	    .domain([d3.min(colorDomain), d3.max(colorDomain)])

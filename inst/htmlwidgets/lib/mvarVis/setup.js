@@ -30,8 +30,6 @@ var setupSVG = function(el, x, width, height, index, number) {
 	.scale(scales.yScale)
 	.orient("right");
 
-    console.log(xAxis)
-
     //Create SVG element
     var svg = d3.selectAll("div")
 	.filter(function(d) { return d == index; })
@@ -57,6 +55,6 @@ var setupElems = function(el, number, width) {
 	.data(d3.range(number))
 	.enter()
 	.append("div")
-	.attr("class", "container")
+	.attr("class", "mvar_container")
 	.style("width", width / number + "px");
 }
