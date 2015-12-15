@@ -18,7 +18,7 @@
 table.fixed {
     table-layout:fixed;
     font-size: 11px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Roboto";
     background: #B3B3B3;
 }
 
@@ -34,7 +34,7 @@ td {
 select {
     border-radius: 0;
     border: 0px solid;
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Roboto";
     background-color: #ADDFF0
 }
 
@@ -44,6 +44,5 @@ select {
 }
 
 .mvar_text {
-    font-family: "Open Sans", sans-serif;
-    text-shadow: -.8px 0 black, 0 .8px black, .8px 0 black, 0 -.8px black;
+   font-family: "Signika";
 }
