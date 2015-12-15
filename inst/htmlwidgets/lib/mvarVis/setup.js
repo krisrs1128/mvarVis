@@ -1,4 +1,4 @@
-var padding = 20;
+var padding = 20
 var getScales = function(width, height) {
     //Create scale functions
     var xScale = d3.scale.linear()
@@ -11,10 +11,8 @@ var getScales = function(width, height) {
     return {"xScale": xScale, "yScale": yScale}
 }
 
-var setupSVG = function(el, width, height) {
-
-    var scales = getScales(width, height);
-
+var setupSVG = function(el, width, height, index, number) {
+    var scales = getScales(width / number, height);
     // Define axes
     var xAxis = d3.svg.axis()
 	.scale(scales.xScale)
@@ -24,9 +22,10 @@ var setupSVG = function(el, width, height) {
 	.orient("right");
 
     //Create SVG element
-    var svg = d3.select(el)
+    var svg = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
 	.append("svg")
-	.attr("width", width)
+	.attr("width", width / number)
 	.attr("height", height);
 
     svg.append("g")
@@ -38,6 +37,16 @@ var setupSVG = function(el, width, height) {
     svg.append("g")
 	.attr("class", "axis")
 	.call(yAxis)
-	.attr("transform", "translate(" + width / 2 + ", 0)")
+	.attr("transform", "translate(" + width / (2 * number) + ", 0)")
+}
+
+var setupElems = function(el, number, width) {
+    var div = d3.select(el)
+	.selectAll("div")
+	.data(d3.range(number))
+	.enter()
+	.append("div")
+	.attr("class", "container")
+	.style("width", width / number + "px");
 }
 

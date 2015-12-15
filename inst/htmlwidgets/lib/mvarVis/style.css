@@ -48,3 +48,8 @@ select {
     font-family: 'Open Sans', sans-serif;
     background-color: #ADDFF0
 }
+
+.container {
+    float: left;
+    overflow: hidden;
+}

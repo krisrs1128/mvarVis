@@ -1,8 +1,10 @@
 
-drawScatter = function(x) {
+drawScatter = function(x, index) {
     // get the selected color scale
-    var select = d3.selectAll("select")
-    var options = d3.selectAll("option")
+    var group = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
+    var select = group.selectAll("select")
+    var options = group.selectAll("option")
     var selectedIndex = select.property("selectedIndex")
     var curCol = options[0][selectedIndex].__data__;
     var colorDomain = uniqueValues(x, curCol)
@@ -10,7 +12,7 @@ drawScatter = function(x) {
 	.domain(colorDomain);
 
     // draw the circles
-    var svg = d3.select("svg")
+    var svg = group.select("svg")
     var scales = getScales(svg.attr("width"), svg.attr("height"));
     svg.append("g")
 	.attr("class", "circle")
@@ -18,10 +20,11 @@ drawScatter = function(x) {
 	.data(x)
 	.enter()
 	.append("circle")
-	.attr({cx: function (d) { return scales.xScale(d.layer_1); },
-               cy: function (d) { return scales.yScale(d.layer_2); },
+	.attr({cx: function (d) { return scales.xScale(d.axis1); },
+               cy: function (d) { return scales.yScale(d.axis2); },
                r: 4,
-	       fill: function(d) { return colorScale(d[curCol]); }
+	       fill: function(d) { return colorScale(d[curCol]); },
+	       index: index
 	      });
 
     // define interactivity for the circles
@@ -31,7 +34,7 @@ drawScatter = function(x) {
 		.transition()
 		.duration(75)
 		.attr({ r: 8 });
-	    hoverTable(d);
+	    hoverTable(d, d3.select(this).attr("index"));
 	});
     d3.selectAll("circle")
 	.on("mouseout", function(d) {

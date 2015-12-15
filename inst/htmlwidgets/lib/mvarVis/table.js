@@ -1,8 +1,9 @@
 
-var makeTable = function(el, x) {
+var makeTable = function(el, x, index) {
     // make a table
-    var table = d3.select(el).
-	append("table")
+    var table = d3.selectAll("div")
+	.filter(function(d) { return d == index; } )
+	.append("table")
 	.attr("class", "fixed");
     var x_keys = Object.keys(x[0]);
 
@@ -20,10 +21,16 @@ var makeTable = function(el, x) {
 	.attr("id", function(d) { return d; });
 }
 
-var hoverTable = function(d) {
+var hoverTable = function(d, index) {
+    var group = d3.selectAll("div")
+	.filter(function(d) { return d == index; })
+
+    console.log(group)
+
     ids = Object.keys(d)
     ids.forEach(function(x) {
-	d3.select("#" + x)
+	group.select("#" + x)
 	    .html(d[x])
+	console.log(group.select("#" + x))
     });
 }
