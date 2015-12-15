@@ -58,7 +58,5 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
     eig <- NA
   }
 
-  # Combined tables mvarTable object
-  mvar_table <- new("mvarTable", table = mvar_layer_list, eig = eig)
-  return (mvar_table)
+  new("mvarTable", table = mvar_layer_list, eig = eig)
 }
