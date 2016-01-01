@@ -52,16 +52,32 @@ var createInput = function(el, x, index) {
 	.text(function(d) { return d; });
 }
 
-var getColorInfo = function(el, x, index) {
+var getInput = function(el, x, index, selIndex) {
     // get the selected color scale
     var group = d3.select(el)
 	.selectAll("div")
 	.filter(function(d) { return d == index; })
-    var select = group.selectAll("select")
+    var select = group.selectAll("select")[0]
     var options = group.selectAll("option")
-    var selectedIndex = select.property("selectedIndex")
-    var curCol = options[0][selectedIndex].__data__;
-    var colorDomain = uniqueValues(x, curCol)
+    var selectedIndex = select[selIndex].selectedIndex
+    var curOption = options[selIndex][selectedIndex].__data__;
+    return {"selectedIndex": selectedIndex,
+	    "curOption": curOption};
+}
+
+var getSizeInfo = function(el, x, index) {
+    var sizeInfo = getInput(el, x, index, 1);
+    var sizeDomain = uniqueValues(x, sizeInfo.curCol)
+    var sizeScale = d3.scale.linear()
+	.domain(sizeDomain)
+	.range([3, 40])
+    return {"curSize": sizeInfo.curOption, "sizeScale": sizeScale};
+}
+
+var getColorInfo = function(el, x, index) {
+    // get the selected color scale
+    var colInfo = getInput(el, x, index, 0);
+    var colorDomain = uniqueValues(x, colInfo.curOption)
     var colorScale;
     if(isNumeric(colorDomain[0])) {
 	colorDomain = colorDomain.map(parseFloat)
@@ -77,5 +93,5 @@ var getColorInfo = function(el, x, index) {
 	    .domain(colorDomain)
 	    .range(colorbrewer.Set2[d3.min([colorDomain.length, 8])]) // limit on number of ordinal colors
     }
-    return {"curCol": curCol, "colorScale": colorScale};
+    return {"curCol": colInfo.curOption, "colorScale": colorScale};
 }
