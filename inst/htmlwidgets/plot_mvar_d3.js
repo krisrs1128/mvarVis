@@ -9,9 +9,10 @@ HTMLWidgets.widget({
 
     renderValue: function(el, x, instance) {
 	setupElems(el, x.length, instance.width);
-	for(i in d3.range(x.length)) {
+	for(var i in d3.range(x.length)) {
 	    cur_x = HTMLWidgets.dataframeToD3(x[i].data);
 	    createInput(el, cur_x, i);
+	    createQuantiInput(el, cur_x, i);
 	    setupSVG(el, cur_x, instance.width, instance.height, i, x.length);
 	    drawScatter(el, cur_x, i, x[i].type);
 	    makeTable(el, instance.width / x.length, cur_x, i);

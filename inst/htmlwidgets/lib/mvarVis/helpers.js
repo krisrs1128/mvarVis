@@ -1,5 +1,5 @@
 
-uniqueValues = function(array, field) {
+var uniqueValues = function(array, field) {
     var unique = {};
     var distinct = [];
     for(var i in array){
@@ -11,6 +11,6 @@ uniqueValues = function(array, field) {
     return (Object.keys(unique))
 }
 
-function isNumeric(n) {
+var isNumeric = function(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
