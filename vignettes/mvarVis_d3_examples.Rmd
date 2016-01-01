@@ -22,7 +22,7 @@ We can plot the results d3. Hover over points to see their values in
 the table that appears below the plot. Change the colors using the
 selection box at the top left.
 
-```{r, echo = F}
+```{r}
 plot_mvar_d3(wine_mfa)
 ```
 \
