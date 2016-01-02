@@ -22,23 +22,22 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
     // define interactivity for the circles
     setup.svg.selectAll(".mvar_text > text")
 	.on("mouseover", function(d) {
-	    var newSize = 1.2 * d3.select(this).attr("font-size");
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"font-size": newSize,
+		.attr({"font-size": function(z) { return 2.5 * sizeInfo.sizeScale(z[sizeInfo.curSize]); },
 		       opacity: 1});
 	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
     setup.svg.selectAll(".mvar_text > text")
 	.on("mouseout", function(d) {
-	    var newSize = 5/6 * d3.select(this).attr("font-size");
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({opacity: .7,
-		       "font-size": newSize,
-		      })
+		.attr({"font-size": function(z) { return 2 * sizeInfo.sizeScale(z[sizeInfo.curSize]); },
+		       opacity: .7});
 	});
 }
 

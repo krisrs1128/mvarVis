@@ -43,21 +43,22 @@ var drawArrow = function(el, x, index, colInfo, sizeInfo) {
     // define interactivity for the arrow
     setup.svg.selectAll(".mvar_arrow > line")
 	.on("mouseover", function(d) {
-	    var sizeInfo = getSizeInfo(el, x, index);
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"stroke-width": function(d) { return .6 * sizeInfo.sizeScale(d[sizeInfo.curSize]) },
+		.attr({"stroke-width": function(z) { return .6 * sizeInfo.sizeScale(z[sizeInfo.curSize]) },
 
 		       "opacity": 1});
 	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
     setup.svg.selectAll(".mvar_arrow > line")
 	.on("mouseout", function(d) {
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) },
+		.attr({"stroke-width": function(z) { return .3 * sizeInfo.sizeScale(z[sizeInfo.curSize]) },
 		       "opacity": .7});
 	});
 }

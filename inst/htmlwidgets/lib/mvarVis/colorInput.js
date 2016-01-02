@@ -70,7 +70,7 @@ var getSizeInfo = function(el, x, index) {
     var sizeDomain = uniqueValues(x, sizeInfo.curOption).map(parseFloat)
     var sizeScale = d3.scale.linear()
 	.domain([d3.min(sizeDomain), d3.max(sizeDomain)])
-	.range([5, 12])
+	.range([4, 15])
     return {"curSize": sizeInfo.curOption, "sizeScale": sizeScale};
 }
 

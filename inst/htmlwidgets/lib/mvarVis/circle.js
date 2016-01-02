@@ -18,20 +18,22 @@ var drawCircles = function(el, x, index, colInfo, sizeInfo) {
     // define interactivity for the circles
     setup.svg.selectAll("circle")
 	.on("mouseover", function(d) {
-	    var newR = 2 * d3.select(this).attr("r");
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"r": newR, "opacity": 1});
+		.attr({"r": function(z) { return 1.5 * sizeInfo.sizeScale(z[sizeInfo.curSize]) },
+		       "opacity": 1});
 	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
     setup.svg.selectAll("circle")
 	.on("mouseout", function(d) {
-	    var newR = .5 * d3.select(this).attr("r");
+	    sizeInfo = getSizeInfo(el, x, index);
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"r": newR, "opacity": 0.7})
+		.attr({"r": function(z) { return sizeInfo.sizeScale(z[sizeInfo.curSize]) },
+		       "opacity": 0.7})
 	});
 }
 
