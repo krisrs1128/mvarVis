@@ -16,7 +16,7 @@ var drawScatter = function(el, x, index, type) {
   	drawCircles(el, x, index, colInfo, sizeInfo);
 	break;
       case "text":
-	drawText(el, x, index, colInfo);
+	drawText(el, x, index, colInfo, sizeInfo);
 	break;
     case "arrow":
 	drawArrow(el, x, index, colInfo, sizeInfo);
