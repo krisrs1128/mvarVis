@@ -15,7 +15,7 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    "y": function(d) { return setup.scales.yScale(d.axis2); },
 	    "fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	    "opacity": .7,
-	    "font-size": function(d) { return 2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12); },
+	    "font-size": function(d) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8); },
 	    "index": index
 	});
 
@@ -26,7 +26,7 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"font-size": function(z) { return 2.5 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12); },
+		.attr({"font-size": function(z) { return 1.6 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8); },
 		       "opacity": 1});
 	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
@@ -36,8 +36,8 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"font-size": function(z) { return 2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12) },
-		       "opacity": .7});
+		.attr({"font-size": function(z) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) },
+		       "opacity": .8});
 	});
 }
 
@@ -49,5 +49,5 @@ var updateText = function(el, x, index) {
     var sizeInfo = getSizeInfo(el, x, index);
     group.selectAll(".mvar_text > text")
 	.attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-	       "font-size": function(d) { return 2 * sizeInfo.sizeScale(d[sizeInfo.curSize]) }})
+	       "font-size": function(d) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) }})
 }
