@@ -1,7 +1,5 @@
 
-var drawCircles = function(el, x, index) {
-    var colInfo = getColorInfo(el, x, index);
-    var sizeInfo = getSizeInfo(el, x, index);
+var drawCircles = function(el, x, index, colInfo, sizeInfo) {
     var setup = drawSetup(el, x, index);
     setup.svg.append("g")
 	.attr("class", "circle")

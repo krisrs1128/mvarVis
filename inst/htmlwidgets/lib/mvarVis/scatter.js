@@ -13,13 +13,13 @@ var drawScatter = function(el, x, index, type) {
     var sizeInfo = getSizeInfo(el, x, index);
     switch(type) {
       case "point":
-  	drawCircles(el, x, index);
+  	drawCircles(el, x, index, colInfo, sizeInfo);
 	break;
       case "text":
 	drawText(el, x, index, colInfo);
 	break;
     case "arrow":
-	drawArrow(el, x, index, colInfo);
+	drawArrow(el, x, index, colInfo, sizeInfo);
 	break;
     }
 }
