@@ -16,7 +16,7 @@ var marker = function(svg, color) {
     return "url(#" + color + ")"
 }
 
-var drawArrow = function(el, x, index, colInfo) {
+var drawArrow = function(el, x, index, colInfo, sizeInfo) {
     var setup = drawSetup(el, x, index);
 
     // draw the arrows
@@ -32,7 +32,7 @@ var drawArrow = function(el, x, index, colInfo) {
 	    x2: function(d) { return setup.scales.xScale(d.axis1); },
 	    y2: function(d) { return setup.scales.yScale(d.axis2); },
 	    "stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol])},
-	    "stroke-width": 3,
+	    "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) },
 	    "opacity": 0.7,
 	    "index": index,
 	    "marker-end": function(d) {
@@ -63,8 +63,10 @@ var updateArrows = function(el, x, index) {
 	.selectAll("div")
 	.filter(function(d) { return d == index; })
     var colInfo = getColorInfo(el, x, index);
+    var sizeInfo = getSizeInfo(el, x, index);
     group.selectAll(".mvar_arrow > line")
 	.attr({"stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
+	       "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) },
 	       "marker-end": function(d) {
 		   return marker(group.select("svg"), colInfo.colorScale(d[colInfo.curCol]));
 	       }
