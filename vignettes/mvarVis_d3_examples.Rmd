@@ -18,7 +18,7 @@ data(wine)
 wine_mfa <- ordi(wine[, -c(1:2)], "MFA", wine[, 1:2], group = c(5,3,10,9,2),
                  type = rep("s",5), ncp = 3, graph = F)
 ```
-We can plot the results d3. Hover over points to see their values in
+We can plot the results with d3. Hover over points to see their values in
 the table that appears below the plot. Change the colors using the
 selection box at the top left.
 
