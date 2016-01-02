@@ -10,9 +10,10 @@ var drawSetup = function(el, x, index) {
 
 var drawScatter = function(el, x, index, type) {
     var colInfo = getColorInfo(el, x, index);
+    var sizeInfo = getSizeInfo(el, x, index);
     switch(type) {
       case "point":
-  	drawCircles(el, x, index, colInfo);
+  	drawCircles(el, x, index);
 	break;
       case "text":
 	drawText(el, x, index, colInfo);
