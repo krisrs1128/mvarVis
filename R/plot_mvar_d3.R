@@ -12,10 +12,14 @@
 #' plot_mvar_d3(hobbies_mca, height = 500)
 #' @importFrom htmlwidgets createWidget
 #' @export
-plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, height = 400) {
-
+plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, asp = NULL,
+                         height = 250) {
+  if(is.null(asp)) {
+    asp <- ifelse(length(mvar_object@eig) > 2,
+                  mvar_object@eig[1] / mvar_object@eig[2], 1)
+  }
   if(is.null(width)) {
-    width <- height * length(mvar_object@table)
+    width <- asp * height * length(mvar_object@table)
   }
   if(is.null(types)) {
     types <- rep("point", length(mvar_object@table))

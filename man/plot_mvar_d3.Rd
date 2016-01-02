@@ -4,7 +4,8 @@
 \alias{plot_mvar_d3}
 \title{Interactive multivariate analysis plots}
 \usage{
-plot_mvar_d3(mvar_object, types = NULL, width = NULL, height = 400)
+plot_mvar_d3(mvar_object, types = NULL, width = NULL, asp = NULL,
+  height = 250)
 }
 \description{
 Interactive multivariate analysis plots
