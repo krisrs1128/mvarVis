@@ -15,7 +15,7 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    "y": function(d) { return setup.scales.yScale(d.axis2); },
 	    "fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	    "opacity": .7,
-	    "font-size": function(d) { return 2 * sizeInfo.sizeScale(d[sizeInfo.curSize]); },
+	    "font-size": function(d) { return 2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12); },
 	    "index": index
 	});
 
@@ -26,8 +26,8 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"font-size": function(z) { return 2.5 * sizeInfo.sizeScale(z[sizeInfo.curSize]); },
-		       opacity: 1});
+		.attr({"font-size": function(z) { return 2.5 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12); },
+		       "opacity": 1});
 	    hoverTable(el, d, d3.select(this).attr("index"));
 	});
     setup.svg.selectAll(".mvar_text > text")
@@ -36,8 +36,8 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	    d3.select(this)
 		.transition()
 		.duration(75)
-		.attr({"font-size": function(z) { return 2 * sizeInfo.sizeScale(z[sizeInfo.curSize]); },
-		       opacity: .7});
+		.attr({"font-size": function(z) { return 2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .8 + .2 * 12) },
+		       "opacity": .7});
 	});
 }
 
