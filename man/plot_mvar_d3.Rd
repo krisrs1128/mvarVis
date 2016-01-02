@@ -5,7 +5,7 @@
 \title{Interactive multivariate analysis plots}
 \usage{
 plot_mvar_d3(mvar_object, types = NULL, width = NULL, asp = NULL,
-  height = 250)
+  height = 200)
 }
 \description{
 Interactive multivariate analysis plots

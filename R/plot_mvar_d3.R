@@ -13,7 +13,7 @@
 #' @importFrom htmlwidgets createWidget
 #' @export
 plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, asp = NULL,
-                         height = 250) {
+                         height = 200) {
   if(is.null(asp)) {
     asp <- ifelse(length(mvar_object@eig) > 2,
                   mvar_object@eig[1] / mvar_object@eig[2], 1)
