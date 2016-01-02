@@ -85,5 +85,5 @@ hobbies_mca <- ordi(hobbies[, 1:18], method = "MCA",
 ```
 
 ```{r}
-plot_mvar_d3(hobbies_mca, height = 700)
+plot_mvar_d3(hobbies_mca, height = 400)
 ```
