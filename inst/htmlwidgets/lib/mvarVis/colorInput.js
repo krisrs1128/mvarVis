@@ -52,25 +52,25 @@ var createInput = function(el, x, index) {
 	.text(function(d) { return d; });
 }
 
-var getInput = function(el, x, index, selIndex) {
+var getInput = function(el, x, index, inputIx) {
     // get the selected color scale
     var group = d3.select(el)
 	.selectAll("div")
 	.filter(function(d) { return d == index; })
-    var select = group.selectAll("select")[0]
-    var options = group.selectAll("option")
-    var selectedIndex = select[selIndex].selectedIndex
-    var curOption = options[selIndex][selectedIndex].__data__;
+    var select = group.selectAll("select")[0][inputIx]
+    var options = group.selectAll("select").selectAll("option")[inputIx]
+    var selectedIndex = select.selectedIndex
+    var curOption = options[selectedIndex].__data__;
     return {"selectedIndex": selectedIndex,
 	    "curOption": curOption};
 }
 
 var getSizeInfo = function(el, x, index) {
     var sizeInfo = getInput(el, x, index, 1);
-    var sizeDomain = uniqueValues(x, sizeInfo.curCol)
+    var sizeDomain = uniqueValues(x, sizeInfo.curOption).map(parseFloat)
     var sizeScale = d3.scale.linear()
-	.domain(sizeDomain)
-	.range([3, 40])
+	.domain([d3.min(sizeDomain), d3.max(sizeDomain)])
+	.range([3, 20])
     return {"curSize": sizeInfo.curOption, "sizeScale": sizeScale};
 }
 
