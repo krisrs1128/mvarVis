@@ -27,7 +27,7 @@
 #'    dudi.mix dudi.nsc dudi.pco dpcoa procuste cca
 #' @importFrom FactoMineR PCA CA DMFA FAMD HMFA MCA spMCA
 #' @export
-ordi_wrapper <- function(X, method = "pca", dist_method = "euclidean", ...) {
+ordi_wrapper <- function(X, method = "ade4_pca", dist_method = "euclidean", ...) {
   ordi_method <- match_ordi_method(method)
   direct_methods <- c("ade4_pca", "acm", "coa", "fca", "fpca", "hillsmith", "mix",
                       "nsc", "decorana", "factominer_pca", "CA", "MFA", "DMFA",
