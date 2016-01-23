@@ -32,6 +32,7 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, width = NULL, asp = NULL,
   for(table_ix in seq_along(mvar_object@table)) {
     cur_coord <- mvar_object@table[[table_ix]]@coord
     colnames(cur_coord) <- paste0("axis", seq_len(ncol(cur_coord)))
+    cur_coord <- cbind(cur_coord, running_cosines(cur_coord))
     cur_ann <- mvar_object@table[[table_ix]]@annotation
     x[[table_ix]] <- list(data = data.frame(cur_coord, cur_ann),
                           type = types[table_ix])
