@@ -4,7 +4,7 @@
 \alias{ordi_wrapper}
 \title{Wrapper for vegan / ade4 / factominer  ordination methods}
 \usage{
-ordi_wrapper(X, method = "pca", dist_method = "euclidean", ...)
+ordi_wrapper(X, method = "ade4_pca", dist_method = "euclidean", ...)
 }
 \arguments{
 \item{X}{Either a data frame, a distance object, a list of both a data frame

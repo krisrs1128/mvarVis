@@ -59,3 +59,32 @@ mvar_annotate <- function(mvar_object, annotations_list) {
   }
   return (mvar_object)
 }
+
+#' @title Get squared cosines from a set of scores
+#' @param coord The coordinates from which to compute contributions. We assume
+#' coordinates for all dimensions are present.
+#' @return The squared cosines between each observation and each component.
+#' @references Abdi and Williams "Principle Component Analysis", equation (11).
+#' @export
+cosines <- function(coord) {
+  res <- coord ^ 2 / rowSums(coord ^ 2)
+  colnames(res) <- paste0("cosine_", colnames(res))
+  res
+}
+
+#' @title Get running sum of squared cosines from a set of scores
+#' @param coord The coordinates from which to compute contributions. We assume
+#' coordinates for all dimensions are present.
+#' @return The sum of squared cosines up to each dimension, for each
+#' observation.
+#' @references Abdi and Williams "Principle Component Analysis", equation (11).
+#' @examples
+#' data(wine)
+#' wine_mfa <- ordi(wine[, -c(1:2)], "MFA", wine[, 1:2], group = c(5,3,10,9,2), type = rep("s",5), graph = F)
+#' coord <- slot(slot(wine_mfa, "table")$ind, "coord")
+#' running_cosines(coord)
+#' @export
+running_cosines <- function(coord) {
+  res <- t(apply(cosines(coord), 1, cumsum))
+  colnames(res) <- paste0("total_", colnames(res))
+}
