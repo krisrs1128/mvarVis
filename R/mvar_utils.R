@@ -87,4 +87,5 @@ cosines <- function(coord) {
 running_cosines <- function(coord) {
   res <- t(apply(cosines(coord), 1, cumsum))
   colnames(res) <- paste0("total_", colnames(res))
+  res
 }
