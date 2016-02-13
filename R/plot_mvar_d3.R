@@ -51,7 +51,6 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
                          width = NULL) {
   opts <- list(types = types, width = width, asp = asp, height = height) %>%
     merge_mvar_d3_defaults(mvar_object)
-  print(opts)
 
   x <- list()
   for(table_ix in seq_along(mvar_object@table)) {
