@@ -44,6 +44,8 @@ var updateCircles = function(el, x, index, opts){
   var colInfo = getColorInfo(el, x, index, opts);
   var sizeInfo = getSizeInfo(el, x, index);
   group.selectAll("circle")
+    .transition()
+    .duration(750)
     .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	   "r": function(d) { return sizeInfo.sizeScale(d[sizeInfo.curSize]); }})
 }

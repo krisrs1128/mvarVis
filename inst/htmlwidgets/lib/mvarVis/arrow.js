@@ -70,10 +70,11 @@ var updateArrows = function(el, x, index, opts) {
   var colInfo = getColorInfo(el, x, index, opts);
   var sizeInfo = getSizeInfo(el, x, index);
   group.selectAll(".mvar_arrow > line")
+    .transition()
+    .duration(750)
     .attr({"stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-	   "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) },
-	   "marker-end": function(d) {
-	     return marker(group.select("svg"), colInfo.colorScale(d[colInfo.curCol]));
-	   }
-	  });
+	   "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) }})
+  group.selectAll(".mvar_arrow > line")
+    .attr({"marker-end": function(d) { return marker(group.select("svg"), colInfo.colorScale(d[colInfo.curCol]));}})
+
 }

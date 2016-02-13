@@ -48,6 +48,8 @@ var updateText = function(el, x, index, opts) {
   var colInfo = getColorInfo(el, x, index, opts);
   var sizeInfo = getSizeInfo(el, x, index);
   group.selectAll(".mvar_text > text")
+    .transition()
+    .duration(750)
     .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	   "font-size": function(d) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) }})
 }
