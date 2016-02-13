@@ -28,6 +28,15 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
 
   # plot points for all the tables
   default_opts$types <- rep("point", length(mvar_object@table))
+
+  # default color palettes
+  default_opts$ordinal_palettes <- replicate(length(mvar_object@table),
+                                             c("#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"),
+                                             simplify = F)
+  default_opts$continuous_palettes <- replicate(length(mvar_object@table),
+                                                c("#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"),
+                                                simplify = F)
+
   opts <- opts[!sapply(opts, is.null)]
   modifyList(default_opts, opts)
 }
@@ -48,9 +57,12 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
 #' @importFrom magrittr %>%
 #' @export
 plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
-                         width = NULL) {
-  opts <- list(types = types, width = width, asp = asp, height = height) %>%
-    merge_mvar_d3_defaults(mvar_object)
+                         width = NULL, ordinal_palettes = NULL,
+                         continuous_palettes = NULL) {
+  opts <- list(types = types, width = width, asp = asp, height = height,
+               ordinal_palettes = ordinal_palettes,
+               continuous_palettes = continuous_palettes) %>%
+                 merge_mvar_d3_defaults(mvar_object)
 
   x <- list()
   for(table_ix in seq_along(mvar_object@table)) {
@@ -58,8 +70,11 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
     colnames(cur_coord) <- paste0("axis", seq_len(ncol(cur_coord)))
     cur_coord <- cbind(cur_coord, running_cosines(cur_coord))
     cur_ann <- mvar_object@table[[table_ix]]@annotation
+    table_opts <- list(type = opts$types[table_ix],
+                       continuous_palette = opts$continuous_palettes[table_ix],
+                       ordinal_palette = opts$ordinal_palettes[table_ix])
     x[[table_ix]] <- list(data = data.frame(cur_coord, cur_ann),
-                          type = opts$types[table_ix])
+                          opts = table_opts)
   }
 
   createWidget(name = "plot_mvar_d3", x = x, width = opts$width,

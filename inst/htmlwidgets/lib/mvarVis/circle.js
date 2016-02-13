@@ -37,13 +37,13 @@ var drawCircles = function(el, x, index, colInfo, sizeInfo) {
 	});
 }
 
-var updateCircles = function(el, x, index){
-    var group = d3.select(el)
-	.selectAll("div")
-	.filter(function(d) { return d == index; })
-    var colInfo = getColorInfo(el, x, index);
-    var sizeInfo = getSizeInfo(el, x, index);
-    group.selectAll("circle")
-	.attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-	       "r": function(d) { return sizeInfo.sizeScale(d[sizeInfo.curSize]); }})
+var updateCircles = function(el, x, index, opts){
+  var group = d3.select(el)
+      .selectAll("div")
+      .filter(function(d) { return d == index; })
+  var colInfo = getColorInfo(el, x, index, opts);
+  var sizeInfo = getSizeInfo(el, x, index);
+  group.selectAll("circle")
+    .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
+	   "r": function(d) { return sizeInfo.sizeScale(d[sizeInfo.curSize]); }})
 }
