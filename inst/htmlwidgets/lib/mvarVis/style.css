@@ -38,11 +38,6 @@ select {
     background-color: #ADDFF0
 }
 
-.mvar_container {
-    float: left;
-    overflow: hidden;
-}
-
 .mvar_text {
    font-family: "Signika";
 }

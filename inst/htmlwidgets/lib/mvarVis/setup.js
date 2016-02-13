@@ -3,10 +3,10 @@ var getScales = function(domain, width, height) {
     //Create scale functions
     var padding = 20
     var xScale = d3.scale.linear()
-	.domain(domain.y_domain)
+	.domain(domain["y_domain"])
 	.range([padding, width - padding]);
     var yScale = d3.scale.linear()
-	.domain(domain.y_domain)
+	.domain(domain["y_domain"])
 	.range([height - padding, padding]);
     return {"xScale": xScale, "yScale": yScale}
 }
@@ -20,7 +20,7 @@ var getDomain = function(x) {
 }
 
 var setupSVG = function(el, x, width, height, index, number) {
-    var scales = getScales(getDomain(x), width / number, height);
+    var scales = getScales(getDomain(x), width, height);
 
     // Define axes
     var xAxis = d3.svg.axis()
@@ -35,19 +35,19 @@ var setupSVG = function(el, x, width, height, index, number) {
 	.selectAll("div")
 	.filter(function(d) { return d == index; })
 	.append("svg")
-	.attr("width", width / number)
+	.attr("width", width)
 	.attr("height", height);
 
     svg.append("g")
 	.attr("class", "axis")
 	.call(xAxis)
-	.attr("transform", "translate(0, " +  height / 2 + ")")
+	.attr("transform", "translate(0, " +  number * height / 2 + ")")
 	.selectAll("text")
 
     svg.append("g")
 	.attr("class", "axis")
 	.call(yAxis)
-	.attr("transform", "translate(" + width / (2 * number) + ", 0)")
+	.attr("transform", "translate(" + width / 2 + ", 0)")
 }
 
 var setupElems = function(el, number, width) {
@@ -55,7 +55,5 @@ var setupElems = function(el, number, width) {
 	.selectAll("div")
 	.data(d3.range(number))
 	.enter()
-	.append("div")
-	.attr("class", "mvar_container")
-	.style("width", width / number + "px");
+	.append("div");
 }
