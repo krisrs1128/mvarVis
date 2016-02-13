@@ -1,16 +1,16 @@
 
 var uniqueValues = function(array, field) {
-    var unique = {};
-    var distinct = [];
-    for(var i in array){
-	if(typeof(unique[array[i][field]]) == "undefined"){
-	    distinct.push(array[i][field]);
-	}
-	unique[array[i][field]] = 0;
+  var unique = {};
+  var distinct = [];
+  for(var i in array){
+    if(typeof(unique[array[i][field]]) == "undefined"){
+      distinct.push(array[i][field]);
     }
-    return (Object.keys(unique))
+    unique[array[i][field]] = 0;
+  }
+  return (Object.keys(unique))
 }
 
 var isNumeric = function(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
