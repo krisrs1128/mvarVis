@@ -44,9 +44,19 @@ var createInput = function(el, x, index, opts) {
 	updateText(el, x, index, opts);
 	updateArrows(el, x, index, opts);
       });
+
+  var option_keys = Object.keys(x[0])
+
+  // move the "None" option to the very top
+  var none_index = option_keys.indexOf("None");
+  if(none_index != -1) {
+    option_keys.splice(none_index, 1);
+    option_keys.unshift("None");
+  }
+
   var options = select
       .selectAll("option")
-      .data(Object.keys(x[0]))
+      .data(option_keys)
       .enter()
       .append("option")
       .text(function(d) { return d; });
@@ -78,6 +88,12 @@ var getColorInfo = function(el, x, index, opts) {
   // get the selected color scale
   var colInfo = getInput(el, x, index, 0);
   var colorDomain = uniqueValues(x, colInfo.curOption)
+  if(colorDomain[0] == "no_color") {
+    return {"curCol": colInfo.curOption,
+	    "colorScale": d3.scale.ordinal()
+	    .domain(colorDomain)
+	    .range(["#424242"])}
+  }
 
   var colorScale;
   if(isNumeric(colorDomain[0])) {
