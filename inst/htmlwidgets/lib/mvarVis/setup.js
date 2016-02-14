@@ -41,7 +41,7 @@ var setupSVG = function(el, x, width, height, index, number) {
     svg.append("g")
 	.attr("class", "axis")
 	.call(xAxis)
-	.attr("transform", "translate(0, " +  number * height / 2 + ")")
+	.attr("transform", "translate(0, " +  height / 2 + ")")
 	.selectAll("text")
 
     svg.append("g")

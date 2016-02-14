@@ -15,11 +15,16 @@ HTMLWidgets.widget({
 	z["None"] = "no_color"; // to give option for no color / size
 	return z;
       })
+      console.log(x[i])
+      console.log(x[i]["opts"])
+      console.log(x[i]["opts"]["width"])
+      console.log(x[i]["opts"]["height"])
       createInput(el, cur_x, i, x[i]["opts"]);
       createQuantiInput(el, cur_x, i, x[i]["opts"]);
-      setupSVG(el, cur_x, instance["width"], instance["height"], i, x["length"]);
+      setupSVG(el, cur_x, x[i]["opts"]["width"],
+	       x[i]["opts"]["height"], i, x["length"]);
       drawScatter(el, cur_x, i, x[i]["opts"]);
-      makeTable(el, instance["width"], cur_x, i);
+      makeTable(el, x[i]["opts"]["width"], cur_x, i);
     }
   }
 });

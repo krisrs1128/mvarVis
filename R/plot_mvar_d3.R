@@ -72,13 +72,15 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
     cur_ann <- mvar_object@table[[table_ix]]@annotation
     table_opts <- list(type = opts$types[table_ix],
                        continuous_palette = opts$continuous_palettes[table_ix],
-                       ordinal_palette = opts$ordinal_palettes[table_ix])
+                       ordinal_palette = opts$ordinal_palettes[table_ix],
+                       width = opts$width, height = opts$height)
     x[[table_ix]] <- list(data = data.frame(cur_coord, cur_ann),
                           opts = table_opts)
   }
-
+  k_tables <- length(mvar_object@table)
   createWidget(name = "plot_mvar_d3", x = x, width = opts$width,
-               height = opts$height, package = "mvarVis")
+               height = k_tables * (1.3 * opts$height),
+               package = "mvarVis")
 
 }
 
