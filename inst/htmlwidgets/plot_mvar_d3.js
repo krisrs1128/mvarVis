@@ -4,10 +4,16 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
+    console.log("removing elements")
     return {"width": width, "height": height};
   },
 
   renderValue: function(el, x, instance) {
+    // clear current canvas
+    d3.select(el)
+      .selectAll("*")
+      .remove()
+
     setupElems(el, x.length, instance.width);
     for(var i in d3.range(x.length)) {
       cur_x = HTMLWidgets.dataframeToD3(x[i].data);
