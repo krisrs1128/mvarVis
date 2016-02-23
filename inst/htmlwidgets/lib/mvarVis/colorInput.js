@@ -60,9 +60,13 @@ var getInput = function(el, x, index, inputIx) {
 var getSizeInfo = function(el, x, index) {
   var sizeInfo = getInput(el, x, index, 1);
   var sizeDomain = uniqueValues(x, sizeInfo.curOption).map(parseFloat)
-  var sizeScale = d3.scale.linear()
-      .domain([d3.min(sizeDomain), d3.max(sizeDomain)])
-      .range([4, 15])
+  if(sizeInfo.curOption == "NULL") {
+    var sizeScale = function(d) { return 9; }
+  } else {
+    var sizeScale = d3.scale.linear()
+	.domain([d3.min(sizeDomain), d3.max(sizeDomain)])
+	.range([4, 15])
+  }
   return {"curSize": sizeInfo.curOption, "sizeScale": sizeScale};
 }
 
