@@ -21,8 +21,8 @@ HTMLWidgets.widget({
 	z["None"] = "no_color"; // to give option for no color / size
 	return z;
       })
-      createInput(el, cur_x, i, x[i]["opts"]);
-      createQuantiInput(el, cur_x, i, x[i]["opts"]);
+      createInput(el, cur_x, i, x[i]["opts"]); // color can be either quantitative or qualitative
+      createQuantiInput(el, cur_x, i, x[i]["opts"]); // size input has to be quantitative
       setupSVG(el, cur_x, x[i]["opts"]["width"],
 	       x[i]["opts"]["height"], i, x["length"]);
       drawScatter(el, cur_x, i, x[i]["opts"]);

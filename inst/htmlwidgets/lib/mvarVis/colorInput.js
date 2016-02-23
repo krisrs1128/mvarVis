@@ -33,6 +33,7 @@ var createQuantiInput = function(el, x, index, opts) {
   createInput(el, quantiX, index, opts);
 }
 
+// Create an input selection for all variables in x
 var createInput = function(el, x, index, opts) {
   // create a dropdown selection
   var select = d3.select(el)
