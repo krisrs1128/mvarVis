@@ -46,7 +46,7 @@ var createBrushInput = function(el, x, index, opts) {
       .filter(function(d) { return d == index; })
       .append("svg")
       .attr({"height": 30,
-	     "width": 500})
+	     "width": opts["width"]})
       .append("g")
       .classed("brush", true)
       .call(brush)
