@@ -4,12 +4,11 @@ var drawCircles = function(el, x, index, opts) {
   var sizeInfo = getSizeInfo(el, x, index, opts);
 
   var setup = drawSetup(el, x, index);
-  setup.svg.append("g")
-    .attr("class", "circle")
-    .selectAll("circle")
+  setup.svg.selectAll("circle")
     .data(x)
     .enter()
     .append("circle")
+    .classed("circle", true)
     .attr({"cx": function (d) { return setup.scales.xScale(d.axis1); },
            "cy": function (d) { return setup.scales.yScale(d.axis2); },
            "r": function(d) { return sizeInfo.sizeScale(d[sizeInfo.curSize]) },
@@ -17,6 +16,7 @@ var drawCircles = function(el, x, index, opts) {
 	   "opacity": 0.7,
 	   "index": index
 	  });
+
 
   // define interactivity for the circles
   setup.svg.selectAll("circle")
@@ -38,15 +38,15 @@ var drawCircles = function(el, x, index, opts) {
 	.attr({"r": function(z) { return sizeInfo.sizeScale(z[sizeInfo.curSize]) },
 	       "opacity": 0.7})
     });
-}
 
-var updateCircles = function(el, x, index, opts){
-  var group = d3.select(el)
-      .selectAll("div")
-      .filter(function(d) { return d == index; })
-  var colInfo = getColorInfo(el, x, index, opts);
-  var sizeInfo = getSizeInfo(el, x, index, opts);
-  group.selectAll("circle")
+  // remove points that have been removed from x
+  setup.svg.selectAll("circle")
+    .data(x)
+    .exit()
+    .remove()
+
+  // update the circles with new attributes
+  setup.svg.selectAll("circle")
     .transition()
     .duration(750)
     .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },

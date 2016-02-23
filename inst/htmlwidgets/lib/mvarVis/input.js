@@ -30,7 +30,7 @@ var createBrushInput = function(el, x, index, opts) {
   var resizePoints = function() {
     opts["rMin"] = brush.extent()[0] // opts is not constant, depends on inputs
     opts["rMax"] = brush.extent()[1]
-    updateCircles(el, x, index, opts)
+    drawCircles(el, x, index, opts)
   }
 
   // create the brush
@@ -64,7 +64,7 @@ var createInput = function(el, x, index, opts, selectVars) {
       .filter(function(d) { return d == index; })
       .append("select")
       .on("change", function(z) {
-	updateCircles(el, x, index, opts);
+	drawCircles(el, x, index, opts);
 	updateText(el, x, index, opts);
 	updateArrows(el, x, index, opts);
       });
@@ -97,6 +97,8 @@ var createTypeInput = function(el, x, index, opts) {
 
   // create a separate div for each of the possible inputs
   typeElem = typeElem.selectAll("div")
+    .append("g")
+    .attr("id", "type")
     .data(["point", "text", "arrow"])
     .enter()
     .append("div")
@@ -106,6 +108,11 @@ var createTypeInput = function(el, x, index, opts) {
   typeElem.append("input")
     .attr({"type": "checkbox",
 	   "value": function(d) { return (d); }})
+    .on("change", function() {
+      drawCircles(el, x, index, opts);
+      updateText(el, x, index, opts);
+      updateArrows(el, x, index, opts);
+    });
   typeElem.append("label")
     .text(function(d) { return (d); })
 }
