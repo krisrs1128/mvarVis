@@ -21,10 +21,3 @@ var drawScatter = function(el, x, index, opts) {
     break;
   }
 }
-
-
-//var updateScatter = function(el, x, index, opts) {
-//  if($.inArray("point", opts["type"])) {
-//    updateCircles(el, x, index, opts)
-//  }
-//}

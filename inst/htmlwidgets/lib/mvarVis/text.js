@@ -1,12 +1,13 @@
 
-var drawText = function(el, x, index, colInfo, sizeInfo) {
+var drawText = function(el, x, index, opts) {
+  var colInfo = getColorInfo(el, x, index, opts);
+  var sizeInfo = getSizeInfo(el, x, index, opts);
+
   var setup = drawSetup(el, x, index);
-  setup.svg.append("g")
-    .attr("class", "mvar_text")
-    .selectAll("text")
-    .data(x)
-    .enter()
+  setup.svg.selectAll(".mvar_text")
+    .data(x).enter()
     .append("text")
+    .classed("mvar_text", true)
     .text(function(d) {
       return d.label;
     })
@@ -19,10 +20,10 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
       "index": index
     });
 
-  // define interactivity for the circles
-  setup.svg.selectAll(".mvar_text > text")
+  // define interactivity for the text
+  setup.svg.selectAll(".mvar_text")
     .on("mouseover", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
@@ -30,24 +31,22 @@ var drawText = function(el, x, index, colInfo, sizeInfo) {
 	       "opacity": 1});
       hoverTable(el, d, d3.select(this).attr("index"));
     });
-  setup.svg.selectAll(".mvar_text > text")
+
+  setup.svg.selectAll(".mvar_text")
     .on("mouseout", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
 	.attr({"font-size": function(z) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) },
 	       "opacity": .8});
     });
-}
 
-var updateText = function(el, x, index, opts) {
-  var group = d3.select(el)
-      .selectAll("div")
-      .filter(function(d) { return d == index; })
-  var colInfo = getColorInfo(el, x, index, opts);
-  var sizeInfo = getSizeInfo(el, x, index);
-  group.selectAll(".mvar_text > text")
+  setup.svg.selectAll(".mvar_text")
+    .data(x).exit()
+    .remove();
+
+  setup.svg.selectAll(".mvar_text")
     .transition()
     .duration(750)
     .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },

@@ -65,7 +65,7 @@ var createInput = function(el, x, index, opts, selectVars) {
       .append("select")
       .on("change", function(z) {
 	drawCircles(el, x, index, opts);
-	updateText(el, x, index, opts);
+	drawText(el, x, index, opts);
 	updateArrows(el, x, index, opts);
       });
 
@@ -110,7 +110,7 @@ var createTypeInput = function(el, x, index, opts) {
 	   "value": function(d) { return (d); }})
     .on("change", function() {
       drawCircles(el, x, index, opts);
-      updateText(el, x, index, opts);
+      drawText(el, x, index, opts);
       updateArrows(el, x, index, opts);
     });
   typeElem.append("label")
