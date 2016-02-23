@@ -15,13 +15,14 @@ var getQuantiVars = function(x0) {
 }
 
 var createAllInputs = function(el, x, index, opts) {
-      sizeVars = getQuantiVars(x[0]);
-      sizeVars.unshift("NULL");
-      colVars = Object.keys(x[0]);
-      colVars.unshift("NULL");
-      createInput(el, x, index, opts, colVars);
-      createInput(el, x, index, opts, sizeVars);
-      createBrushInput(el, x, index, opts);
+  sizeVars = getQuantiVars(x[0]);
+  sizeVars.unshift("NULL");
+  colVars = Object.keys(x[0]);
+  colVars.unshift("NULL");
+  createInput(el, x, index, opts, colVars);
+  createInput(el, x, index, opts, sizeVars);
+  createBrushInput(el, x, index, opts);
+
 }
 
 var createBrushInput = function(el, x, index, opts) {
@@ -128,8 +129,4 @@ var getColorInfo = function(el, x, index, opts) {
       .range(opts["ordinal_palette"][0].slice(0, max_cols))
   }
   return {"curCol": colInfo.curOption, "colorScale": colorScale};
-}
-
-var getBrushExtent = function(el, x, index, options) {
-
 }

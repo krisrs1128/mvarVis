@@ -4,7 +4,6 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
-    console.log("removing elements")
     return {"width": width, "height": height};
   },
 
