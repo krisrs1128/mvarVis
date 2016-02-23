@@ -63,11 +63,7 @@ var createInput = function(el, x, index, opts, selectVars) {
       .selectAll("div")
       .filter(function(d) { return d == index; })
       .append("select")
-      .on("change", function(z) {
-	drawCircles(el, x, index, opts);
-	drawText(el, x, index, opts);
-	updateArrows(el, x, index, opts);
-      });
+      .on("change", function(z) { drawScatter(el, x, index, opts); });
 
   var options = select
       .selectAll("option")
@@ -108,11 +104,7 @@ var createTypeInput = function(el, x, index, opts) {
   typeElem.append("input")
     .attr({"type": "checkbox",
 	   "value": function(d) { return (d); }})
-    .on("change", function() {
-      drawCircles(el, x, index, opts);
-      drawText(el, x, index, opts);
-      updateArrows(el, x, index, opts);
-    });
+    .on("change", function() { drawScatter(el, x, index, opts); });
   typeElem.append("label")
     .text(function(d) { return (d); })
 }

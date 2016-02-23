@@ -9,15 +9,15 @@ var drawSetup = function(el, x, index) {
 }
 
 var drawScatter = function(el, x, index, opts) {
-  switch(opts["type"]) {
-  case "point":
+  console.log(opts)
+  if($.inArray("point", opts["type"]) != -1) {
     drawCircles(el, x, index, opts);
-    break;
-  case "text":
+  }
+  if($.inArray("text", opts["type"]) != -1) {
+    console.log("hi")
     drawText(el, x, index, opts);
-    break;
-  case "arrow":
+  }
+  if($.inArray("arrow", opts["type"]) != -1) {
     drawArrow(el, x, index, opts);
-    break;
   }
 }
