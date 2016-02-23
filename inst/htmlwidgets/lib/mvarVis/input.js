@@ -101,10 +101,17 @@ var createTypeInput = function(el, x, index, opts) {
     .classed("checkbox", true)
 
   // create a checkbox and label for each of those inputs
+  console.log(opts)
   typeElem.append("input")
     .attr({"type": "checkbox",
 	   "value": function(d) { return (d); },
 	   "name": "type-panel-" + index})
+    .property("checked", function(d) {
+      if($.inArray(d, opts["type"]) != -1) {
+	return true;
+      } else {
+	return false;
+      } })
     .on("change", function() {
       var checks = $("input[name='type-panel-" + index + "']:checked")
 	  .serializeArray()
