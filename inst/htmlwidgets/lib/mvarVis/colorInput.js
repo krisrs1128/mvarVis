@@ -14,27 +14,17 @@ var getQuantiVars = function(x0) {
   return quantiVars;
 }
 
-// Create an input selection for only quantitative variables
-// Args:
-//   el: The element onto which to add the input.
-//   x: An array containing the data.
-//   index: The panel within el onto which to draw the current input.
-// Returns:
-//   null, but as a side effect adds a input to el.
-var createQuantiInput = function(el, x, index, opts) {
-  // create a dropdown selection for quantitative features
-  var quantiVars = getQuantiVars(x[0]);
-  var quantiX = d3.range(x.length).map(function(z) { return {} });
-  for(var j in quantiVars) {
-    for(var k in d3.range(x.length)) {
-      quantiX[k][quantiVars[j]] = x[k][quantiVars[j]];
-    }
-  }
-  createInput(el, quantiX, index, opts);
+var createAllInputs = function(el, x, index, opts) {
+      sizeVars = getQuantiVars(x[0]);
+      sizeVars.unshift("NULL");
+      colVars = Object.keys(x[0]);
+      colVars.unshift("NULL");
+      createInput(el, x, index, opts, colVars);
+      createInput(el, x, index, opts, sizeVars);
 }
 
 // Create an input selection for all variables in x
-var createInput = function(el, x, index, opts) {
+var createInput = function(el, x, index, opts, selectVars) {
   // create a dropdown selection
   var select = d3.select(el)
       .selectAll("div")
@@ -46,18 +36,9 @@ var createInput = function(el, x, index, opts) {
 	updateArrows(el, x, index, opts);
       });
 
-  var option_keys = Object.keys(x[0])
-
-  // move the "None" option to the very top
-  var none_index = option_keys.indexOf("None");
-  if(none_index != -1) {
-    option_keys.splice(none_index, 1);
-    option_keys.unshift("None");
-  }
-
   var options = select
       .selectAll("option")
-      .data(option_keys)
+      .data(selectVars)
       .enter()
       .append("option")
       .text(function(d) { return d; });
