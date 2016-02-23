@@ -70,11 +70,9 @@ var getColorInfo = function(el, x, index, opts) {
   // get the selected color scale
   var colInfo = getInput(el, x, index, 0);
   var colorDomain = uniqueValues(x, colInfo.curOption)
-  if(colorDomain[0] == "no_color") {
+  if(colInfo.curOption == "NULL") {
     return {"curCol": colInfo.curOption,
-	    "colorScale": d3.scale.ordinal()
-	    .domain(colorDomain)
-	    .range(["#424242"])}
+	    "colorScale": function(d) { return "#424242" }}
   }
 
   var colorScale;
