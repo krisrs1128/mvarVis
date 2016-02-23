@@ -103,8 +103,14 @@ var createTypeInput = function(el, x, index, opts) {
   // create a checkbox and label for each of those inputs
   typeElem.append("input")
     .attr({"type": "checkbox",
-	   "value": function(d) { return (d); }})
-    .on("change", function() { drawScatter(el, x, index, opts); });
+	   "value": function(d) { return (d); },
+	   "name": "type-panel-" + index})
+    .on("change", function() {
+      var checks = $("input[name='type-panel-" + index + "']:checked")
+	  .serializeArray()
+      opts["type"] = checks.map(function(d) { return d["value"] })
+      drawScatter(el, x, index, opts);
+    });
   typeElem.append("label")
     .text(function(d) { return (d); })
 }
