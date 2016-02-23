@@ -22,7 +22,7 @@ var createAllInputs = function(el, x, index, opts) {
   createInput(el, x, index, opts, colVars);
   createInput(el, x, index, opts, sizeVars);
   createBrushInput(el, x, index, opts);
-
+  createTypeInput(el, x, index, opts);
 }
 
 var createBrushInput = function(el, x, index, opts) {
@@ -88,6 +88,26 @@ var getInput = function(el, x, index, inputIx) {
   var curOption = options[selectedIndex].__data__;
   return {"selectedIndex": selectedIndex,
 	  "curOption": curOption};
+}
+
+var createTypeInput = function(el, x, index, opts) {
+  var typeElem = d3.select(el)
+      .selectAll("div")
+      .filter(function(d) { return d == index; })
+
+  // create a separate div for each of the possible inputs
+  typeElem = typeElem.selectAll("div")
+    .data(["point", "text", "arrow"])
+    .enter()
+    .append("div")
+    .classed("checkbox", true)
+
+  // create a checkbox and label for each of those inputs
+  typeElem.append("input")
+    .attr({"type": "checkbox",
+	   "value": function(d) { return (d); }})
+  typeElem.append("label")
+    .text(function(d) { return (d); })
 }
 
 var getSizeInfo = function(el, x, index, opts) {
