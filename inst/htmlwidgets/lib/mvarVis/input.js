@@ -30,7 +30,7 @@ var createBrushInput = function(el, x, index, opts) {
   var resizePoints = function() {
     opts["rMin"] = brush.extent()[0] // opts is not constant, depends on inputs
     opts["rMax"] = brush.extent()[1]
-    drawCircles(el, x, index, opts)
+    drawScatter(el, x, index, opts)
   }
 
   // create the brush

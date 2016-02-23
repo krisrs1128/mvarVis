@@ -27,7 +27,11 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
                                 opts$height)
 
   # plot points for all the tables
-  default_opts$types <- rep(list("point"), length(mvar_object@table))
+  if(!is.null(opts$types)) {
+    default_opts$types <- rep(list("point"), length(mvar_object@table))
+  } else {
+    default_opts$types <- opts$types
+  }
 
   # define range of point sizes
   default_opts$rMin <- 1

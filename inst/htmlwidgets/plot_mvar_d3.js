@@ -19,9 +19,9 @@ HTMLWidgets.widget({
       createAllInputs(el, cur_x, i, x[i]["opts"]);
       setupSVG(el, cur_x, x[i]["opts"]["width"],
 	       x[i]["opts"]["height"], i, x["length"]);
+      console.log(x[i]["opts"])
       drawScatter(el, cur_x, i, x[i]["opts"]);
       makeTable(el, x[i]["opts"]["width"], cur_x, i);
     }
   }
 });
-
