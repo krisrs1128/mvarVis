@@ -35,8 +35,9 @@ var setupSVG = function(el, x, width, height, index, number) {
 	.selectAll("div")
 	.filter(function(d) { return d == index; })
 	.append("svg")
-	.attr("width", width)
-	.attr("height", height);
+	.attr({"width": width,
+	       "id": "scatter",
+	       "height": height});
 
     svg.append("g")
 	.attr("class", "axis")

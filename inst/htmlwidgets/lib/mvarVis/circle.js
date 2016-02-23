@@ -1,5 +1,8 @@
 
-var drawCircles = function(el, x, index, colInfo, sizeInfo) {
+var drawCircles = function(el, x, index, opts) {
+  var colInfo = getColorInfo(el, x, index, opts);
+  var sizeInfo = getSizeInfo(el, x, index, opts);
+
   var setup = drawSetup(el, x, index);
   setup.svg.append("g")
     .attr("class", "circle")
@@ -18,7 +21,7 @@ var drawCircles = function(el, x, index, colInfo, sizeInfo) {
   // define interactivity for the circles
   setup.svg.selectAll("circle")
     .on("mouseover", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
@@ -28,7 +31,7 @@ var drawCircles = function(el, x, index, colInfo, sizeInfo) {
     });
   setup.svg.selectAll("circle")
     .on("mouseout", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
@@ -42,7 +45,7 @@ var updateCircles = function(el, x, index, opts){
       .selectAll("div")
       .filter(function(d) { return d == index; })
   var colInfo = getColorInfo(el, x, index, opts);
-  var sizeInfo = getSizeInfo(el, x, index);
+  var sizeInfo = getSizeInfo(el, x, index, opts);
   group.selectAll("circle")
     .transition()
     .duration(750)

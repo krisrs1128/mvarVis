@@ -29,6 +29,10 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
   # plot points for all the tables
   default_opts$types <- rep("point", length(mvar_object@table))
 
+  # define range of point sizes
+  default_opts$rMin <- 1
+  default_opts$rMax <- 20
+
   # default color palettes
   default_opts$ordinal_palettes <- replicate(length(mvar_object@table),
                                              c("#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"),
@@ -57,9 +61,10 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
 #' @importFrom magrittr %>%
 #' @export
 plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
-                         width = NULL, ordinal_palettes = NULL,
-                         continuous_palettes = NULL) {
+                         width = NULL, rMin = NULL, rMax = NULL,
+                         ordinal_palettes = NULL, continuous_palettes = NULL) {
   opts <- list(types = types, width = width, asp = asp, height = height,
+               rMin = rMin, rMax = rMax,
                ordinal_palettes = ordinal_palettes,
                continuous_palettes = continuous_palettes) %>%
                  merge_mvar_d3_defaults(mvar_object)
@@ -73,7 +78,8 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
     table_opts <- list(type = opts$types[table_ix],
                        continuous_palette = opts$continuous_palettes[table_ix],
                        ordinal_palette = opts$ordinal_palettes[table_ix],
-                       width = opts$width, height = opts$height)
+                       width = opts$width, height = opts$height,
+                       rMin = opts$rMin, rMax = opts$rMax)
     x[[table_ix]] <- list(data = data.frame(cur_coord, cur_ann),
                           opts = table_opts)
   }

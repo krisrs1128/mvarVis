@@ -21,6 +21,38 @@ var createAllInputs = function(el, x, index, opts) {
       colVars.unshift("NULL");
       createInput(el, x, index, opts, colVars);
       createInput(el, x, index, opts, sizeVars);
+      createBrushInput(el, x, index, opts);
+}
+
+var createBrushInput = function(el, x, index, opts) {
+  // every time brush changes, resize the circles
+  var resizePoints = function() {
+    opts["rMin"] = brush.extent()[0] // opts is not constant, depends on inputs
+    opts["rMax"] = brush.extent()[1]
+    updateCircles(el, x, index, opts)
+  }
+
+  // create the brush
+  var brush = d3.svg.brush()
+      .x(d3.scale.linear()
+	 .domain([opts["rMin"], opts["rMax"]])
+	 .range([0, opts["width"]]))
+      .extent([opts["rMin"], opts["rMax"]])
+      .on("brush", resizePoints)
+
+  // create the SVG on which the brush lives
+  var brushElem = d3.select(el)
+      .selectAll("div")
+      .filter(function(d) { return d == index; })
+      .append("svg")
+      .attr({"height": 30,
+	     "width": 500})
+      .append("g")
+      .classed("brush", true)
+      .call(brush)
+  brushElem.selectAll("rect")
+    .attr("height", 20)
+
 }
 
 // Create an input selection for all variables in x
@@ -28,7 +60,7 @@ var createInput = function(el, x, index, opts, selectVars) {
   // create a dropdown selection
   var select = d3.select(el)
       .selectAll("div")
-      .filter(function(d) { return d == index; } )
+      .filter(function(d) { return d == index; })
       .append("select")
       .on("change", function(z) {
 	updateCircles(el, x, index, opts);
@@ -57,15 +89,15 @@ var getInput = function(el, x, index, inputIx) {
 	  "curOption": curOption};
 }
 
-var getSizeInfo = function(el, x, index) {
+var getSizeInfo = function(el, x, index, opts) {
   var sizeInfo = getInput(el, x, index, 1);
   var sizeDomain = uniqueValues(x, sizeInfo.curOption).map(parseFloat)
   if(sizeInfo.curOption == "NULL") {
-    var sizeScale = function(d) { return 9; }
+    var sizeScale = function(d) { return (opts["rMin"] + opts["rMax"]) / 2; }
   } else {
     var sizeScale = d3.scale.linear()
 	.domain([d3.min(sizeDomain), d3.max(sizeDomain)])
-	.range([4, 15])
+	.range([opts["rMin"], opts["rMax"]])
   }
   return {"curSize": sizeInfo.curOption, "sizeScale": sizeScale};
 }
@@ -96,4 +128,8 @@ var getColorInfo = function(el, x, index, opts) {
       .range(opts["ordinal_palette"][0].slice(0, max_cols))
   }
   return {"curCol": colInfo.curOption, "colorScale": colorScale};
+}
+
+var getBrushExtent = function(el, x, index, options) {
+
 }
