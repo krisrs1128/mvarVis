@@ -10,6 +10,11 @@ var drawSetup = function(el, x, index) {
 }
 
 var drawScatter = function(el, x, index, opts) {
+
+  console.log(index)
+  console.log(el)
+  console.log(opts)
+
   // draw (or remove) circles
   if($.inArray("point", opts["type"]) != -1) {
     drawCircles(el, x, index, opts);

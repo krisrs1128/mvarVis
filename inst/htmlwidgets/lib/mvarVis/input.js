@@ -95,6 +95,8 @@ var createTypeInput = function(el, x, index, opts) {
       .filter(function(d) { return d == index; })
       .select("#allInputs")
 
+  console.log(typeElem)
+
   // create a separate div for each of the possible inputs
   typeElem = typeElem.selectAll("div")
     .append("g")
@@ -105,11 +107,10 @@ var createTypeInput = function(el, x, index, opts) {
     .classed("checkbox", true)
 
   // create a checkbox and label for each of those inputs
-  console.log(opts)
   typeElem.append("input")
     .attr({"type": "checkbox",
 	   "value": function(d) { return (d); },
-	   "name": "type-panel-" + index})
+	   "name": d3.select(el).attr("id") + "-type-panel-" + index})
     .property("checked", function(d) {
       if($.inArray(d, opts["type"]) != -1) {
 	return true;
@@ -117,8 +118,8 @@ var createTypeInput = function(el, x, index, opts) {
 	return false;
       } })
     .on("change", function() {
-      var checks = $("input[name='type-panel-" + index + "']:checked")
-	  .serializeArray()
+      var checks = $("input[name='" + d3.select(el).attr("id") + "-type-panel-" +
+		     index + "']:checked").serializeArray()
       opts["type"] = checks.map(function(d) { return d["value"] })
       drawScatter(el, x, index, opts);
     });

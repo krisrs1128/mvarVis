@@ -89,7 +89,7 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
   }
   k_tables <- length(mvar_object@table)
   createWidget(name = "plot_mvar_d3", x = x, width = opts$width,
-               height = k_tables * (1.3 * opts$height),
+               height = k_tables * (2 * opts$height),
                package = "mvarVis")
 
 }
