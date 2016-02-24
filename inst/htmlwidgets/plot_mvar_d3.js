@@ -24,4 +24,3 @@ HTMLWidgets.widget({
     }
   }
 });
-

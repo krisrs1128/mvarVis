@@ -16,16 +16,16 @@ var marker = function(svg, color) {
   return "url(#" + color + ")"
 }
 
-var drawArrow = function(el, x, index, colInfo, sizeInfo) {
+var drawArrow = function(el, x, index, opts) {
   var setup = drawSetup(el, x, index);
+  var colInfo = getColorInfo(el, x, index, opts);
+  var sizeInfo = getSizeInfo(el, x, index, opts);
 
-  // draw the arrows
-  setup.svg.append("g")
-    .attr("class", "mvar_arrow")
-    .selectAll("line")
-    .data(x)
-    .enter()
+  // draw the arrows for the first time
+  setup.svg.selectAll(".mvar_arrow")
+    .data(x).enter()
     .append("line")
+    .classed("mvar_arrow", true)
     .attr({
       x1: setup.scales.xScale(0),
       y1: setup.scales.yScale(0),
@@ -41,9 +41,9 @@ var drawArrow = function(el, x, index, colInfo, sizeInfo) {
     });
 
   // define interactivity for the arrow
-  setup.svg.selectAll(".mvar_arrow > line")
+  setup.svg.selectAll(".mvar_arrow")
     .on("mouseover", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
@@ -52,29 +52,29 @@ var drawArrow = function(el, x, index, colInfo, sizeInfo) {
 	       "opacity": 1});
       hoverTable(el, d, d3.select(this).attr("index"));
     });
-  setup.svg.selectAll(".mvar_arrow > line")
+  setup.svg.selectAll(".mvar_arrow")
     .on("mouseout", function(d) {
-      sizeInfo = getSizeInfo(el, x, index);
+      sizeInfo = getSizeInfo(el, x, index, opts);
       d3.select(this)
 	.transition()
 	.duration(75)
 	.attr({"stroke-width": function(z) { return .3 * sizeInfo.sizeScale(z[sizeInfo.curSize]) },
 	       "opacity": .7});
     });
-}
 
-var updateArrows = function(el, x, index, opts) {
-  var group = d3.select(el)
-      .selectAll("div")
-      .filter(function(d) { return d == index; })
-  var colInfo = getColorInfo(el, x, index, opts);
-  var sizeInfo = getSizeInfo(el, x, index);
-  group.selectAll(".mvar_arrow > line")
+  // remove unecessary elements
+  setup.svg.selectAll(".mvar_arrow")
+    .data(x).exit()
+    .remove()
+
+  // transition color and size to match current values
+  setup.svg.selectAll(".mvar_arrow")
     .transition()
     .duration(750)
     .attr({"stroke": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
 	   "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) }})
-  group.selectAll(".mvar_arrow > line")
-    .attr({"marker-end": function(d) { return marker(group.select("svg"), colInfo.colorScale(d[colInfo.curCol]));}})
+  setup.svg.selectAll(".mvar_arrow")
+    .attr({"marker-end": function(d) { return marker(setup.svg, colInfo.colorScale(d[colInfo.curCol]));}})
+
 
 }

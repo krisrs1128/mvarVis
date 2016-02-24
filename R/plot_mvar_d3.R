@@ -27,7 +27,11 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
                                 opts$height)
 
   # plot points for all the tables
-  default_opts$types <- rep("point", length(mvar_object@table))
+  if(is.null(opts$types)) {
+    default_opts$types <- rep(list(list("point")), length(mvar_object@table))
+  } else {
+    default_opts$types <- opts$types
+  }
 
   # define range of point sizes
   default_opts$rMin <- 1
@@ -75,7 +79,7 @@ plot_mvar_d3 <- function(mvar_object, types = NULL, height = NULL, asp = NULL,
     colnames(cur_coord) <- paste0("axis", seq_len(ncol(cur_coord)))
     cur_coord <- cbind(cur_coord, running_cosines(cur_coord))
     cur_ann <- mvar_object@table[[table_ix]]@annotation
-    table_opts <- list(type = opts$types[table_ix],
+    table_opts <- list(type = opts$types[[table_ix]], # always want an array in js
                        continuous_palette = opts$continuous_palettes[table_ix],
                        ordinal_palette = opts$ordinal_palettes[table_ix],
                        width = opts$width, height = opts$height,

@@ -22,7 +22,7 @@ var createAllInputs = function(el, x, index, opts) {
   createInput(el, x, index, opts, colVars);
   createInput(el, x, index, opts, sizeVars);
   createBrushInput(el, x, index, opts);
-
+  createTypeInput(el, x, index, opts);
 }
 
 var createBrushInput = function(el, x, index, opts) {
@@ -30,7 +30,7 @@ var createBrushInput = function(el, x, index, opts) {
   var resizePoints = function() {
     opts["rMin"] = brush.extent()[0] // opts is not constant, depends on inputs
     opts["rMax"] = brush.extent()[1]
-    updateCircles(el, x, index, opts)
+    drawScatter(el, x, index, opts)
   }
 
   // create the brush
@@ -63,11 +63,7 @@ var createInput = function(el, x, index, opts, selectVars) {
       .selectAll("div")
       .filter(function(d) { return d == index; })
       .append("select")
-      .on("change", function(z) {
-	updateCircles(el, x, index, opts);
-	updateText(el, x, index, opts);
-	updateArrows(el, x, index, opts);
-      });
+      .on("change", function(z) { drawScatter(el, x, index, opts); });
 
   var options = select
       .selectAll("option")
@@ -88,6 +84,42 @@ var getInput = function(el, x, index, inputIx) {
   var curOption = options[selectedIndex].__data__;
   return {"selectedIndex": selectedIndex,
 	  "curOption": curOption};
+}
+
+var createTypeInput = function(el, x, index, opts) {
+  var typeElem = d3.select(el)
+      .selectAll("div")
+      .filter(function(d) { return d == index; })
+
+  // create a separate div for each of the possible inputs
+  typeElem = typeElem.selectAll("div")
+    .append("g")
+    .attr("id", "type")
+    .data(["point", "text", "arrow"])
+    .enter()
+    .append("div")
+    .classed("checkbox", true)
+
+  // create a checkbox and label for each of those inputs
+  console.log(opts)
+  typeElem.append("input")
+    .attr({"type": "checkbox",
+	   "value": function(d) { return (d); },
+	   "name": "type-panel-" + index})
+    .property("checked", function(d) {
+      if($.inArray(d, opts["type"]) != -1) {
+	return true;
+      } else {
+	return false;
+      } })
+    .on("change", function() {
+      var checks = $("input[name='type-panel-" + index + "']:checked")
+	  .serializeArray()
+      opts["type"] = checks.map(function(d) { return d["value"] })
+      drawScatter(el, x, index, opts);
+    });
+  typeElem.append("label")
+    .text(function(d) { return (d); })
 }
 
 var getSizeInfo = function(el, x, index, opts) {
