@@ -37,7 +37,7 @@ var createBrushInput = function(el, x, index, opts) {
   var brush = d3.svg.brush()
       .x(d3.scale.linear()
 	 .domain([opts["rMin"], opts["rMax"]])
-	 .range([0, opts["width"]]))
+	 .range([0, .5 * opts["width"]]))
       .extent([opts["rMin"], opts["rMax"]])
       .on("brush", resizePoints)
 
@@ -45,6 +45,7 @@ var createBrushInput = function(el, x, index, opts) {
   var brushElem = d3.select(el)
       .selectAll("div")
       .filter(function(d) { return d == index; })
+      .select("#allInputs")
       .append("svg")
       .attr({"height": 30,
 	     "width": opts["width"]})
@@ -62,6 +63,7 @@ var createInput = function(el, x, index, opts, selectVars) {
   var select = d3.select(el)
       .selectAll("div")
       .filter(function(d) { return d == index; })
+      .select("#allInputs")
       .append("select")
       .on("change", function(z) { drawScatter(el, x, index, opts); });
 
@@ -78,6 +80,7 @@ var getInput = function(el, x, index, inputIx) {
   var group = d3.select(el)
       .selectAll("div")
       .filter(function(d) { return d == index; })
+      .select("#allInputs")
   var select = group.selectAll("select")[0][inputIx]
   var options = group.selectAll("select").selectAll("option")[inputIx]
   var selectedIndex = select.selectedIndex
@@ -90,6 +93,7 @@ var createTypeInput = function(el, x, index, opts) {
   var typeElem = d3.select(el)
       .selectAll("div")
       .filter(function(d) { return d == index; })
+      .select("#allInputs")
 
   // create a separate div for each of the possible inputs
   typeElem = typeElem.selectAll("div")

@@ -2,7 +2,8 @@
 var drawSetup = function(el, x, index) {
   var group = d3.select(el)
       .selectAll("div")
-      .filter(function(d) { return d == index; });
+      .filter(function(d) { return d == index; })
+      .select("#scatterplot")
   var svg = group.select("#scatter")
   var scales = getScales(getDomain(x), svg.attr("width"), svg.attr("height"));
   return {"group": group, "svg": svg, "scales": scales};

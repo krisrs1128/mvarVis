@@ -4,6 +4,7 @@ var makeTable = function(el, width, x, index) {
   var table = d3.select(el)
       .selectAll("div")
       .filter(function(d) { return d == index; } )
+      .select("#table")
       .append("table")
       .attr({"class": "fixed",
 	     "width": width * .99

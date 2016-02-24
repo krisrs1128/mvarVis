@@ -31,21 +31,14 @@ td {
 }
 
 select {
-    border-radius: 0;
-    border: 0px solid;
-    font-family: "Roboto";
-    background-color: #ADDFF0
-}
-
-.checkbox {
     font-family: "Roboto";
 }
 
 .mvar_text {
-    font-family: "Signika";
+   font-family: "Signika";
 }
 
 .brush .extent {
-    fill-opacity: .125;
-    shape-rendering: crispEdges;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }
