@@ -14,9 +14,9 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
   default_opts <- list()
 
   # how much of each panel should be input selections?
-  default_opts$prop_input <- 5/12
+  default_opts$prop_input <- 3/12
 
-  # default aspect ratio is .7, NOT the ratio of eigenvalues
+  # default aspect ratio is NOT the ratio of eigenvalues
   k_tables <- length(mvar_object@table)
   default_opts$width <- ifelse(is.null(opts$width), 500, opts$width)
   default_opts$height <- ifelse(is.null(opts$height),

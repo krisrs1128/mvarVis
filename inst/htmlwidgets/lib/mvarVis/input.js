@@ -37,7 +37,7 @@ var createBrushInput = function(el, x, index, opts) {
   var brush = d3.svg.brush()
       .x(d3.scale.linear()
 	 .domain([opts["rMin"], opts["rMax"]])
-	 .range([0, .5 * opts["width"]]))
+	 .range([0, .7 * opts["width"] * opts["prop_input"]]))
       .extent([opts["rMin"], opts["rMax"]])
       .on("brush", resizePoints)
 
@@ -48,7 +48,7 @@ var createBrushInput = function(el, x, index, opts) {
       .select("#allInputs")
       .append("svg")
       .attr({"height": 30,
-	     "width": .8 * opts["width"] * opts["prop_input"]})
+	     "width": .73 * opts["width"] * opts["prop_input"]})
       .append("g")
       .classed("brush", true)
       .call(brush)
@@ -65,6 +65,7 @@ var createInput = function(el, x, index, opts, selectVars) {
       .filter(function(d) { return d == index; })
       .select("#allInputs")
       .append("select")
+      .style({"width": .65 * opts["width"] * opts["prop_input"] + "px"})
       .on("change", function(z) { drawScatter(el, x, index, opts); });
 
   var options = select

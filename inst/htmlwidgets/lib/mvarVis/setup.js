@@ -67,7 +67,7 @@ var setupElems = function(el, number, height, width, propInput) {
       .classed("row-fluid", true)
 
   var plotTableElem = viewport.append("div")
-      .classed("span7", true)
+      .classed("span9", true)
   plotTableElem.append("div")
     .attr({"id": "table"})
     .style("height", "30px")
@@ -77,7 +77,7 @@ var setupElems = function(el, number, height, width, propInput) {
     .style("height", height - 30 + "px")
 
   viewport.append("div")
-    .classed("span5", true)
+    .classed("span3", true)
     .style("height", height + "px")
     .append("form")
     .classed("well", true)
