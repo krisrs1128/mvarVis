@@ -10,6 +10,13 @@ var drawSetup = function(el, x, index) {
 }
 
 var drawScatter = function(el, x, index, opts) {
+  // draw (or remove) arrows
+  if($.inArray("arrow", opts["type"]) != -1) {
+    drawArrow(el, x, index, opts);
+  } else {
+    drawArrow(el, [], index, opts);
+  }
+
   // draw (or remove) circles
   if($.inArray("point", opts["type"]) != -1) {
     drawCircles(el, x, index, opts);
@@ -24,10 +31,4 @@ var drawScatter = function(el, x, index, opts) {
     drawText(el, [], index, opts);
   }
 
-  // draw (or remove) arrows
-  if($.inArray("arrow", opts["type"]) != -1) {
-    drawArrow(el, x, index, opts);
-  } else {
-    drawArrow(el, [], index, opts);
-  }
 }
