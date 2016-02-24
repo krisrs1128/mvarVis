@@ -63,15 +63,18 @@ var setupElems = function(el, number, height, width, propInput) {
       .append("div")
       .classed("mvar-table", true)
 
-  divs.append("div")
-    .classed("row-fluid", true)
-    .attr({"id": "table"})
   var viewport = divs.append("div")
-    .classed("row-fluid", true)
-    .attr("id", "viewport")
-  viewport.append("div")
-    .classed("span7", true)
+      .classed("row-fluid", true)
+
+  var plotTableElem = viewport.append("div")
+      .classed("span7", true)
+  plotTableElem.append("div")
+    .attr({"id": "table"})
+    .style("height", "30px")
+
+  plotTableElem.append("div")
     .attr({"id": "scatterplot"})
+    .style("height", height - 30 + "px")
 
   viewport.append("div")
     .classed("span5", true)

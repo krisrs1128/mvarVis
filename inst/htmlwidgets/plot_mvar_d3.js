@@ -25,7 +25,7 @@ HTMLWidgets.widget({
       createAllInputs(el, cur_x, i, x[i]["opts"]);
       setupSVG(el, cur_x, svgWidth, elemHeight, i, x["length"]);
       drawScatter(el, cur_x, i, x[i]["opts"]);
-      makeTable(el, elemWidth, cur_x, i);
+      makeTable(el, svgWidth, cur_x, i);
     }
   }
 });
