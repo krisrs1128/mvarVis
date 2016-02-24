@@ -43,7 +43,7 @@ var createBrushInput = function(el, x, index, opts) {
 
   // create the SVG on which the brush lives
   var brushElem = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
       .append("svg")
@@ -61,7 +61,7 @@ var createBrushInput = function(el, x, index, opts) {
 var createInput = function(el, x, index, opts, selectVars) {
   // create a dropdown selection
   var select = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
       .append("select")
@@ -78,7 +78,7 @@ var createInput = function(el, x, index, opts, selectVars) {
 var getInput = function(el, x, index, inputIx) {
   // get the selected options
   var group = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
   var select = group.selectAll("select")[0][inputIx]
@@ -91,7 +91,7 @@ var getInput = function(el, x, index, inputIx) {
 
 var createTypeInput = function(el, x, index, opts) {
   var typeElem = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
 

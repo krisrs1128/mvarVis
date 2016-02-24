@@ -32,7 +32,7 @@ var setupSVG = function(el, x, width, height, index, number) {
 
   //Create SVG element
   var svg = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#scatterplot")
       .append("svg")
@@ -58,14 +58,20 @@ var setupElems = function(el, number, width) {
       .data(d3.range(number))
       .enter()
       .append("div")
+      .classed("mvar-table", true)
 
   divs.append("div")
     .classed("row-fluid", true)
     .attr({"id": "table"})
-  divs.append("div")
+  var viewport = divs.append("div")
     .classed("row-fluid", true)
+    .attr("id", "viewport")
+  viewport.append("div")
+    .classed("span9", true)
     .attr({"id": "scatterplot"})
-  divs.append("form")
+  viewport.append("div")
+    .classed("span3", true)
+    .append("form")
     .classed("well", true)
     .attr({"id": "allInputs"})
 }

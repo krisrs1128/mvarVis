@@ -1,7 +1,7 @@
 
 var drawSetup = function(el, x, index) {
   var group = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#scatterplot")
   var svg = group.select("#scatter")
@@ -10,11 +10,6 @@ var drawSetup = function(el, x, index) {
 }
 
 var drawScatter = function(el, x, index, opts) {
-
-  console.log(index)
-  console.log(el)
-  console.log(opts)
-
   // draw (or remove) circles
   if($.inArray("point", opts["type"]) != -1) {
     drawCircles(el, x, index, opts);

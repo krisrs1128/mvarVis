@@ -17,8 +17,8 @@ HTMLWidgets.widget({
     for(var i in d3.range(x.length)) {
       cur_x = HTMLWidgets.dataframeToD3(x[i].data);
       createAllInputs(el, cur_x, i, x[i]["opts"]);
-      setupSVG(el, cur_x, x[i]["opts"]["width"],
-	       x[i]["opts"]["height"], i, x["length"]);
+      setupSVG(el, cur_x, x[i]["opts"]["width"] * .7,
+	       x[i]["opts"]["height"] * .7, i, x["length"]);
       drawScatter(el, cur_x, i, x[i]["opts"]);
       makeTable(el, x[i]["opts"]["width"], cur_x, i);
     }
