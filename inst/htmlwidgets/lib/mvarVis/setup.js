@@ -14,7 +14,7 @@ var getScales = function(domain, width, height) {
 var getDomain = function(x) {
   var axis1 = x.map(function(z) { return Math.abs(z.axis1) })
   var axis2 = x.map(function(z) { return Math.abs(z.axis2) })
-  var axis_max = 1.2 * d3.max(axis1.concat(axis2))
+  var axis_max = d3.max(axis1.concat(axis2))
   return {"x_domain": [-axis_max, axis_max],
 	  "y_domain": [-axis_max, axis_max]}
 }
@@ -29,6 +29,9 @@ var setupSVG = function(el, x, width, height, index, number) {
   var yAxis = d3.svg.axis()
       .scale(scales.yScale)
       .orient("right");
+
+  console.log(width)
+  console.log(height)
 
   //Create SVG element
   var svg = d3.select(el)
@@ -52,7 +55,7 @@ var setupSVG = function(el, x, width, height, index, number) {
     .attr("transform", "translate(" + width / 2 + ", 0)")
 }
 
-var setupElems = function(el, number, width) {
+var setupElems = function(el, number, height, width, propInput) {
   var divs = d3.select(el)
       .selectAll("div")
       .data(d3.range(number))
@@ -67,11 +70,14 @@ var setupElems = function(el, number, width) {
     .classed("row-fluid", true)
     .attr("id", "viewport")
   viewport.append("div")
-    .classed("span9", true)
+    .classed("span7", true)
     .attr({"id": "scatterplot"})
+
   viewport.append("div")
-    .classed("span3", true)
+    .classed("span5", true)
+    .style("height", height + "px")
     .append("form")
     .classed("well", true)
+    .style("overflow-y", "scroll")
     .attr({"id": "allInputs"})
 }
