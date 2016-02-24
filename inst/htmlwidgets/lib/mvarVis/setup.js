@@ -14,7 +14,7 @@ var getScales = function(domain, width, height) {
 var getDomain = function(x) {
   var axis1 = x.map(function(z) { return Math.abs(z.axis1) })
   var axis2 = x.map(function(z) { return Math.abs(z.axis2) })
-  var axis_max = 1.2 * d3.max(axis1.concat(axis2))
+  var axis_max = d3.max(axis1.concat(axis2))
   return {"x_domain": [-axis_max, axis_max],
 	  "y_domain": [-axis_max, axis_max]}
 }
@@ -30,9 +30,12 @@ var setupSVG = function(el, x, width, height, index, number) {
       .scale(scales.yScale)
       .orient("right");
 
+  console.log(width)
+  console.log(height)
+
   //Create SVG element
   var svg = d3.select(el)
-      .selectAll("div")
+      .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#scatterplot")
       .append("svg")
@@ -52,20 +55,32 @@ var setupSVG = function(el, x, width, height, index, number) {
     .attr("transform", "translate(" + width / 2 + ", 0)")
 }
 
-var setupElems = function(el, number, width) {
+var setupElems = function(el, number, height, width, propInput) {
   var divs = d3.select(el)
       .selectAll("div")
       .data(d3.range(number))
       .enter()
       .append("div")
+      .classed("mvar-table", true)
 
-  divs.append("div")
-    .classed("row-fluid", true)
+  var viewport = divs.append("div")
+      .classed("row-fluid", true)
+
+  var plotTableElem = viewport.append("div")
+      .classed("span9", true)
+  plotTableElem.append("div")
     .attr({"id": "table"})
-  divs.append("div")
-    .classed("row-fluid", true)
+    .style("height", "30px")
+
+  plotTableElem.append("div")
     .attr({"id": "scatterplot"})
-  divs.append("form")
+    .style("height", height - 30 + "px")
+
+  viewport.append("div")
+    .classed("span3", true)
+    .style("height", height + "px")
+    .append("form")
     .classed("well", true)
+    .style("overflow-y", "scroll")
     .attr({"id": "allInputs"})
 }
