@@ -34,3 +34,9 @@
     script:
       - colorbrewer.js
     style: colorbrewer.css
+  - name: bootstrap
+    src: htmlwidgets/lib/bootstrap
+    version: 2.3.2
+    script:
+      - bootstrap.js
+    style: bootstrap.css

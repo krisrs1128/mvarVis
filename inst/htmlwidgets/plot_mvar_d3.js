@@ -11,7 +11,7 @@ HTMLWidgets.widget({
     // clear current canvas
     d3.select(el)
       .selectAll("*")
-      .remove()
+      .remove();
 
     setupElems(el, x.length, instance.width);
     for(var i in d3.range(x.length)) {
