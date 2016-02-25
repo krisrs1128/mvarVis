@@ -44,8 +44,6 @@ var drawText = function(el, x, index, opts) {
 
   setup.svg.selectAll(".mvar_text")
     .data(x).exit()
-    .transition()
-    .duration(750)
     .remove();
 
   setup.svg.selectAll(".mvar_text")
