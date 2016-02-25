@@ -75,6 +75,4 @@ var drawArrow = function(el, x, index, opts) {
 	   "stroke-width": function(d) { return .3 * sizeInfo.sizeScale(d[sizeInfo.curSize]) }})
   setup.svg.selectAll(".mvar_arrow")
     .attr({"marker-end": function(d) { return marker(setup.svg, colInfo.colorScale(d[colInfo.curCol]));}})
-
-
 }

@@ -18,7 +18,7 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
 
   # default aspect ratio is NOT the ratio of eigenvalues
   k_tables <- length(mvar_object@table)
-  default_opts$width <- ifelse(is.null(opts$width), 500, opts$width)
+  default_opts$width <- ifelse(is.null(opts$width), 500, .5 * opts$width)
   default_opts$height <- ifelse(is.null(opts$height),
                                 k_tables * default_opts$width, opts$height)
 

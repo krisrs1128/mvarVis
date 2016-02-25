@@ -41,8 +41,7 @@ var drawCircles = function(el, x, index, opts) {
 
   // remove points that have been removed from x
   setup.svg.selectAll("circle")
-    .data(x)
-    .exit()
+    .data(x).exit()
     .remove()
 
   // update the circles with new attributes

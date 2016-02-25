@@ -15,10 +15,10 @@ var drawText = function(el, x, index, opts) {
       "x": function(d) { return setup.scales.xScale(d.axis1); },
       "y": function(d) { return setup.scales.yScale(d.axis2); },
       "fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-      "opacity": .7,
-      "font-size": function(d) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8); },
+      "opacity": 0.8,
+      "font-size": function(d) { return 1.8 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .5 * 8); },
       "index": index
-    });
+    })
 
   // define interactivity for the text
   setup.svg.selectAll(".mvar_text")
@@ -27,7 +27,7 @@ var drawText = function(el, x, index, opts) {
       d3.select(this)
 	.transition()
 	.duration(75)
-	.attr({"font-size": function(z) { return 1.6 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8); },
+	.attr({"font-size": function(z) {return 1.8 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + 8); },
 	       "opacity": 1});
       hoverTable(el, d, d3.select(this).attr("index"));
     });
@@ -38,17 +38,19 @@ var drawText = function(el, x, index, opts) {
       d3.select(this)
 	.transition()
 	.duration(75)
-	.attr({"font-size": function(z) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) },
+	.attr({"font-size": function(z)  { return 1.8 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .5 * 8); },
 	       "opacity": .8});
     });
 
   setup.svg.selectAll(".mvar_text")
     .data(x).exit()
+    .transition()
+    .duration(750)
     .remove();
 
   setup.svg.selectAll(".mvar_text")
     .transition()
     .duration(750)
     .attr({"fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-	   "font-size": function(d) { return 1.2 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .3 * 8) }})
+	   "font-size": function(d) { return 1.8 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .5 * 8) }})
 }

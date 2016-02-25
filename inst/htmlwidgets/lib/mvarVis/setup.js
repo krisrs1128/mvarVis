@@ -64,10 +64,10 @@ var setupElems = function(el, number, height, width, propInput) {
       .classed("mvar-table", true)
 
   var viewport = divs.append("div")
-      .classed("row-fluid", true)
+      .classed("row", true)
 
   var plotTableElem = viewport.append("div")
-      .classed("span9", true)
+      .classed("col-sm-9", true)
   plotTableElem.append("div")
     .attr({"id": "table"})
     .style("height", "30px")
@@ -77,7 +77,7 @@ var setupElems = function(el, number, height, width, propInput) {
     .style("height", height - 30 + "px")
 
   viewport.append("div")
-    .classed("span3", true)
+    .classed("col-sm-3", true)
     .style("height", height + "px")
     .append("form")
     .classed("well", true)
