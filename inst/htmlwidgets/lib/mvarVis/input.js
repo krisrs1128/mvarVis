@@ -19,9 +19,14 @@ var createAllInputs = function(el, x, index, opts) {
   sizeVars.unshift("NULL");
   colVars = Object.keys(x[0]);
   colVars.unshift("NULL");
+
+  annotateInput(el, index, "Color")
   createInput(el, x, index, opts, colVars);
+  annotateInput(el, index, "Size")
   createInput(el, x, index, opts, sizeVars);
+  annotateInput(el, index, "Size range")
   createBrushInput(el, x, index, opts);
+  annotateInput(el, index, "Geom type")
   createTypeInput(el, x, index, opts);
 }
 
@@ -55,6 +60,17 @@ var createBrushInput = function(el, x, index, opts) {
   brushElem.selectAll("rect")
     .attr("height", 20)
 
+}
+
+var annotateInput = function(el, index, textLabel) {
+  d3.select(el)
+    .selectAll(".mvar-table")
+    .filter(function(d) { return d == index; })
+    .select("#allInputs")
+    .append("g")
+    .classed("inputLabel", true)
+    .append("text")
+    .text(textLabel)
 }
 
 // Create an input selection for all variables in x

@@ -38,6 +38,11 @@ select {
    font-family: "Signika";
 }
 
+.inputLabel {
+    font-family: "Signika";
+    font-size: 15px;
+}
+
 .brush .extent {
   fill-opacity: .125;
   shape-rendering: crispEdges;
