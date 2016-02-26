@@ -1,7 +1,7 @@
 
 var getScales = function(domain, width, height) {
   //Create scale functions
-  var padding = 20
+  var padding = 30;
   var xScale = d3.scale.linear()
       .domain(domain["y_domain"])
       .range([padding, width - padding]);
@@ -78,7 +78,7 @@ var setupElems = function(el, number, height, width, propInput) {
 
   viewport.append("div")
     .classed("col-sm-3", true)
-    .style("height", height + "px")
+    .style("max-height", height + "px")
     .append("form")
     .classed("well", true)
     .style("overflow-y", "scroll")

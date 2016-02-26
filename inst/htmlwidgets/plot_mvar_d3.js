@@ -23,7 +23,7 @@ HTMLWidgets.widget({
     for(var i in d3.range(x["length"])) {
       cur_x = HTMLWidgets.dataframeToD3(x[i].data);
       createAllInputs(el, cur_x, i, x[i]["opts"]);
-      setupSVG(el, cur_x, svgWidth, elemHeight, i, x["length"]);
+      setupSVG(el, cur_x, svgWidth, elemHeight - 30, i, x["length"]); // subtract out table height
       drawScatter(el, cur_x, i, x[i]["opts"]);
       makeTable(el, svgWidth, cur_x, i);
     }
