@@ -24,7 +24,7 @@ var createAllInputs = function(el, x, index, opts) {
   createInput(el, x, index, opts, colVars);
   annotateInput(el, index, "Size")
   createInput(el, x, index, opts, sizeVars);
-  annotateInput(el, index, "Size range")
+  annotateInput(el, index, "Size range (pixels)")
   createBrushInput(el, x, index, opts);
   annotateInput(el, index, "Geom type")
   createTypeInput(el, x, index, opts);
@@ -38,11 +38,13 @@ var createBrushInput = function(el, x, index, opts) {
     drawScatter(el, x, index, opts)
   }
 
+  var brushScale = d3.scale.linear()
+      .domain([opts["rMin"], opts["rMax"]])
+      .range([0, .7 * opts["width"] * opts["prop_input"]])
+
   // create the brush
   var brush = d3.svg.brush()
-      .x(d3.scale.linear()
-	 .domain([opts["rMin"], opts["rMax"]])
-	 .range([0, .7 * opts["width"] * opts["prop_input"]]))
+      .x(brushScale)
       .extent([opts["rMin"], opts["rMax"]])
       .on("brush", resizePoints)
 
@@ -52,14 +54,20 @@ var createBrushInput = function(el, x, index, opts) {
       .filter(function(d) { return d == index; })
       .select("#allInputs")
       .append("svg")
-      .attr({"height": 30,
+      .attr({"height": 50,
 	     "width": .73 * opts["width"] * opts["prop_input"]})
-      .append("g")
+
+  brushElem.append("g") // actual brush
       .classed("brush", true)
       .call(brush)
+
+  brushElem.append("g")
+    .classed("axis", true)
+    .call(d3.svg.axis().scale(brushScale))
+    .attr("transform", "translate(0, 20)")
+
   brushElem.selectAll("rect")
     .attr("height", 20)
-
 }
 
 var annotateInput = function(el, index, textLabel) {
@@ -111,8 +119,6 @@ var createTypeInput = function(el, x, index, opts) {
       .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
-
-  console.log(typeElem)
 
   // create a separate div for each of the possible inputs
   typeElem = typeElem.selectAll("div")
