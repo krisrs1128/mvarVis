@@ -25,18 +25,7 @@ selection box at the top left.
 ```{r}
 plot_mvar_d3(wine_mfa)
 ```
-\
-\
-\
-We can choose between `point`, `text`, and `arrow` for each layer
-(though only one at a time, at least for now).
 
-```{r}
-plot_mvar_d3(wine_mfa, c("text", "arrow"))
-```
-\
-\
-\
 If we want, we can have as many panels as we want. This splits the MFA
 variables by group. The splitting code isn't pretty, but it shouldnt'
 be too hard to write some helpers to streamline things.
@@ -62,7 +51,7 @@ wine_mfa_split <- new(
   eig = wine_mfa@eig
 )
 
-plot_mvar_d3(wine_mfa_split, c("point", rep("text", 5)))
+plot_mvar_d3(wine_mfa_split, c(list(list("point")), replicate(5, list("text", "arrow"), simplify = F)))
 ```
 
 We can also have just one panel.
@@ -73,9 +62,7 @@ wine_pca <- ordi(wine[, -c(1:2)], "factominer_pca",
                  ncp = 3, graph = F)
 plot_mvar_d3(wine_pca)
 ```
-\
-\
-\
+
 Here's an MCA example. Notice we can customize width / height.
 
 ```{r}
@@ -85,5 +72,5 @@ hobbies_mca <- ordi(hobbies[, 1:18], method = "MCA",
 ```
 
 ```{r}
-plot_mvar_d3(hobbies_mca, height = 400)
+plot_mvar_d3(hobbies_mca, height = 400, rMax = 8)
 ```
