@@ -36,7 +36,7 @@
     style: colorbrewer.css
   - name: bootstrap
     src: htmlwidgets/lib/bootstrap
-    version: 2.3.2
+    version: 3.3.6
     script:
-      - bootstrap.js
-    style: bootstrap.css
+      - bootstrap.min.js
+    style: bootstrap.min.css
