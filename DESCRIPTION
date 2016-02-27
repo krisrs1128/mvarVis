@@ -5,7 +5,7 @@ Authors@R: person("Kris", "Sankaran", , "kriss1@stanford.edu", role = c("aut", "
 Description: Visualize multivariate analysis results, more details forthcoming.
 Depends: R (>= 3.1.2), htmlwidgets, vegan, ade4
 Imports: ggplot2, methods
-Suggests: knitr, ape
+Suggests: knitr, vegan, FactoMineR, vegan, ade4
 License: GPL
 LazyData: true
 VignetteBuilder: knitr
