@@ -78,9 +78,9 @@ var setupElems = function(el, number, height, width, propInput) {
 
   viewport.append("div")
     .classed("span3", true)
-    .style("max-height", height + "px")
     .append("form")
     .classed("well", true)
     .style("overflow-y", "scroll")
+    .style("max-height", height + "px")
     .attr({"id": "allInputs"})
 }

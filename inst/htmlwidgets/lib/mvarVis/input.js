@@ -54,7 +54,7 @@ var createBrushInput = function(el, x, index, opts) {
       .filter(function(d) { return d == index; })
       .select("#allInputs")
       .append("svg")
-      .attr({"height": 50,
+      .attr({"height": 25,
 	     "width": .73 * opts["width"] * opts["prop_input"]})
 
   brushElem.append("g") // actual brush
@@ -64,10 +64,10 @@ var createBrushInput = function(el, x, index, opts) {
   brushElem.append("g")
     .classed("axis", true)
     .call(d3.svg.axis().scale(brushScale))
-    .attr("transform", "translate(0, 20)")
+    .attr("transform", "translate(0, 10)")
 
   brushElem.selectAll("rect")
-    .attr("height", 20)
+    .attr("height", 10)
 }
 
 var annotateInput = function(el, index, textLabel) {
@@ -79,6 +79,7 @@ var annotateInput = function(el, index, textLabel) {
     .classed("inputLabel", true)
     .append("text")
     .text(textLabel)
+    .append("br")
 }
 
 // Create an input selection for all variables in x
@@ -91,6 +92,12 @@ var createInput = function(el, x, index, opts, selectVars) {
       .append("select")
       .style({"width": .65 * opts["width"] * opts["prop_input"] + "px"})
       .on("change", function(z) { drawScatter(el, x, index, opts); });
+
+  d3.select(el)
+    .selectAll(".mvar-table")
+    .filter(function(d) { return d == index; })
+    .select("#allInputs")
+    .append("br")
 
   var options = select
       .selectAll("option")
