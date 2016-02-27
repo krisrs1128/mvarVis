@@ -40,7 +40,7 @@ var createBrushInput = function(el, x, index, opts) {
 
   var brushScale = d3.scale.linear()
       .domain([opts["rMin"], opts["rMax"]])
-      .range([0, .7 * opts["width"] * opts["prop_input"]])
+      .range([0, .58 * opts["width"] * opts["prop_input"]])
 
   // create the brush
   var brush = d3.svg.brush()
@@ -55,7 +55,7 @@ var createBrushInput = function(el, x, index, opts) {
       .select("#allInputs")
       .append("svg")
       .attr({"height": 25,
-	     "width": .73 * opts["width"] * opts["prop_input"]})
+	     "width": .6 * opts["width"] * opts["prop_input"]})
 
   brushElem.append("g") // actual brush
       .classed("brush", true)
