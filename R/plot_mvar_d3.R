@@ -38,7 +38,7 @@ merge_mvar_d3_defaults <- function(opts = list(), mvar_object) {
                                              c("#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854","#ffd92f","#e5c494","#b3b3b3"),
                                              simplify = F)
   default_opts$continuous_palettes <- replicate(k_tables,
-                                                c("#a50026","#d73027","#f46d43","#fdae61","#fee090","#ffffbf","#e0f3f8","#abd9e9","#74add1","#4575b4","#313695"),
+                                                c('#000080','#2c3a8d','#37699a','#3199a5','#54bdb4','#95d1c7','#cbe6dc','#fffaf0','#f5cdc3','#e8a098','#d7736f','#c2514f','#ac3a35','#96221c','#800000'),
                                                 simplify = F)
 
   opts <- opts[!sapply(opts, is.null)]

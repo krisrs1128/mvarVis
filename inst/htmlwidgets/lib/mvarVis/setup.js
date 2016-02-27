@@ -30,9 +30,6 @@ var setupSVG = function(el, x, width, height, index, number) {
       .scale(scales.yScale)
       .orient("right");
 
-  console.log(width)
-  console.log(height)
-
   //Create SVG element
   var svg = d3.select(el)
       .selectAll(".mvar-table")
