@@ -15,8 +15,6 @@ var drawText = function(el, x, index, opts) {
       "x": function(d) { return setup.scales.xScale(d.axis1); },
       "y": function(d) { return setup.scales.yScale(d.axis2); },
       "fill": function(d) { return colInfo.colorScale(d[colInfo.curCol]); },
-      "stroke-width": ".4px",
-      "stroke": "black",
       "opacity": 0.8,
       "font-size": function(d) { return 1.8 * (sizeInfo.sizeScale(d[sizeInfo.curSize]) * .7 + .5 * 8); },
       "index": index
