@@ -39,9 +39,17 @@ select {
    font-family: "Signika";
    font-size: 13px;
    margin-bottom: 5px;
+   display: block;
 }
 
 .brush .extent {
   fill-opacity: .125;
   shape-rendering: crispEdges;
+}
+
+.checkboxGroup {
+    font-family: "Roboto";
+    font-size: 11px;
+    display: block;
+    margin: 0;
 }

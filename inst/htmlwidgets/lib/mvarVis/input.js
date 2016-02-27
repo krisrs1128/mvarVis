@@ -23,7 +23,7 @@ var createAllInputs = function(el, x, index, opts) {
   createInput(el, x, index, opts, colVars, "Color");
   createInput(el, x, index, opts, sizeVars, "Size");
   createBrushInput(el, x, index, opts, "Size range (px)");
-  createTypeInput(el, x, index, opts, "Geom");
+  createTypeInput(el, x, index, opts);
 }
 
 var createBrushInput = function(el, x, index, opts, textLabel) {
@@ -115,21 +115,22 @@ var createTypeInput = function(el, x, index, opts) {
       .select("#allInputs")
 
   // create a separate div for each of the possible inputs
-  typeElem = typeElem.selectAll("div")
-    .append("g")
-    .attr("id", "type")
-    .data(["point", "text", "arrow"])
-    .enter()
-    .append("div")
-    .classed("checkbox", true)
-
-  // create a checkbox and label for each of those inputs
-  typeElem
+  typeElem = typeElem
     .append("label")
     .classed("inputElem", true)
-    .append("input")
-    .attr({"type": "checkbox",
-	   "value": function(d) { return (d); },
+    .append("forminput")
+    .text("Geom")
+    .selectAll("label")
+    .data(["point", "text", "arrow"])
+    .enter()
+
+  typeElem = typeElem.append("label")
+    .classed("checkboxGroup", true)
+  
+  typeElem.append("input")
+    .attr({"id": function(d) { return d3.select(el).attr("id") + "-type-panel-" + index + d; },
+	   "type": "checkbox",
+	   "value": function(d) { return d; },
 	   "name": d3.select(el).attr("id") + "-type-panel-" + index})
     .property("checked", function(d) {
       if($.inArray(d, opts["type"]) != -1) {
@@ -142,11 +143,12 @@ var createTypeInput = function(el, x, index, opts) {
 		     index + "']:checked").serializeArray()
       opts["type"] = checks.map(function(d) { return d["value"] })
       drawScatter(el, x, index, opts);
-    });
+    })
 
   typeElem.append("text")
-    .style("vertical-align", "top")
-    .text(function(d) { return (d); })
+    .text(function(d) { return d })
+    .style({"margin-left": "5px"})
+    
 }
 
 var getSizeInfo = function(el, x, index, opts) {
