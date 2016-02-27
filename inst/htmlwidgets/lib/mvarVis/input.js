@@ -20,17 +20,13 @@ var createAllInputs = function(el, x, index, opts) {
   colVars = Object.keys(x[0]);
   colVars.unshift("NULL");
 
-  annotateInput(el, index, "Color")
-  createInput(el, x, index, opts, colVars);
-  annotateInput(el, index, "Size")
-  createInput(el, x, index, opts, sizeVars);
-  annotateInput(el, index, "Size range (pixels)")
-  createBrushInput(el, x, index, opts);
-  annotateInput(el, index, "Geom type")
-  createTypeInput(el, x, index, opts);
+  createInput(el, x, index, opts, colVars, "Color");
+  createInput(el, x, index, opts, sizeVars, "Size");
+  createBrushInput(el, x, index, opts, "Size range (px)");
+  createTypeInput(el, x, index, opts, "Geom");
 }
 
-var createBrushInput = function(el, x, index, opts) {
+var createBrushInput = function(el, x, index, opts, textLabel) {
   // every time brush changes, resize the circles
   var resizePoints = function() {
     opts["rMin"] = brush.extent()[0] // opts is not constant, depends on inputs
@@ -53,6 +49,10 @@ var createBrushInput = function(el, x, index, opts) {
       .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
+      .append("label")
+      .classed("inputElem", true)
+      .append("text")
+      .text(textLabel)
       .append("svg")
       .attr({"height": 25,
 	     "width": .6 * opts["width"] * opts["prop_input"]})
@@ -70,34 +70,21 @@ var createBrushInput = function(el, x, index, opts) {
     .attr("height", 10)
 }
 
-var annotateInput = function(el, index, textLabel) {
-  d3.select(el)
-    .selectAll(".mvar-table")
-    .filter(function(d) { return d == index; })
-    .select("#allInputs")
-    .append("g")
-    .classed("inputLabel", true)
-    .append("text")
-    .text(textLabel)
-    .append("br")
-}
-
 // Create an input selection for all variables in x
-var createInput = function(el, x, index, opts, selectVars) {
+var createInput = function(el, x, index, opts, selectVars, textLabel) {
+
   // create a dropdown selection
   var select = d3.select(el)
       .selectAll(".mvar-table")
       .filter(function(d) { return d == index; })
       .select("#allInputs")
+      .append("label")
+      .classed("inputElem", true)
+      .append("text")
+      .text(textLabel)
       .append("select")
       .style({"width": .65 * opts["width"] * opts["prop_input"] + "px"})
       .on("change", function(z) { drawScatter(el, x, index, opts); });
-
-  d3.select(el)
-    .selectAll(".mvar-table")
-    .filter(function(d) { return d == index; })
-    .select("#allInputs")
-    .append("br")
 
   var options = select
       .selectAll("option")
@@ -137,7 +124,10 @@ var createTypeInput = function(el, x, index, opts) {
     .classed("checkbox", true)
 
   // create a checkbox and label for each of those inputs
-  typeElem.append("input")
+  typeElem
+    .append("label")
+    .classed("inputElem", true)
+    .append("input")
     .attr({"type": "checkbox",
 	   "value": function(d) { return (d); },
 	   "name": d3.select(el).attr("id") + "-type-panel-" + index})
@@ -153,7 +143,9 @@ var createTypeInput = function(el, x, index, opts) {
       opts["type"] = checks.map(function(d) { return d["value"] })
       drawScatter(el, x, index, opts);
     });
-  typeElem.append("label")
+
+  typeElem.append("text")
+    .style("vertical-align", "top")
     .text(function(d) { return (d); })
 }
 
