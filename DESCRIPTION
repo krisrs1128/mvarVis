@@ -1,10 +1,10 @@
 Package: mvarVis
-Title: Visualize multivariate analysis results.
+Title: Visualize Multivariate Analysis Plots
 Version: 0.0.1
 Authors@R: person("Kris", "Sankaran", , "kriss1@stanford.edu", role = c("aut", "cre"))
 Description: Visualize multivariate analysis results, more details forthcoming.
-Depends: R (>= 3.1.2), htmlwidgets, vegan, ade4, FactoMineR
-Imports: ggplot2, methods
+Depends: R (>= 3.1.2), htmlwidgets
+Imports: ggplot2, methods, vegan, ade4, FactoMineR
 Suggests: knitr
 License: GPL
 LazyData: true
