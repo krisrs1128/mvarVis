@@ -12,7 +12,8 @@ setClass("mvarLayer",
            annotation = "data.frame"
            )
          )
-
+################################################################################
+################################################################################
 #' @title mvarTable-class
 #'
 #' @description A class for storing multiple projections of a data set.
@@ -27,12 +28,38 @@ setClass("mvarTable",
            eig = "numeric"
            )
          )
-
+################################################################################
+################################################################################
+#' @title mvarBootTable-class
+#'
+#' @description A class for storing multiple projections of a data set and
+#' of its boostrap samples.
+#'
+#' @rdname  mvarBootTable-class
+#'
+#' @importFrom methods setClass
+#' @export
+setClass("mvarBootTable",
+         representation(
+           center = "list"
+           bootTables = "list",
+           centerEig = "numeric"
+           bootEigs = "list"
+           )
+         )
+################################################################################
+################################################################################
+#' @title Check if valid table format
+#'
+#' @description A function checking if the object has a valid format
+#' for the table slot of mvarTable.
+#'
 check_table <- function(object) {
+  errors <- TRUE
   # Check that table is a list of mvarLayer objects
-  class_is_mvar_layer <- lapply(object, function(x) class(x)=="mvarLayer")
-  if(!all(class_is_mvaraxis)) {
-    errors <- paste0("Elements ", which(!class_is_mvaraxis), " are not valid mvarLayer objects.")
+  class_is_mvar_layer <- sapply(object, function(x) class(x)=="mvarLayer")
+  if(!all(class_is_mvar_layer)) {
+    errors <- paste0("Elements ", which(!class_is_mvar_layer), " are not valid mvarLayer objects.")
   }
-  errors
+  return(TRUE)
 }
