@@ -51,7 +51,11 @@ bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "metaMDS",
 mvarCenter <- bootOrd@center
 mvarBoot <- mvar_boot2Table(bootOrd)
 
-plot_mvar(mvarBoot, col = "SampleType", shape = "human") 
+df <- cbind(mvarBoot@table[[1]]@coord, mvarBoot@table[[1]]@annotation)
+
+plot_mvar(mvarBoot, col = "SampleType", shape = "human") + 
+  stat_density_2d(data = df, aes(x = axis_1, y = axis_2, group = label, 
+                                 col = SampleType, shape = human))
 plot_mvar(mvarCenter, col = "SampleType", shape = "human")
 ```
 
