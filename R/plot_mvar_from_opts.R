@@ -10,16 +10,22 @@
 #'    description of what these need to contain.
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #' @export
-plot_mvar_from_opts <- function(mvar_object, opts = NULL) {
+plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
   if(is.null(opts)) {
     opts <- rep(list(list()), length(mvar_object@table))
   }
   p <- ggplot()
-  for(cur_table in 1:length(mvar_object@table)) {
-    p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
+  if (class(mvar_object) == "mvarTable") {
+    for(cur_table in 1:length(mvar_object@table)) {
+      p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
+    }
+    if(!is.na(mvar_object@eig[1])) {
+      p <- add_eigenvalue_info(mvar_object@eig, p, opts)
+    }
+    return (p)
+  } else if (class(mvar_object) == "mvarBootTable") { 
+    print("Do something")
+  } else {
+    stop("Input object must be of class mvarTable or mvarBootTable")
   }
-  if(!is.na(mvar_object@eig[1])) {
-    p <- add_eigenvalue_info(mvar_object@eig, p, opts)
-  }
-  return (p)
 }

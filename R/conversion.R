@@ -1,4 +1,3 @@
-
 ################################################################################
 # Function to convert factominer / ade4 / vegan -> mvarTable
 ################################################################################
@@ -104,7 +103,7 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
 #'    \code{eig} slot. The annotation slots of each mVarLayer are the row names
 #'    of the projected coordinates.
 #' @importFrom vegan scores
-#'  @export
+#' @export
 vegan_to_mvar <- function(vegan_object) {
   mvar_layer_list <- list()
   scores_list <- list()

@@ -180,12 +180,7 @@ boot_table <- function(tab, n = 1, common_depth = FALSE,
 #' \code{mvarVis::ordi} on each of the boostrap samples, and then
 #' rotating the coordinates using procustes method to fit them to the 
 #' coordinates of ordination of the original data table.
-#' @importFrom vegan vegdist cca decorana metaMDS isomap rda CCorA
-#' @importFrom ade4 dudi.pca dudi.acm dudi.coa dudi.fca dudi.fpca dudi.hillsmith
-#'    dudi.mix dudi.nsc dudi.pco dpcoa procuste cca
-#' @importFrom FactoMineR PCA CA DMFA FAMD HMFA MCA spMCA
 #' @export
-#' 
 #' @examples
 #' D <-  matrix(runif(100, max = 100), nrow = 25)
 #' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca", 
@@ -197,13 +192,13 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
   boot_data <- boot_table(D, n, common_depth, replace_zero, round)
   if (class(dist_method) == "function") {
     origDist <- dist_method(D)
-    orig_ord <- ordi(origDist, method, ...)
+    orig_ord <- ordi(origDist, method =  method, ...)
     boot_ord <- lapply(1:dim(boot_data)[1], function(i) {
       ibootDist <- dist_method(boot_data[i, , ])
       ordi(ibootDist, method = method, ...)
     })
   } else {
-    orig_ord <- ordi(D, method, dist_method, ...)
+    orig_ord <- ordi(D, method = method, dist_method = dist_method, ...)
     boot_ord <- lapply(1:dim(boot_data)[1], function(i) {
       ordi(boot_data[i, , ], method = method, dist_method = dist_method, ...)
     })
@@ -220,12 +215,8 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
       boot_ord[[bootIDX]]@table[[tabIDX]]@coord <- ibootCoord
     }
   }
-  boot_tables <- lapply(boot_ord, function(x) x@table)
-  boot_eigs <- lapply(boot_ord, function(x) x@eig)
   mvar_boot_table <- new("mvarBootTable", 
-                         center = orig_ord@table, 
-                         centerEig = orig_ord@eig,
-                         bootTables = boot_tables,
-                         bootEigs = boot_eigs)
+                         center = orig_ord,
+                         boot = boot_ord)
   return(mvar_boot_table)
 }

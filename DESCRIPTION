@@ -1,11 +1,22 @@
 Package: mvarVis
 Title: Visualize multivariate analysis results.
 Version: 0.0.1
-Authors@R: person("Kris", "Sankaran", , "kriss1@stanford.edu", role = c("aut", "cre"))
+Authors@R: c(
+  person("Kris", "Sankaran", email = "kriss1@stanford.edu", role = c("aut", "cre")),
+  person("Lan", "Nguyen", email = "lanhuong@stanford.edu", role = "ctb"))
 Description: Visualize multivariate analysis results, more details forthcoming.
-Depends: R (>= 3.1.2), htmlwidgets, vegan, ade4, FactoMineR
-Imports: ggplot2, methods
-Suggests: knitr
+Depends:
+    R (>= 3.1.2),
+    htmlwidgets,
+    vegan,
+    ade4,
+    FactoMineR
+Imports:
+    ggplot2,
+    methods
+Suggests:
+    knitr
 License: GPL
 LazyData: true
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

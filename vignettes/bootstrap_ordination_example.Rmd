@@ -1,0 +1,76 @@
+---
+  title: "Boostrap ordination example"
+  author: "Lan Huong Nguyen"
+  date: "`r Sys.Date()`"
+  output: rmarkdown::html_vignette
+  vignette: >
+  %\VignetteIndexEntry{analogues to plot ordination}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+##Loading / reshaping data
+    
+First we load the data from the phyloseq package.
+
+```{r}
+library("phyloseq")
+
+data("GlobalPatterns")
+GP = GlobalPatterns
+wh0 = genefilter_sample(GP, filterfun_sample(function(x) x > 5), A = 0.5 * nsamples(GP))
+GP1 = prune_taxa(wh0, GP)
+# Pick low depth of the samples = 1000
+GP1 = transform_sample_counts(GP1, function(x) 1e+03 * x/sum(x))
+phylum.sum = tapply(taxa_sums(GP1), tax_table(GP1)[, "Phylum"], sum, na.rm = TRUE)
+top5phyla = names(sort(phylum.sum, TRUE))[1:5]
+GP1 = prune_taxa((tax_table(GP1)[, "Phylum"] %in% top5phyla), GP1)
+human = get_variable(GP1, "SampleType") %in% c("Feces", "Mock", "Skin", "Tongue")
+sample_data(GP1)$human <- factor(human)
+```
+
+## Boostrap Ordination
+
+Define the distance we want to use, in this case a weighted UniFrac
+```{r}
+distWUnifrac <- function (D) {
+  if (!all((dim(D) == dim(GP1@otu_table)))) GP1 <- t(GP1)
+  rownames(D) <- taxa_names(GP1)
+  colnames(D) <- sample_names(GP1)
+  otu_table(GP1) <- otu_table(D, TRUE)
+  phyloseq::UniFrac(GP1, weighted = TRUE, normalized = TRUE)
+}
+```
+
+
+```{r}
+bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "metaMDS", 
+                          dist_method = distWUnifrac, common_depth = TRUE, 
+                          replace_zero = FALSE, round = FALSE, scannf = F,
+                          rows_annot = GP1@sam_data) 
+mvarCenter <- bootOrd@center
+mvarBoot <- mvar_boot2Table(bootOrd)
+
+plot_mvar(mvarBoot, col = "SampleType", shape = "human") 
+plot_mvar(mvarCenter, col = "SampleType", shape = "human")
+```
+
+## TO DO:
+
+1. Implement the stat_density_2d layer for the plot_table
+2. Allow options like size and pch in plot_mvar
+3. How to add a center ordination plot with bigger size or different shape???
+4. What is happening in "pco" from ade4 ?
+
+```{r}
+############################ Check what is happening ########################
+
+origDist <- dist_method(GP1@otu_table)
+orig_ord <- ade4::dudi.pco(origDist, scannf = F)
+
+# if only distance object is supplied then what is orig_ord$li and what is orig_ord$co????
+# shouldn't there be only one set of cooredinates???
+
+# Warning message:
+#   In ordi_method(X, ...) : Non euclidean distance
+```
