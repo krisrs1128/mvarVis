@@ -73,6 +73,8 @@ mvar_boot2Table <- function(mvarBootTab) {
     stop("Input object must of of class mvarBootTable")
   nBoots <- length(mvarBootTab@boot)
   bootEigs <- lapply(1:nBoots, function(i) mvarBootTab@boot[[i]]@eig)
+  min_n_eig <- min(sapply(bootEigs, function(x) length(x)))
+  bootEigs <- lapply(bootEigs, function(x) x[1:min_n_eig])
   meanBootEigs <- colMeans(do.call(rbind, bootEigs))
   return(new("mvarTable", 
         table = merge_tables(mvarBootTab@boot), 

@@ -5,7 +5,8 @@
 \title{Construct Aesthetics List}
 \usage{
 build_aes_and_non_aes_lists(mvar_object, x = "axis_1", y = "axis_2",
-  col = NULL, shape = NULL, size = NULL, label = NULL)
+  col = NULL, fill = NULL, shape = NULL, size = NULL, label = NULL,
+  ...)
 }
 \arguments{
 \item{mvar_object}{The mvar_object that we would like to plot.}
@@ -34,12 +35,18 @@ to use.}
 \item{label}{The label to use for text in the plot. This can either be a column in
 one or more of the annotation objects, in which case the values from that
 annotation will be used for coloring, or a string specifying the actual color
-to use.
-@return Two lists containing the aes and non aes options. Both lists have
-length given by the number layers in the mvar object. The i^th component
-contains directions for plotting the i^th layer. The aes list contains
-options that are column names in the corresponding annotation, the non-aes
-components are not in the data annotation.}
+to use.}
+
+\item{...}{Other arguments passed on to layer. These are often aesthetics, 
+used to set an aesthetic to a fixed value, like pch = 16. They may also be parameters 
+to the paired geom/stat.}
+}
+\value{
+Two lists containing the aes and non aes options. Both lists have
+ length given by the number layers in the mvar object. The i^th component
+ contains directions for plotting the i^th layer. The aes list contains
+ options that are column names in the corresponding annotation, the non-aes
+ components are not in the data annotation.
 }
 \description{
 While the plot\_mvar\_from\_opts is very flexible, it does not

@@ -186,21 +186,30 @@ boot_table <- function(tab, n = 1, common_depth = FALSE,
 #' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca", 
 #'                            dist_method = "euclidean")
 #'                            
-boot_ordination <- function(D, n = 50, method = "ade4_pca", 
-                            dist_method = "euclidean", common_depth = FALSE, 
-                            replace_zero = FALSE, round = FALSE, ...) {
+boot_ordination <- function(D, n = 50, method = "ade4_pca", dist_method = "euclidean", 
+                            rows_annot = NULL, cols_annot = NULL, table_names = NULL,
+                            common_depth = FALSE, replace_zero = FALSE, round = FALSE, ...) {
+  if(is.null(table_names) & method == "pco") {
+    table_names <- c("li")
+  }
   boot_data <- boot_table(D, n, common_depth, replace_zero, round)
   if (class(dist_method) == "function") {
     origDist <- dist_method(D)
-    orig_ord <- ordi(origDist, method =  method, ...)
+    orig_ord <- ordi(origDist, method =  method, rows_annot = rows_annot, 
+                     cols_annot = cols_annot, table_names = table_names, ...)
     boot_ord <- lapply(1:dim(boot_data)[1], function(i) {
       ibootDist <- dist_method(boot_data[i, , ])
-      ordi(ibootDist, method = method, ...)
+      ordi(ibootDist, method = method, rows_annot = rows_annot, 
+           cols_annot = cols_annot, table_names = table_names, ...)
     })
   } else {
-    orig_ord <- ordi(D, method = method, dist_method = dist_method, ...)
+    orig_ord <- ordi(D, method = method, dist_method = dist_method, 
+                     rows_annot = rows_annot, cols_annot = cols_annot, 
+                     table_names = table_names,...)
     boot_ord <- lapply(1:dim(boot_data)[1], function(i) {
-      ordi(boot_data[i, , ], method = method, dist_method = dist_method, ...)
+      ordi(boot_data[i, , ], method = method, dist_method = dist_method, 
+           rows_annot = rows_annot, cols_annot = cols_annot, 
+           table_names = table_names, ...)
     })
   }
   for (bootIDX in 1:length(boot_ord)) {

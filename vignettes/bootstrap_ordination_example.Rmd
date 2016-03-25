@@ -1,9 +1,9 @@
 ---
-  title: "Boostrap ordination example"
-  author: "Lan Huong Nguyen"
-  date: "`r Sys.Date()`"
-  output: rmarkdown::html_vignette
-  vignette: >
+title: "Boostrap ordination example"
+author: "Lan Huong Nguyen"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
   %\VignetteIndexEntry{analogues to plot ordination}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
@@ -48,21 +48,42 @@ bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "metaMDS",
                           dist_method = distWUnifrac, common_depth = TRUE, 
                           replace_zero = FALSE, round = FALSE, scannf = F,
                           rows_annot = GP1@sam_data) 
-mvarCenter <- bootOrd@center
-mvarBoot <- mvar_boot2Table(bootOrd)
 
-df <- cbind(mvarBoot@table[[1]]@coord, mvarBoot@table[[1]]@annotation)
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-contour")
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-density")
+```
 
-plot_mvar(mvarBoot, col = "SampleType", shape = "human") + 
-  stat_density_2d(data = df, aes(x = axis_1, y = axis_2, group = label, 
-                                 col = SampleType, shape = human))
-plot_mvar(mvarCenter, col = "SampleType", shape = "human")
+```{r}
+bootOrd <- boot_ordination(t(GP1@otu_table), n = 20, method = "pco", 
+                          dist_method = "bray", common_depth = TRUE, 
+                          replace_zero = FALSE, round = FALSE, scannf = F,
+                          rows_annot = GP1@sam_data) 
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-contour")
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-density")
+```
+
+```{r}
+bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "pco", 
+                          dist_method = distWUnifrac, common_depth = TRUE, 
+                          replace_zero = FALSE, round = FALSE, scannf = F,
+                          rows_annot = GP1@sam_data) 
+
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-contour")
+plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-density")
+```
+
+```{r}
+bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "ade4_pca", 
+                          dist_method = "bray", common_depth = TRUE, 
+                          replace_zero = FALSE, round = FALSE, scannf = F,
+                          rows_annot = GP1@tax_table, cols_annot = GP1@sam_data) 
+
+plot_mvar(bootOrd, col = "Phylum", shape = "human", layers_list = "point-and-contour")
+plot_mvar(bootOrd, col = "Phylum", shape = "human", layers_list = "point-and-density")
 ```
 
 ## TO DO:
 
-1. Implement the stat_density_2d layer for the plot_table
-2. Allow options like size and pch in plot_mvar
 3. How to add a center ordination plot with bigger size or different shape???
 4. What is happening in "pco" from ade4 ?
 

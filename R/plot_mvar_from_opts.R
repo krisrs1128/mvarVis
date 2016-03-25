@@ -22,10 +22,25 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
     if(!is.na(mvar_object@eig[1])) {
       p <- add_eigenvalue_info(mvar_object@eig, p, opts)
     }
-    return (p)
   } else if (class(mvar_object) == "mvarBootTable") { 
-    print("Do something")
+    mvar_center <- mvar_object@center
+    mvar_boot <- mvar_boot2Table(mvar_object)
+    center_opts <- opts$center 
+    boot_opts <- opts$boot 
+    
+    for(cur_table in 1:length(mvar_center@table)) {
+      p <- plot_table(mvar_boot@table[[cur_table]], boot_opts[[cur_table]], p, cur_table)
+      if (!("shape" %in% names(center_opts[[cur_table]]$aes_list)))
+        center_opts[[cur_table]]$non_aes_list$shape <- 21
+      p <- plot_table(mvar_center@table[[cur_table]], center_opts[[cur_table]], p, cur_table) +
+        scale_shape_manual(values = c(21, 22, 23, 24, 25)) + 
+        guides(fill = guide_legend(override.aes = list(shape = 21)))
+    }
+    if(!is.na(mvar_boot@eig[1])) {
+      p <- add_eigenvalue_info(mvar_boot@eig, p, opts)
+    }
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")
   }
+  return (p)
 }

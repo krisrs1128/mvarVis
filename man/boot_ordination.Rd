@@ -5,6 +5,7 @@
 \title{Boostrap ordination.}
 \usage{
 boot_ordination(D, n = 50, method = "ade4_pca", dist_method = "euclidean",
+  rows_annot = NULL, cols_annot = NULL, table_names = NULL,
   common_depth = FALSE, replace_zero = FALSE, round = FALSE, ...)
 }
 \arguments{
