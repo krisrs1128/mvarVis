@@ -15,6 +15,7 @@ First we load the data from the phyloseq package.
 
 ```{r}
 library("phyloseq")
+library("mvarVis")
 
 data("GlobalPatterns")
 GP = GlobalPatterns
