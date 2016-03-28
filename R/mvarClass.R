@@ -93,10 +93,9 @@ merge_tables <- function(mvar_tables){
   coords <- vector(mode = "list", length = n_tables)
 
   # merge over tables and bootstrap reps
-  list_length <- length(mvar_tables)
   for(j in seq_len(n_tables)) {
-    annot[[j]] <- vector(mode = "list", length = list_length)
-    coords[[j]] <- vector(mode = "list", length = list_length)
+    annot[[j]] <- vector(mode = "list", length = length(mvar_tables))
+    coords[[j]] <- vector(mode = "list", length = length(mvar_tables))
     for(i in seq_along(mvar_tables)) {
       annot[[j]][[i]] <- data.frame(mvar_tables[[i]]@table[[j]]@annotation, bootIDX = i)
       coords[[j]][[i]] <- mvar_tables[[i]]@table[[j]]@coord
