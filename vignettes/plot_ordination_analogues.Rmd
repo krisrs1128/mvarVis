@@ -52,7 +52,7 @@ sample_data(GP1)$human <- factor(human)
 
 ```{r}
 gp1_nmds <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "metaMDS")
-plot_mvar(gp1_nmds, col = "Phylum", shape = "human")
+plot_mvar(gp1_nmds, col = "Phylum", shape = "human", layers_list = "point-text")
 
 # DCA
 gp1_dca <- ordi(GP1@otu_table, GP1@tax_table, GP1@sam_data, method = "decorana")
