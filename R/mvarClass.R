@@ -83,25 +83,29 @@ mvar_boot_to_table <- function(mvar_boot_tab) {
 #' @title Merge tables
 #'
 #' @description Merge tables from the list of mvarTable objects
-merge_tables <- function(mvarTableList){
-  firstTab <- mvarTableList[[1]]@table
-  for (tabIDX in 1:length(firstTab)) {
-    curAnnot <- firstTab[[tabIDX]]@annotation
-    firstTab[[tabIDX]]@annotation <- cbind(curAnnot,
-                                           bootIDX =rep(1, nrow(curAnnot)))
-  }
-  superTable <- firstTab
-  for (i in 2:length(mvarTableList)) {
-    newTable <- mvarTableList[[i]]@table
-    bootIDXName <- data.frame(bootIDX = i)
-    for (tabIDX in 1:length(newTable)) {
-      curAnnot <- newTable[[tabIDX]]@annotation
-      newAnnot <- cbind(curAnnot, bootIDX = rep(i, nrow(curAnnot)))
-      superTable[[tabIDX]]@coord <- rbind(superTable[[tabIDX]]@coord,
-                                          newTable[[tabIDX]]@coord)
-      superTable[[tabIDX]]@annotation <- rbind(superTable[[tabIDX]]@annotation,
-                                               newAnnot)
+merge_tables <- function(mvar_tables){
+  n_tables <- sapply(mvar_tables, function(x) length(x@table))
+  stopifnot(all(n_tables == n_tables[1]))
+  n_tables <- n_tables[1]
+
+  # initialize results
+  annot <- vector(mode = "list", length = n_tables)
+  coords <- vector(mode = "list", length = n_tables)
+
+  # merge over tables and bootstrap reps
+  list_length <- length(mvar_tables)
+  for(j in seq_len(n_tables)) {
+    annot[[j]] <- vector(mode = "list", length = list_length)
+    coords[[j]] <- vector(mode = "list", length = list_length)
+    for(i in seq_along(mvar_tables)) {
+      annot[[j]][[i]] <- data.frame(mvar_tables[[i]]@table[[j]]@annotation, bootIDX = i)
+      coords[[j]][[i]] <- mvar_tables[[i]]@table[[j]]@coord
     }
+    annot[[j]] <- do.call(rbind, annot[[j]])
+    coords[[j]] <- do.call(rbind, coords[[j]])
   }
-  return(superTable)
+
+  lapply(1:n_tables, function(j) {
+    new("mvarLayer", coord = coords[[j]], annotation = annot[[j]])
+  })
 }
