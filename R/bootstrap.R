@@ -113,32 +113,65 @@ boot_prop_vector <- function(x, n = 1, depth = NULL, replace_zeros = FALSE,
   depth * rdirichlet(n, x)
 }
 
-################################################################################
-################################################################################
+#' Wrapper for boostrap a count or Dirichlet vectors
+#'
+#' \code{boot_vector} returns \code{n} samples of boostraped vector of 
+#' raw counts or proportions. If raw counts (integers) are supplied in \code{x},
+#' a multinomial sample is drawn with \code{sum(x)} trials with weights 
+#' equal \code{x}. If \code{x} does not contain integers, a Dirichlet sample
+#' with parameter \code{x}. If \code{depth} is supplied, the samples 
+#' are scaled to have sum equal to \code{depth}.
+#'
+#' @param x (Required). A vector of counts.
+#' @param n (Optional). Default 1. An integer indicating the number of
+#'  boostrap count vectors to return.
+#' @param replace_zero (Optional) A logical specifying whether to replace
+#' zeros in x.
+#' @param replace_value (Optional) The value to replace zeros with, when
+#' replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+#' 1.
+#' @return A vector or a matrix of \code{n} vectors boostrapped from \code{x}.
+#' @examples
+#' boot_vector(sample(1:1000, 5))
+#'
+#' x <- sample(1:1000, 10)
+#' x[sample(1:length(x), 4)] <- 0
+#' boot_vector(x, n = 3, replace_zero = TRUE)
+#' 
+#' y <- runif(10)
+#' y <- y/sum(y)
+#' boot_vector(y, n = 4, replace_zero = 0.05)
+boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
+                         replace_value = 1) {
+  if(all(x %% 1 == 0)) {
+    res <- boot_count_vector(x, n, depth, replace_zeros, replace_values)
+  } else {
+    res <- boot_prop_vector(x, n, depth, replace_zeros, replace_values)
+  }
+  res
+}
+
 #' Bootstrap table.
 #'
 #' \code{boot_table} returns samples boostrapped from table \code{tab} 
 #' supplied. Each column of the returned table is a boostrap trial of
 #' the corresponding column of the \code{tab} input table.
-#' If the supplied table, \code{T}, is a matrix of raw counts (integers),
-#' the columns of the output table are multinomial samples with weights 
-#' proportional to corresponding columns of \code{tab}, otherwise the output
-#' columns are samples from Dirichlet distribution with parameters equal
-#' to corresponding columns of \code{tab}.
+#' The columns of the output table are multinomial samples with weights 
+#' proportional to corresponding columns of \code{tab}.
 #'
 #' @param tab (Required). A matrix or data.frame of numeric counts/weights.
 #' @param n (Optional). Default 1. An integer indicating the number of
 #'  boostrap count tables to return.
-#' @param common_depth (Optional). Default \code{TRUE}. A logical or numeric
+#' @param common_depth (Optional). Default \code{FALSE}. A logical or numeric
 #'  scalar. If numeric or \code{TRUE} the boostrap counts are normalized so
-#'  that the column sums are even and equal to \code{common_depth} or
-#'  \code{median} of the \code{tab} column sums respectively.
-#' @param replace_zero (Optional). Default FALSE. A logical or numeric
-#'  scalar/vector replacing the zero probability of having a read for an OTU.
-#'  If numeric or TRUE zeros in \code{x} will be replaced
-#'  by \code{replace_zero} or 1 respectively, i.e. we add a small positive
-#'  weight in place of zeros. If \code{replace_zero} is a vector then each
-#'  component corresponds to respective columns of \code{tab}.
+#'  that the column sums are even and equal to \code{common_value}.
+#' @param common_value (Optional) The depth to use when common_depth is TRUE.
+#' Defaults to the median of the column sums in tab. 
+#' @param replace_zero (Optional) A logical specifying whether to replace
+#' zeros in x.
+#' @param replace_value (Optional) The value to replace zeros with, when
+#' replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+#' 1.
 #' @param round (Optional). Default FALSE. A logical scalar. Should the
 #'  boostrap counts be rounded to the nearest integer?
 #' @return \code{n} x dim(\code{tab})[1] x dim(\code{tab})[2] 3D array of 
