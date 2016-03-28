@@ -1,62 +1,80 @@
 #' Sample from Dirichlet Distribution
 #' 
-#' Generate a sample from a dirichlet distribution with parameter \code{alpha}
+#' @description Generate a sample from a dirichlet distribution with parameter
+#' \code{alpha}
 #' 
-#' @param alpha (Required). A vector of parameters for Dirichlet variable
+#' @param alpha (Required) A vector of parameters for Dirichlet variable
 #' @return A vector of a random sample from Dirichlet distribution with
 #' parameter \code{alpha}
 #' @examples
 #' rdirichlet(sample(1:10, 5))
 rdirichlet <- function(alpha) {
   y <- rgamma(length(alpha), alpha, 1)
-  return(y / sum(y))
+  y / sum(y)
 }
-################################################################################
-################################################################################
+
+#' Boostrap a count vector (Internal)
+#'
+#' @param x (Required) A vector of counts.
+#' @param k (Optional) The size of the bootstrap sample. Defaults to sum(x).
+#' @param n (Optional) Default 1. An integer indicating the number of
+#'  boostrap count vectors to return.
+#' @return A vector or a matrix of \code{n} vectors boostrapped from \code{x}.
+#' @examples
+#' x <- sample(1:1000)
+#' boot_count_vector_(x, n = 5)
+#' boot_count_vector_(x, k = 100, n = 5)
+boot_count_vector_ <- function(x, k = NULL, n = 1){
+  if (any(x < 0)) {
+    stop("No negative counts allowed")
+  }
+  if(is.null(k)) {
+    k <- sum(x)
+  }
+
+  rmultinom(n, k, prob = x / sum(x))
+}
+
 #' Boostrap a count vector
 #'
-#' \code{boot_count_vector} returns \code{n} boostrap vectors of counts.
-#' This is basically a multinomial sample with \code{sum(x)} trials
+#'\code{boot_count_vector} returns \code{n} boostrap vectors of
+#' counts. This is basically a multinomial sample with \code{sum(x)} trials
 #' with weights equal \code{x}.
 #'
-#' @param x (Required). A vector of counts.
-#' @param n (Optional). Default 1. An integer indicating the number of
+#' @param x (Required) A vector of counts.
+#' @param n (Optional) Default 1. An integer indicating the number of
 #'  boostrap count vectors to return.
-#' @param replace_zero (Optional). A logical or numeric scalar 
-#' (FALSE by default). If TRUE or numeric zeros in \code{x} will be replaced 
-#' by 1 or \code{replace_zero} respectively, i.e. we add a small positive weight
-#' in place of zeros.
+#' @param depth (Optional) Should the count vectors be normalized to a given
+#' depth?
+#' @param replace_zero (Optional) A logical specifying whether to replace
+#' zeros in x.
+#' @param replace_value (Optional) The value to replace zeros with, when
+#' replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+#' 1.
 #' @return A vector or a matrix of \code{n} vectors boostrapped from \code{x}.
 #' @examples
 #' boot_count_vector(sample(1:1000, 5))
 #'
 #' x <- sample(1:1000, 10)
 #' x[sample(1:length(x), 4)] <- 0
-#' boot_count_vector(x, replace_zero = TRUE)
 #' boot_count_vector(x, replace_zero = 0.5)
-boot_count_vector <- function(x, n = 1, depth = FALSE, replace_zero = FALSE){
-  if (any(x < 0))
-    stop("No negative counts allowed")
-  bootVecs <- array(0, dim=c(length(x), n))
-  if (sum(x) == 0)
-    return(bootVec) # if empty vector return immediately
-  if (replace_zero) {
-    replace_zero <- ifelse(replace_zero == TRUE, 1, replace_zero)
-    x[which(x == 0)] <- replace_zero
+#'
+#' boot_count_vector(x, depth = 100)
+boot_count_vector <- function(x, n = 1, depth = NULL, replace_zero = FALSE,
+                              replace_value = 1) {
+  # replace zeros
+  if(replace_zero) {
+    x[x == 0] <- replace_value
   }
-  bootSample <- replicate(n, sample.int(length(x), sum(x), replace = TRUE,
-                                        prob=x))
-  for(i in 1:n) {
-    bootTab <- table(bootSample[, i])
-    if (is.numeric(depth))
-      bootTab <- depth * bootTab / sum(bootTab)
-    # Assign the tabulated random boostrap sample values to the species vector
-    bootVecs[as(names(bootTab), "integer"), i] <- bootTab
+
+  # if depth is not specified, draw same number of elements as in x
+  if(is.null(depth)) {
+    depth <- sum(x)
   }
-  # Return abundance vector.
-  return(bootVecs)
+
+  boot_count_vector_(x, depth, n)
 }
-################################################################################
+
 ################################################################################
 #' Boostrap a vector
 #'
