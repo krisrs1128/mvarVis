@@ -9,11 +9,13 @@
 #' @return A vector of a random sample from Dirichlet distribution with
 #' parameter \code{alpha}
 #' @examples
-#' rdirichlet(sample(1:10, 5))
+#' rdirichlet(5, sample(1:10))
 rdirichlet <- function(n = 1, alpha = 1) {
+  stopifnot(all(alpha >= 0))
   alpha_rep <- rep(alpha, each = n)
   k <- length(alpha)
-  matrix(rgamma(n * k, alpha_rep, 1), k, n, byrow = T)
+  X <- matrix(rgamma(n * k, alpha_rep, 1), k, n, byrow = T)
+  sweep(X, 2, colSums(X), "/") # normalize
 }
 
 #' Boostrap a count vector (Internal)
@@ -78,45 +80,37 @@ boot_count_vector <- function(x, n = 1, depth = NULL, replace_zero = FALSE,
   boot_count_vector_(x, depth, n)
 }
 
-################################################################################
-#' Boostrap a vector
+#' Boostrap a vector of proportions
 #'
-#' \code{boot_vector} returns \code{n} samples of boostraped vector of 
-#' raw counts or proportions. If raw counts (integers) are supplied in \code{x},
-#' a multinomial sample is drawn with \code{sum(x)} trials with weights 
-#' equal \code{x}. If \code{x} does not contain integers, a Dirichlet sample
-#' with parameter \code{x}. If \code{depth} is supplied, the samples 
-#' are scaled to have sum equal to \code{depth}.
+#' \code{boot_prop_vector} returns \code{n} samples of boostraped vector of 
+#' proportions. It draws a Dirichlet sample with parameter \code{x}. If
+#' \code{depth} is supplied, the samples are scaled to have sum equal to
+#' \code{depth}.
 #'
 #' @param x (Required). A vector of counts.
 #' @param n (Optional). Default 1. An integer indicating the number of
 #'  boostrap count vectors to return.
-#' @param replace_zero (Optional). A logical or numeric scalar 
-#' (FALSE by default). If TRUE or numeric zeros in \code{x} will be replaced 
-#' by 1 or \code{replace_zero} respectively, i.e. we add a small positive weight
-#' in place of zeros.
+#' @param replace_zero (Optional) A logical specifying whether to replace
+#' zeros in x.
+#' @param replace_value (Optional) The value to replace zeros with, when
+#' replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+#' 1.
 #' @return A vector or a matrix of \code{n} vectors boostrapped from \code{x}.
 #' @examples
-#' boot_vector(sample(1:1000, 5))
-#'
-#' x <- sample(1:1000, 10)
-#' x[sample(1:length(x), 4)] <- 0
-#' boot_vector(x, n = 3, replace_zero = TRUE)
-#' 
 #' y <- runif(10)
-#' y <- y/sum(y)
-#' boot_vector(y, n = 4, replace_zero = 0.05)
-boot_vector <- function(x, n = 1, depth = FALSE, replace_zero = FALSE){
-  if (any(x < 0))
-    stop("No negative counts allowed")
-  if (all(x %% 1 == 0)) return(boot_count_vector(x, n, depth, replace_zero))
-  
-  if (replace_zero) {
-    replace_zero <- ifelse(replace_zero == TRUE, 1, replace_zero)
-    x[which(x == 0)] <- replace_zero
+#' y <- y / sum(y)
+#' boot_prop_vector(y, n = 4, replace_zero = 0.05)
+boot_prop_vector <- function(x, n = 1, depth = NULL, replace_zeros = FALSE,
+                             replace_value = 1) {
+  if(replace_zeros) {
+    x[x == 0] <- replace_value
   }
-  if (!is.numeric(depth)) depth <- sum(x)
-  return(replicate(n, rdirichlet(x))*depth)
+
+  if(is.null(depth)) {
+    depth <- sum(x)
+  }
+  
+  depth * rdirichlet(n, x)
 }
 
 ################################################################################
@@ -173,7 +167,7 @@ boot_table <- function(tab, n = 1, common_depth = FALSE,
   if(n > 1) dimnames(bootMats)[[1]] <- paste("trial", 1:n, sep = "_")
   
   for(i in 1:ncol(tab)){
-    mat <- boot_vector(tab[, i], n, common_depth, replace_zero[i])
+    mat <- boot_count_vector(tab[, i], n, common_depth, replace_zero[i])
     if(round)
       mat <- round(mat)
     if (!all(dim(mat) == dim(bootMats[, , i]))) mat <- t(mat)
