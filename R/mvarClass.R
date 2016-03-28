@@ -69,7 +69,7 @@ check_table <- function(object) {
 #' @description Converts mvarBootTable object into 2 mvarTable objects
 #' one for center and one for bootstrap samples.
 mvar_boot2Table <- function(mvarBootTab) {
-  if (class(object) != "mvarBootTable") 
+  if (class(mvarBootTab) != "mvarBootTable") 
     stop("Input object must of of class mvarBootTable")
   nBoots <- length(mvarBootTab@boot)
   bootEigs <- lapply(1:nBoots, function(i) mvarBootTab@boot[[i]]@eig)

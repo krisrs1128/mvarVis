@@ -15,6 +15,8 @@ First we load the data from the phyloseq package.
 
 ```{r}
 library("phyloseq")
+library("ggplot2")
+library("mvarVis")
 
 data("GlobalPatterns")
 GP = GlobalPatterns
@@ -49,8 +51,10 @@ bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "metaMDS",
                           replace_zero = FALSE, round = FALSE, scannf = F,
                           rows_annot = GP1@sam_data) 
 
-plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-contour")
-plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-density")
+plot_mvar(bootOrd, col = "SampleType", shape = "human", 
+          layers_list = "point-and-contour", bins = 5)
+plot_mvar(bootOrd, col = "SampleType", shape = "human", 
+          layers_list = "point-and-density")
 ```
 
 ```{r}
@@ -58,8 +62,10 @@ bootOrd <- boot_ordination(t(GP1@otu_table), n = 20, method = "pco",
                           dist_method = "bray", common_depth = TRUE, 
                           replace_zero = FALSE, round = FALSE, scannf = F,
                           rows_annot = GP1@sam_data) 
-plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-contour")
-plot_mvar(bootOrd, col = "SampleType", shape = "human", layers_list = "point-and-density")
+plot_mvar(bootOrd, col = "SampleType", shape = "human", 
+          layers_list = "point-and-contour", bins = 5)
+plot_mvar(bootOrd, col = "SampleType", shape = "human", 
+          layers_list = "point-and-density")
 ```
 
 ```{r}
@@ -84,8 +90,7 @@ plot_mvar(bootOrd, col = "Phylum", shape = "human", layers_list = "point-and-den
 
 ## TO DO:
 
-3. How to add a center ordination plot with bigger size or different shape???
-4. What is happening in "pco" from ade4 ?
+1. What is happening in "pco" from ade4 ?
 
 ```{r}
 ############################ Check what is happening ########################

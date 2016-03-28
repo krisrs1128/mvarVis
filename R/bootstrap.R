@@ -219,8 +219,8 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca", dist_method = "eucli
       ibootCoord <- mvar@table[[tabIDX]]@coord
       # Procustes rotation to fit the original ordination configuration
       ibootCoord <- vegan::procrustes(centerCoord, ibootCoord)$Yrot
-      colnames(ibootCoord) <- colnames(origCoord)
-      rownames(ibootCoord) <- rownames(origCoord)
+      colnames(ibootCoord) <- colnames(centerCoord)
+      rownames(ibootCoord) <- rownames(centerCoord)
       boot_ord[[bootIDX]]@table[[tabIDX]]@coord <- ibootCoord
     }
   }

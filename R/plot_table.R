@@ -32,7 +32,10 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
 
   # add the points layer
   if(opts$layers_list$point) {
-    p <- p + do.call(geom_point, c(list(data = data, mapping = table_aes), non_aes))
+    non_aes_copy <- non_aes
+    if ("bins" %in% names(non_aes_copy)) non_aes_copy$bins <- NULL
+    p <- p + do.call(geom_point, c(list(data = data, mapping = table_aes), 
+                                   non_aes_copy))
   }
 
   # add the arrows layer
