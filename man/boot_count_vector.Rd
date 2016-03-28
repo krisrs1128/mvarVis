@@ -4,25 +4,31 @@
 \alias{boot_count_vector}
 \title{Boostrap a count vector}
 \usage{
-boot_count_vector(x, n = 1, depth = FALSE, replace_zero = FALSE)
+boot_count_vector(x, n = 1, depth = NULL, replace_zero = FALSE,
+  replace_value = 1)
 }
 \arguments{
-\item{x}{(Required). A vector of counts.}
+\item{x}{(Required) A vector of counts.}
 
-\item{n}{(Optional). Default 1. An integer indicating the number of
+\item{n}{(Optional) Default 1. An integer indicating the number of
 boostrap count vectors to return.}
 
-\item{replace_zero}{(Optional). A logical or numeric scalar
-(FALSE by default). If TRUE or numeric zeros in \code{x} will be replaced
-by 1 or \code{replace_zero} respectively, i.e. we add a small positive weight
-in place of zeros.}
+\item{depth}{(Optional) Should the count vectors be normalized to a given
+depth?}
+
+\item{replace_zero}{(Optional) A logical specifying whether to replace
+zeros in x.}
+
+\item{replace_value}{(Optional) The value to replace zeros with, when
+replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+1.}
 }
 \value{
 A vector or a matrix of \code{n} vectors boostrapped from \code{x}.
 }
 \description{
-\code{boot_count_vector} returns \code{n} boostrap vectors of counts.
-This is basically a multinomial sample with \code{sum(x)} trials
+\code{boot_count_vector} returns \code{n} boostrap vectors of
+counts. This is basically a multinomial sample with \code{sum(x)} trials
 with weights equal \code{x}.
 }
 \examples{
@@ -30,7 +36,8 @@ boot_count_vector(sample(1:1000, 5))
 
 x <- sample(1:1000, 10)
 x[sample(1:length(x), 4)] <- 0
-boot_count_vector(x, replace_zero = TRUE)
 boot_count_vector(x, replace_zero = 0.5)
+
+boot_count_vector(x, depth = 100)
 }
 

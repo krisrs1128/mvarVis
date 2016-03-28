@@ -2,9 +2,10 @@
 % Please edit documentation in R/bootstrap.R
 \name{boot_vector}
 \alias{boot_vector}
-\title{Boostrap a vector}
+\title{Wrapper for boostrap a count or Dirichlet vectors}
 \usage{
-boot_vector(x, n = 1, depth = FALSE, replace_zero = FALSE)
+boot_vector(x, n = 1, depth = NULL, replace_zeros = FALSE,
+  replace_value = 1)
 }
 \arguments{
 \item{x}{(Required). A vector of counts.}
@@ -12,10 +13,12 @@ boot_vector(x, n = 1, depth = FALSE, replace_zero = FALSE)
 \item{n}{(Optional). Default 1. An integer indicating the number of
 boostrap count vectors to return.}
 
-\item{replace_zero}{(Optional). A logical or numeric scalar
-(FALSE by default). If TRUE or numeric zeros in \code{x} will be replaced
-by 1 or \code{replace_zero} respectively, i.e. we add a small positive weight
-in place of zeros.}
+\item{replace_value}{(Optional) The value to replace zeros with, when
+replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+1.}
+
+\item{replace_zero}{(Optional) A logical specifying whether to replace
+zeros in x.}
 }
 \value{
 A vector or a matrix of \code{n} vectors boostrapped from \code{x}.

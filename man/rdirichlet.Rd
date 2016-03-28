@@ -4,19 +4,23 @@
 \alias{rdirichlet}
 \title{Sample from Dirichlet Distribution}
 \usage{
-rdirichlet(alpha)
+rdirichlet(n = 1, alpha = 1)
 }
 \arguments{
-\item{alpha}{(Required). A vector of parameters for Dirichlet variable}
+\item{n}{The number of Dirichlet samples to draw.}
+
+\item{alpha}{(Optional) A vector of parameters for Dirichlet variable.
+Defaults to 1.}
 }
 \value{
 A vector of a random sample from Dirichlet distribution with
 parameter \code{alpha}
 }
 \description{
-Generate a sample from a dirichlet distribution with parameter \code{alpha}
+Generate a sample from a dirichlet distribution with parameter
+\code{alpha}
 }
 \examples{
-rdirichlet(sample(1:10, 5))
+rdirichlet(5, sample(1:10))
 }
 
