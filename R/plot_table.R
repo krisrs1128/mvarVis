@@ -20,7 +20,7 @@
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #' @importFrom grid arrow unit
 #' @importFrom ggplot2 ggplot geom_point geom_segment geom_text aes_string
-#'    facet_grid
+#'    facet_grid stat_density_2d
 #' @export
 plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
   opts <- merge_table_plot_opts(opts)
@@ -59,26 +59,26 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
     aes_list$group <- "label"
     aes_list$fill <- aes_list$col
     table_aes_copy <- do.call(aes_string, aes_list)
-    
-    p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy), 
+
+    p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy),
                                         non_aes))
   }
-  
+
   # add the density layer
   if(opts$layers_list$density) {
     aes_list <- opts$aes_list
     aes_list$group <- "label"
     aes_list$alpha <- "..level.."
     table_aes_copy <- do.call(aes_string, aes_list)
-    
+
     non_aes_copy <- non_aes
     non_aes_copy$geom <- "polygon"
     non_aes_copy$lty <- "blank"
-    
-    p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy), 
+
+    p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy),
                                         non_aes_copy))
   }
-  
+
   # add faceting
   if(!is.null(opts$facet_vector)) {
     if(length(opts$facet_vector) == 1) {

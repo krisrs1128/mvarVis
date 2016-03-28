@@ -184,7 +184,7 @@ boot_table <- function(tab, n = 1, common_depth = FALSE,
 #' @examples
 #' D <-  matrix(runif(100, max = 100), nrow = 25)
 #' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca", 
-#'                            dist_method = "euclidean")
+#'                            dist_method = "euclidean", scannf = F, nf = 2)
 #'                            
 boot_ordination <- function(D, n = 50, method = "ade4_pca", dist_method = "euclidean", 
                             rows_annot = NULL, cols_annot = NULL, table_names = NULL,
