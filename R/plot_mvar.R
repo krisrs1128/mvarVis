@@ -60,7 +60,7 @@ plot_mvar <- function(mvar_object, layers_list = "point", x = "axis_1",
                        full_lists$non_aes_list, facet_vector)
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
-    mvar_boot <- mvar_boot2Table(mvar_object)
+    mvar_boot <- mvar_boot_to_table(mvar_object)
     
     center_layers_list <- build_layers_list(length(mvar_center@table), "point")
     boot_layers_list <- build_layers_list(length(mvar_boot@table), layers_list)

@@ -25,7 +25,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
     }
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
-    mvar_boot <- mvar_boot2Table(mvar_object)
+    mvar_boot <- mvar_boot_to_table(mvar_object)
     center_opts <- opts$center
     boot_opts <- opts$boot
 

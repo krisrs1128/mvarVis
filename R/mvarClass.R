@@ -68,17 +68,15 @@ check_table <- function(object) {
 #'
 #' @description Converts mvarBootTable object into 2 mvarTable objects
 #' one for center and one for bootstrap samples.
-mvar_boot2Table <- function(mvarBootTab) {
-  if (class(mvarBootTab) != "mvarBootTable") 
-    stop("Input object must of of class mvarBootTable")
-  nBoots <- length(mvarBootTab@boot)
-  bootEigs <- lapply(1:nBoots, function(i) mvarBootTab@boot[[i]]@eig)
-  min_n_eig <- min(sapply(bootEigs, function(x) length(x)))
-  bootEigs <- lapply(bootEigs, function(x) x[1:min_n_eig])
-  meanBootEigs <- colMeans(do.call(rbind, bootEigs))
-  return(new("mvarTable",
-        table = merge_tables(mvarBootTab@boot),
-        eig = meanBootEigs))
+mvar_boot_to_table <- function(mvar_boot_tab) {
+  stopifnot(class(mvar_boot_tab) == "mvarBootTable")
+
+  n_boot <- length(mvar_boot_tab@boot)
+  boot_eigs <- lapply(1:n_boot, function(i) mvar_boot_tab@boot[[i]]@eig)
+  min_n_eig <- min(sapply(boot_eigs, length))
+  boot_eigs <- lapply(boot_eigs, function(x) x[1:min_n_eig])
+  mean_eigs <- colMeans(do.call(rbind, boot_eigs))
+  new("mvarTable", table = merge_tables(mvar_boot_tab@boot), eig = mean_eigs)
 }
 ################################################################################
 ################################################################################
