@@ -2,15 +2,18 @@
 #' 
 #' @description Generate a sample from a dirichlet distribution with parameter
 #' \code{alpha}
-#' 
-#' @param alpha (Required) A vector of parameters for Dirichlet variable
+#'
+#' @param n The number of Dirichlet samples to draw.
+#' @param alpha (Optional) A vector of parameters for Dirichlet variable.
+#' Defaults to 1.
 #' @return A vector of a random sample from Dirichlet distribution with
 #' parameter \code{alpha}
 #' @examples
 #' rdirichlet(sample(1:10, 5))
-rdirichlet <- function(alpha) {
-  y <- rgamma(length(alpha), alpha, 1)
-  y / sum(y)
+rdirichlet <- function(n = 1, alpha = 1) {
+  alpha_rep <- rep(alpha, each = n)
+  k <- length(alpha)
+  matrix(rgamma(n * k, alpha_rep, 1), k, n, byrow = T)
 }
 
 #' Boostrap a count vector (Internal)
@@ -115,6 +118,7 @@ boot_vector <- function(x, n = 1, depth = FALSE, replace_zero = FALSE){
   if (!is.numeric(depth)) depth <- sum(x)
   return(replicate(n, rdirichlet(x))*depth)
 }
+
 ################################################################################
 ################################################################################
 #' Bootstrap table.
