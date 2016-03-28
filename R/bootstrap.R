@@ -144,9 +144,9 @@ boot_prop_vector <- function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
                          replace_value = 1) {
   if(all(x %% 1 == 0)) {
-    res <- boot_count_vector(x, n, depth, replace_zeros, replace_values)
+    res <- boot_count_vector(x, n, depth, replace_zeros, replace_value)
   } else {
-    res <- boot_prop_vector(x, n, depth, replace_zeros, replace_values)
+    res <- boot_prop_vector(x, n, depth, replace_zeros, replace_value)
   }
   res
 }
@@ -162,9 +162,9 @@ boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 #' @param tab (Required). A matrix or data.frame of numeric counts/weights.
 #' @param n (Optional). Default 1. An integer indicating the number of
 #'  boostrap count tables to return.
-#' @param common_depth (Optional). Default \code{FALSE}. A logical or numeric
-#'  scalar. If numeric or \code{TRUE} the boostrap counts are normalized so
-#'  that the column sums are even and equal to \code{common_value}.
+#' @param common_depth (Optional). Default \code{FALSE}. The value to which to
+#' normalize the boostrapped column sums. If not provided, do not normalize to
+#' a common depth.
 #' @param common_value (Optional) The depth to use when common_depth is TRUE.
 #' Defaults to the median of the column sums in tab. 
 #' @param replace_zero (Optional) A logical specifying whether to replace
@@ -185,28 +185,30 @@ boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 #' boot_table(x, common_depth = 100)
 #' boot_table(x, common_depth = 100, n = 10, round = TRUE)
 #' boot_table(x, common_depth = 100, n = 10, replace_zero = 0.5)
-boot_table <- function(tab, n = 1, common_depth = FALSE,
-                       replace_zero = FALSE, round = FALSE) {
-  if (common_depth == TRUE)
-    common_depth <- median(colSums(tab))
-  if (length(replace_zero) == 1)
-    replace_zero = rep(replace_zero, ncol(tab))
-  if (length(replace_zero) != ncol(tab))
-    stop("`replace_zero` length > 1 and does not match the number of 
-         columns of `tab`.")
-  bootMats <- array(0, dim=c(n, nrow(tab), ncol(tab)))
-  dimnames(bootMats)[[2]] <- rownames(tab)
-  dimnames(bootMats)[[3]] <- colnames(tab)
-  if(n > 1) dimnames(bootMats)[[1]] <- paste("trial", 1:n, sep = "_")
-  
-  for(i in 1:ncol(tab)){
-    mat <- boot_count_vector(tab[, i], n, common_depth, replace_zero[i])
-    if(round)
-      mat <- round(mat)
-    if (!all(dim(mat) == dim(bootMats[, , i]))) mat <- t(mat)
-    bootMats[, , i] <- mat
+boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
+                       replace_zero = FALSE, replace_value = 1, round = FALSE) {
+  if(common_depth & is.null(common_value)) {
+    common_value <- median(colSums(tab))
   }
-  return(bootMats)
+  if(!common_depth) {
+    common_value <- NULL
+  }
+
+  # initialize result
+  res_names <- list(paste("trial", 1:n, sep = "_"), rownames(tab), colnames(tab))
+  boot_mat <- array(0, dim=c(n, nrow(tab), ncol(tab)), dimnames = res_names)
+  
+  # bootstrap each column
+  for(j in 1:ncol(tab)){
+    boot_mat[,, j] <- t(boot_vector(tab[, j], n, common_value, replace_zero,
+                                   replace_value))
+  }
+
+  if(round) {
+    boot_mat <- round(boot_mat)
+  }
+
+  boot_mat
 }
 ################################################################################
 ################################################################################
