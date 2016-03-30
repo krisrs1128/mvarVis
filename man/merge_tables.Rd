@@ -4,7 +4,7 @@
 \alias{merge_tables}
 \title{Merge tables}
 \usage{
-merge_tables(mvarTableList)
+merge_tables(mvar_tables)
 }
 \description{
 Merge tables from the list of mvarTable objects
