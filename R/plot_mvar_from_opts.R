@@ -30,6 +30,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
     boot_opts <- opts$boot
 
     for(cur_table in 1:length(mvar_center@table)) {
+      print(boot_opts[[cur_table]])
       p <- plot_table(mvar_boot@table[[cur_table]], boot_opts[[cur_table]], p, cur_table)
       if (!("shape" %in% names(center_opts[[cur_table]]$aes_list)))
         center_opts[[cur_table]]$non_aes_list$shape <- 21

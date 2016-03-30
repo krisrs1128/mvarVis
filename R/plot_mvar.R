@@ -51,29 +51,17 @@
 plot_mvar <- function(mvar_object, layers_list = "point", x = "axis_1",
                       y = "axis_2", col = NULL, fill = NULL, shape = NULL,
                       size = NULL, label = NULL, facet_vector = NULL, ...) {
-  if (is.null(fill)) fill <- col
   if (class(mvar_object) == "mvarTable")  {
-    layers_list <- build_layers_list(length(mvar_object@table), layers_list)
-    full_lists <- build_aes_and_non_aes_lists(mvar_object@table, x, y, col,
-                                              fill, shape, size, label)
-    opts <- build_opts(length(mvar_object@table), layers_list, full_lists$aes_list,
-                       full_lists$non_aes_list, facet_vector)
+    opts <- build_opts_wrapper(mvar_object@table,x, y, col, fill, shape, size, label, ...)
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
     mvar_boot <- mvar_boot_to_table(mvar_object)
 
-    center_layers_list <- build_layers_list(length(mvar_center@table), "point")
-    boot_layers_list <- build_layers_list(length(mvar_boot@table), layers_list)
-
-    center_size <- ifelse(is.null(size), 3, 3*size)
-    center_full_lists <- build_aes_and_non_aes_lists(mvar_center@table, x, y, "black",
-                                                     fill, shape, center_size, label)
-    boot_full_lists <- build_aes_and_non_aes_lists(mvar_boot@table, x, y, col, fill,
-                                                   shape, size, label, ...)
-    center_opts <- build_opts(length(mvar_center@table), center_layers_list, center_full_lists$aes_list,
-                              center_full_lists$non_aes_list, facet_vector)
-    boot_opts <- build_opts(length(mvar_boot@table), boot_layers_list, boot_full_lists$aes_list,
-                            boot_full_lists$non_aes_list, facet_vector)
+    center_size <- ifelse(is.null(size), 3, 3 * size)
+    center_opts <- build_opts_wrapper(mvar_center@table, layers_list, x, y, "black", fill,
+                                      shape, center_size, label)
+    boot_opts <- build_opts_wrapper(mvar_boot@table, layers_list, x, y, col, fill, shape,
+                                    size, label)
     opts <- list(center = center_opts, boot = boot_opts)
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")
