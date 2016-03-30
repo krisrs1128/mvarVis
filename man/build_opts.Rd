@@ -4,11 +4,10 @@
 \alias{build_opts}
 \title{Build Opts lists}
 \usage{
-build_opts(mvar_object, layers_list, aes_list, non_aes_list,
-  facet_vector = NULL)
+build_opts(n_tables, layers_list, aes_list, non_aes_list, facet_vector = NULL)
 }
 \arguments{
-\item{mvar_object}{The mvar_object that we would like to plot.}
+\item{n_tables}{The number of tables for which to construct opts.}
 
 \item{layers_list}{A list containing which layer attributes to plot for
 every layer. See the function \code{build_layers_list()} for more
