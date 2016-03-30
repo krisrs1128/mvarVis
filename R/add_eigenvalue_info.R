@@ -18,8 +18,7 @@ add_eigenvalue_info <- function(eigs, p, opts = list()) {
   eigs_prop <- eigs[c(x_axis, y_axis)] / sum(eigs)
   x_label <- sprintf("%s [%g%%]", merged_aes$x, 10 * round(eigs_prop[1], 3))
   y_label <- sprintf("%s [%g%%]", merged_aes$y, 10 * round(eigs_prop[2], 3))
-  p <- p + scale_x_continuous(x_label) +
+  p + scale_x_continuous(x_label) +
     scale_y_continuous(y_label) +
     coord_fixed(ratio = eigs_prop[2] / eigs_prop[1])
-  return (p)
 }
