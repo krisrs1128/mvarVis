@@ -1,5 +1,5 @@
 #' Sample from Dirichlet Distribution
-#' 
+#'
 #' @description Generate a sample from a dirichlet distribution with parameter
 #' \code{alpha}
 #'
@@ -82,7 +82,7 @@ boot_count_vector <- function(x, n = 1, depth = NULL, replace_zero = FALSE,
 
 #' Boostrap a vector of proportions
 #'
-#' \code{boot_prop_vector} returns \code{n} samples of boostraped vector of 
+#' \code{boot_prop_vector} returns \code{n} samples of boostraped vector of
 #' proportions. It draws a Dirichlet sample with parameter \code{x}. If
 #' \code{depth} is supplied, the samples are scaled to have sum equal to
 #' \code{depth}.
@@ -109,17 +109,17 @@ boot_prop_vector <- function(x, n = 1, depth = NULL, replace_zeros = FALSE,
   if(is.null(depth)) {
     depth <- sum(x)
   }
-  
+
   depth * rdirichlet(n, x)
 }
 
 #' Wrapper for boostrap a count or Dirichlet vectors
 #'
-#' \code{boot_vector} returns \code{n} samples of boostraped vector of 
+#' \code{boot_vector} returns \code{n} samples of boostraped vector of
 #' raw counts or proportions. If raw counts (integers) are supplied in \code{x},
-#' a multinomial sample is drawn with \code{sum(x)} trials with weights 
+#' a multinomial sample is drawn with \code{sum(x)} trials with weights
 #' equal \code{x}. If \code{x} does not contain integers, a Dirichlet sample
-#' with parameter \code{x}. If \code{depth} is supplied, the samples 
+#' with parameter \code{x}. If \code{depth} is supplied, the samples
 #' are scaled to have sum equal to \code{depth}.
 #'
 #' @param x (Required). A vector of counts.
@@ -137,7 +137,7 @@ boot_prop_vector <- function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 #' x <- sample(1:1000, 10)
 #' x[sample(1:length(x), 4)] <- 0
 #' boot_vector(x, n = 3, replace_zero = TRUE)
-#' 
+#'
 #' y <- runif(10)
 #' y <- y/sum(y)
 #' boot_vector(y, n = 4, replace_zero = 0.05)
@@ -153,10 +153,10 @@ boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 
 #' Bootstrap table.
 #'
-#' \code{boot_table} returns samples boostrapped from table \code{tab} 
+#' \code{boot_table} returns samples boostrapped from table \code{tab}
 #' supplied. Each column of the returned table is a boostrap trial of
 #' the corresponding column of the \code{tab} input table.
-#' The columns of the output table are multinomial samples with weights 
+#' The columns of the output table are multinomial samples with weights
 #' proportional to corresponding columns of \code{tab}.
 #'
 #' @param tab (Required). A matrix or data.frame of numeric counts/weights.
@@ -166,7 +166,7 @@ boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 #' normalize the boostrapped column sums. If not provided, do not normalize to
 #' a common depth.
 #' @param common_value (Optional) The depth to use when common_depth is TRUE.
-#' Defaults to the median of the column sums in tab. 
+#' Defaults to the median of the column sums in tab.
 #' @param replace_zero (Optional) A logical specifying whether to replace
 #' zeros in x.
 #' @param replace_value (Optional) The value to replace zeros with, when
@@ -174,7 +174,7 @@ boot_vector <-  function(x, n = 1, depth = NULL, replace_zeros = FALSE,
 #' 1.
 #' @param round_values (Optional). Default FALSE. A logical scalar. Should the
 #'  boostrap counts be rounded to the nearest integer?
-#' @return \code{n} x dim(\code{tab})[1] x dim(\code{tab})[2] 3D array of 
+#' @return \code{n} x dim(\code{tab})[1] x dim(\code{tab})[2] 3D array of
 #' samples boostrapped from \code{tab}.
 #' @export
 #' @examples
@@ -198,7 +198,7 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
   # initialize result
   res_names <- list(paste("trial", 1:n, sep = "_"), rownames(tab), colnames(tab))
   boot_mat <- array(0, dim=c(n, nrow(tab), ncol(tab)), dimnames = res_names)
-  
+
   # bootstrap each column
   for(j in 1:ncol(tab)){
     boot_mat[,, j] <- t(boot_vector(tab[, j], n, common_value, replace_zero,
@@ -216,22 +216,22 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
 #'
 #' \code{boot_ordination} computes the ordination for samples boostrapped
 #' from data in \code{D}. Ordination is performed using \code{mvarVis::ordi}
-#' function with specified \code{method}. 
-#' 
-#' @param D (Required). A data frame of raw counts/weights. Raw data 
+#' function with specified \code{method}.
+#'
+#' @param D (Required). A data frame of raw counts/weights. Raw data
 #'  is required, and distance matrix/objects are not acceptable.
 #' @param n (Optional). Default 50. An integer indicating the number of
 #'  boostrap samples generated.
 #' @param method (Required). The method that will perform the required
 #' ordination. See ordi()for options.
-#' @param dist_method (Optional). If a distance matrix is used by the specified 
-#'  method. We will call \code{vegdist} on the \code{D} using this string as 
+#' @param dist_method (Optional). If a distance matrix is used by the specified
+#'  method. We will call \code{vegdist} on the \code{D} using this string as
 #'  the distance. Defaults to euclidean distance.
 #' @param common_depth (Optional). Default \code{FALSE}. The value to which to
 #' normalize the boostrapped column sums. If not provided, do not normalize to
 #' a common depth.
 #' @param common_value (Optional) The depth to use when common_depth is TRUE.
-#' Defaults to the median of the column sums in tab. 
+#' Defaults to the median of the column sums in tab.
 #' @param replace_zero (Optional) A logical specifying whether to replace
 #' zeros in x.
 #' @param replace_value (Optional) The value to replace zeros with, when
@@ -241,16 +241,16 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
 #'  boostrap counts be rounded to the nearest integer?
 #' @importFrom plyr alply
 #' @importFrom vegan procrustes
-#' @return A list ordination objects generated by calling 
+#' @return A list ordination objects generated by calling
 #' \code{mvarVis::ordi} on each of the boostrap samples, and then
-#' rotating the coordinates using procustes method to fit them to the 
+#' rotating the coordinates using procustes method to fit them to the
 #' coordinates of ordination of the original data table.
 #' @export
 #' @examples
 #' D <-  matrix(runif(100, max = 100), nrow = 25)
-#' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca", 
+#' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca",
 #'                            dist_method = "euclidean", scannf = F, nf = 2)
-#'                            
+#'
 boot_ordination <- function(D, n = 50, method = "ade4_pca",
                             dist_method = "euclidean", rows_annot = NULL,
                             cols_annot = NULL, table_names = NULL,
@@ -259,13 +259,9 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
                             round_values = FALSE, ...) {
   # wrapper for ordi() using supplied options
   ordi_ <- function(x) {
-    ordi(x, method = method, dist_method = dist_method, 
-         rows_annot = rows_annot, cols_annot = cols_annot, 
+    ordi(x, method = method, dist_method = dist_method,
+         rows_annot = rows_annot, cols_annot = cols_annot,
          table_names = table_names, ...)
-  }
-  
-  if(is.null(table_names) & method == "pco") {
-    table_names <- c("li")
   }
 
   # generate bootstrap samples
@@ -279,7 +275,7 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
   } else {
     boot_data <- alply(boot_data, 1) # convert from array to list
   }
-   
+
   orig_ord <- ordi_(D)
   boot_ord <- lapply(boot_data, ordi_)
 

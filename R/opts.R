@@ -48,7 +48,7 @@ default_table_names <- function(method) {
          "coa" = c("li", "co"),
          "fca" = c("li", "co"),
          "fpca" = c("li", "co"),
-         "pco" = c("li", "co"),
+         "pco" = c("li"),
          "hillsmith" = c("li", "co"),
          "mix" = c("li", "co"),
          "nsc" = c("li", "co"),
@@ -120,11 +120,11 @@ merge_table_plot_opts <- function(opts = list()) {
   if(is.null(opts$layers_list)) opts$layers_list <- list()
   if(is.null(opts$non_aes_list)) opts$non_aes_list <- list()
 
-  default_aes_list <- list(x = "axis_1", y = "axis_2", col = NULL, 
-                           fill = NULL, shape = NULL, size = NULL, 
+  default_aes_list <- list(x = "axis_1", y = "axis_2", col = NULL,
+                           fill = NULL, shape = NULL, size = NULL,
                            label = "label")
   opts$aes_list <- modifyList(default_aes_list, opts$aes_list)
-  default_layers_list <- list(point = TRUE, text = FALSE, arrow = FALSE, 
+  default_layers_list <- list(point = TRUE, text = FALSE, arrow = FALSE,
                               contour = FALSE, density = FALSE)
   opts$layers_list <- modifyList(default_layers_list, opts$layers_list)
   default_non_aes_list <- list()
@@ -159,8 +159,8 @@ merge_table_plot_opts <- function(opts = list()) {
 #'  one or more of the annotation objects, in which case the values from that
 #'  annotation will be used for coloring, or a string specifying the actual color
 #'  to use.
-#' @param ... Other arguments passed on to layer. These are often aesthetics, 
-#'  used to set an aesthetic to a fixed value. They may also be parameters 
+#' @param ... Other arguments passed on to layer. These are often aesthetics,
+#'  used to set an aesthetic to a fixed value. They may also be parameters
 #'  to the paired geom/stat.
 #' @return Two lists containing the aes and non aes options. Both lists have
 #'  length given by the number layers in the mvar object. The i^th component
@@ -169,7 +169,7 @@ merge_table_plot_opts <- function(opts = list()) {
 #'  components are not in the data annotation.
 #' @export
 build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
-                                        col = NULL, fill = NULL, shape = NULL, 
+                                        col = NULL, fill = NULL, shape = NULL,
                                         size = NULL, label = NULL, ...) {
   n_tables <- length(mvar_object@table)
   aes_list <- rep(list(list()), n_tables)
@@ -180,7 +180,7 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
     # the index of the desired layer.
     cur_col <- ifelse(is.null(col), cur_table, col)
     cur_fill <- ifelse(is.null(fill), cur_table, fill)
-    
+
     cur_colnames <- colnames(mvar_object@table[[cur_table]]@annotation)
     all_colnames <- unlist(lapply(mvar_object@table, function(x) colnames(x@annotation)))
     full_aes_list <- list(x = x, y = y, col = cur_col, fill = cur_fill, shape = shape,
