@@ -12,8 +12,7 @@ setClass("mvarLayer",
            annotation = "data.frame"
            )
          )
-################################################################################
-################################################################################
+
 #' @title mvarTable-class
 #'
 #' @description A class for storing multiple projections of a data set.
@@ -28,8 +27,7 @@ setClass("mvarTable",
            eig = "numeric"
            )
          )
-################################################################################
-################################################################################
+
 #' @title mvarBootTable-class
 #'
 #' @description A class for storing multiple projections of the data set and
@@ -45,8 +43,7 @@ setClass("mvarBootTable",
            boot = "list"
            )
          )
-################################################################################
-################################################################################
+
 #' @title Check if valid table format
 #'
 #' @description A function checking if the object has a valid format
@@ -62,8 +59,7 @@ check_table <- function(object) {
   }
   return(TRUE)
 }
-################################################################################
-################################################################################
+
 #' @title Convert mvarBootTable to mvarTable
 #'
 #' @description Converts mvarBootTable object into 2 mvarTable objects
@@ -78,8 +74,7 @@ mvar_boot_to_table <- function(mvar_boot_tab) {
   mean_eigs <- colMeans(do.call(rbind, boot_eigs))
   new("mvarTable", table = merge_tables(mvar_boot_tab@boot), eig = mean_eigs)
 }
-################################################################################
-################################################################################
+
 #' @title Merge tables
 #'
 #' @description Merge tables from the list of mvarTable objects
