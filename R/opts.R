@@ -19,12 +19,11 @@
 #'  to use for faceting.
 #' @return opts A list that can be input into \code{plot_mvar_from_opts()}.
 #' @export
-build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
+build_opts <- function(n_tables, layers_list, aes_list, non_aes_list,
                        facet_vector = NULL) {
-  n_tables <- length(mvar_object@table)
   opts <- rep(list(list()), n_tables)
 
-  for(cur_table in 1:n_tables) {
+  for(cur_table in seq_len(n_tables)) {
     opts[[cur_table]]$facet_vector <- facet_vector
     opts[[cur_table]]$layers_list <- layers_list[[cur_table]]
     opts[[cur_table]]$aes_list <- aes_list[[cur_table]]
@@ -168,10 +167,10 @@ merge_table_plot_opts <- function(opts = list()) {
 #'  options that are column names in the corresponding annotation, the non-aes
 #'  components are not in the data annotation.
 #' @export
-build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
+build_aes_and_non_aes_lists <- function(mvar_table, x = "axis_1", y = "axis_2",
                                         col = NULL, fill = NULL, shape = NULL,
                                         size = NULL, label = NULL, ...) {
-  n_tables <- length(mvar_object@table)
+  n_tables <- length(mvar_table)
   aes_list <- rep(list(list()), n_tables)
   non_aes_list <- rep(list(list()), n_tables)
   for(cur_table in seq_len(n_tables)) {
@@ -181,8 +180,8 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
     cur_col <- ifelse(is.null(col), cur_table, col)
     cur_fill <- ifelse(is.null(fill), cur_table, fill)
 
-    cur_colnames <- colnames(mvar_object@table[[cur_table]]@annotation)
-    all_colnames <- unlist(lapply(mvar_object@table, function(x) colnames(x@annotation)))
+    cur_colnames <- colnames(mvar_table[[cur_table]]@annotation)
+    all_colnames <- unlist(lapply(mvar_table, function(x) colnames(x@annotation)))
     full_aes_list <- list(x = x, y = y, col = cur_col, fill = cur_fill, shape = shape,
                           size = size, label = label, ...)
     cur_ix <- which(full_aes_list %in% cur_colnames)
