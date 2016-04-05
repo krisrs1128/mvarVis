@@ -32,9 +32,9 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
 
   # add the points layer
   if(opts$layers_list$point) {
-    non_aes_copy <- non_aes
-    if ("bins" %in% names(non_aes_copy)) non_aes_copy$bins <- NULL
-    p <- p + do.call(geom_point, c(list(data = data, mapping = table_aes), 
+    non_aes_copy <- list(position = non_aes$position, stat = non_aes$stat)
+    non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
+    p <- p + do.call(geom_point, c(list(data = data, mapping = table_aes),
                                    non_aes_copy))
   }
 
@@ -50,7 +50,9 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
 
   # add the text layer
   if(opts$layers_list$text) {
-    p <- p + do.call(geom_text, c(list(data = data, mapping = table_aes), non_aes))
+    non_aes_copy <- list(stat = non_aes$stat, position = non_aes$position)
+    non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
+    p <- p + do.call(geom_text, c(list(data = data, mapping = table_aes), non_aes_copy))
   }
 
   # add the contour layer
@@ -60,20 +62,27 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
     aes_list$fill <- aes_list$col
     table_aes_copy <- do.call(aes_string, aes_list)
 
+    non_aes_copy <- list(geom = non_aes$geom, position = non_aes$position,
+                         contour = non_aes$contour, n = non_aes$n,
+                         bins = non_aes$bins)
+    non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
     p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy),
-                                        non_aes))
+                                        non_aes_copy))
   }
 
   # add the density layer
   if(opts$layers_list$density) {
     aes_list <- opts$aes_list
     aes_list$group <- "label"
-    aes_list$alpha <- "..level.."
+    aes_list$alpha <- "..level.. "
     table_aes_copy <- do.call(aes_string, aes_list)
 
-    non_aes_copy <- non_aes
+    non_aes_copy <- list(geom = non_aes$geom, position = non_aes$position,
+                         contour = non_aes$contour, n = non_aes$n)
+    non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
     non_aes_copy$geom <- "polygon"
     non_aes_copy$lty <- "blank"
+    non_aes_copy$n <- 150
 
     p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy),
                                         non_aes_copy))

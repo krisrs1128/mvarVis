@@ -43,41 +43,28 @@
 #'  one or more of the annotation objects, in which case the values from that
 #'  annotation will be used for coloring, or a string specifying the actual color
 #'  to use.
-#' @param ... Other arguments passed on to layer. These are often aesthetics, 
-#' used to set an aesthetic to a fixed value, like pch = 16. They may also be parameters 
+#' @param ... Other arguments passed on to layer. These are often aesthetics,
+#' used to set an aesthetic to a fixed value, like pch = 16. They may also be parameters
 #' to the paired geom/stat.
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #' @export
 plot_mvar <- function(mvar_object, layers_list = "point", x = "axis_1",
-                      y = "axis_2", col = NULL, fill = NULL, shape = NULL, 
+                      y = "axis_2", col = NULL, fill = NULL, shape = NULL,
                       size = NULL, label = NULL, facet_vector = NULL, ...) {
-  if (is.null(fill)) fill <- col
   if (class(mvar_object) == "mvarTable")  {
-    layers_list <- build_layers_list(length(mvar_object@table), layers_list)
-    full_lists <- build_aes_and_non_aes_lists(mvar_object, x, y, col, fill,
-                                              shape, size, label)
-    opts <- build_opts(mvar_object, layers_list, full_lists$aes_list,
-                       full_lists$non_aes_list, facet_vector)
+    opts <- build_opts_wrapper(mvar_object@table,x, y, col, fill, shape, size, label, ...)
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
-    mvar_boot <- mvar_boot2Table(mvar_object)
-    
-    center_layers_list <- build_layers_list(length(mvar_center@table), "point")
-    boot_layers_list <- build_layers_list(length(mvar_boot@table), layers_list)
-    
-    center_size <- ifelse(is.null(size), 3, 3*size)
-    center_full_lists <- build_aes_and_non_aes_lists(mvar_center, x, y, "black", 
-                                                     fill, shape, center_size, label)
-    boot_full_lists <- build_aes_and_non_aes_lists(mvar_boot, x, y, col, fill,
-                                                   shape, size, label, ...)
-    center_opts <- build_opts(mvar_center, center_layers_list, center_full_lists$aes_list,
-                              center_full_lists$non_aes_list, facet_vector)
-    boot_opts <- build_opts(mvar_boot, boot_layers_list, boot_full_lists$aes_list,
-                            boot_full_lists$non_aes_list, facet_vector)
+    mvar_boot <- mvar_boot_to_table(mvar_object)
+
+    center_size <- ifelse(is.null(size), 3, 3 * size)
+    center_opts <- build_opts_wrapper(mvar_center@table, layers_list, x, y, "black", fill,
+                                      shape, center_size, label)
+    boot_opts <- build_opts_wrapper(mvar_boot@table, layers_list, x, y, col, fill, shape,
+                                    size, label)
     opts <- list(center = center_opts, boot = boot_opts)
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")
   }
-  p <- plot_mvar_from_opts(mvar_object, opts)
-  return (p)
+  plot_mvar_from_opts(mvar_object, opts)
 }

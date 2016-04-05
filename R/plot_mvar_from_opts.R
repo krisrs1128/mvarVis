@@ -17,7 +17,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
   }
   p <- ggplot()
   if (class(mvar_object) == "mvarTable") {
-    for(cur_table in 1:length(mvar_object@table)) {
+    for(cur_table in seq_along(mvar_object@table)) {
       p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
     }
     if(!is.na(mvar_object@eig[1])) {
@@ -25,11 +25,11 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
     }
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
-    mvar_boot <- mvar_boot2Table(mvar_object)
+    mvar_boot <- mvar_boot_to_table(mvar_object)
     center_opts <- opts$center
     boot_opts <- opts$boot
 
-    for(cur_table in 1:length(mvar_center@table)) {
+    for(cur_table in seq_along(mvar_center@table)) {
       p <- plot_table(mvar_boot@table[[cur_table]], boot_opts[[cur_table]], p, cur_table)
       if (!("shape" %in% names(center_opts[[cur_table]]$aes_list)))
         center_opts[[cur_table]]$non_aes_list$shape <- 21

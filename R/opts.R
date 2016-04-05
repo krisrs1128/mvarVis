@@ -6,7 +6,7 @@
 
 # table-opts -------------------------------------------------------------------
 #' @title Build Opts lists
-#' @param mvar_object The mvar_object that we would like to plot.
+#' @param n_tables The number of tables for which to construct opts.
 #' @param layers_list A list containing which layer attributes to plot for
 #'  every layer. See the function \code{build_layers_list()} for more
 #'  details.
@@ -19,12 +19,11 @@
 #'  to use for faceting.
 #' @return opts A list that can be input into \code{plot_mvar_from_opts()}.
 #' @export
-build_opts <- function(mvar_object, layers_list, aes_list, non_aes_list,
+build_opts <- function(n_tables, layers_list, aes_list, non_aes_list,
                        facet_vector = NULL) {
-  n_tables <- length(mvar_object@table)
   opts <- rep(list(list()), n_tables)
 
-  for(cur_table in 1:n_tables) {
+  for(cur_table in seq_len(n_tables)) {
     opts[[cur_table]]$facet_vector <- facet_vector
     opts[[cur_table]]$layers_list <- layers_list[[cur_table]]
     opts[[cur_table]]$aes_list <- aes_list[[cur_table]]
@@ -48,7 +47,7 @@ default_table_names <- function(method) {
          "coa" = c("li", "co"),
          "fca" = c("li", "co"),
          "fpca" = c("li", "co"),
-         "pco" = c("li", "co"),
+         "pco" = c("li"),
          "hillsmith" = c("li", "co"),
          "mix" = c("li", "co"),
          "nsc" = c("li", "co"),
@@ -120,11 +119,11 @@ merge_table_plot_opts <- function(opts = list()) {
   if(is.null(opts$layers_list)) opts$layers_list <- list()
   if(is.null(opts$non_aes_list)) opts$non_aes_list <- list()
 
-  default_aes_list <- list(x = "axis_1", y = "axis_2", col = NULL, 
-                           fill = NULL, shape = NULL, size = NULL, 
+  default_aes_list <- list(x = "axis_1", y = "axis_2", col = NULL,
+                           fill = NULL, shape = NULL, size = NULL,
                            label = "label")
   opts$aes_list <- modifyList(default_aes_list, opts$aes_list)
-  default_layers_list <- list(point = TRUE, text = FALSE, arrow = FALSE, 
+  default_layers_list <- list(point = TRUE, text = FALSE, arrow = FALSE,
                               contour = FALSE, density = FALSE)
   opts$layers_list <- modifyList(default_layers_list, opts$layers_list)
   default_non_aes_list <- list()
@@ -159,8 +158,8 @@ merge_table_plot_opts <- function(opts = list()) {
 #'  one or more of the annotation objects, in which case the values from that
 #'  annotation will be used for coloring, or a string specifying the actual color
 #'  to use.
-#' @param ... Other arguments passed on to layer. These are often aesthetics, 
-#'  used to set an aesthetic to a fixed value. They may also be parameters 
+#' @param ... Other arguments passed on to layer. These are often aesthetics,
+#'  used to set an aesthetic to a fixed value. They may also be parameters
 #'  to the paired geom/stat.
 #' @return Two lists containing the aes and non aes options. Both lists have
 #'  length given by the number layers in the mvar object. The i^th component
@@ -168,10 +167,10 @@ merge_table_plot_opts <- function(opts = list()) {
 #'  options that are column names in the corresponding annotation, the non-aes
 #'  components are not in the data annotation.
 #' @export
-build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
-                                        col = NULL, fill = NULL, shape = NULL, 
+build_aes_and_non_aes_lists <- function(mvar_table, x = "axis_1", y = "axis_2",
+                                        col = NULL, fill = NULL, shape = NULL,
                                         size = NULL, label = NULL, ...) {
-  n_tables <- length(mvar_object@table)
+  n_tables <- length(mvar_table)
   aes_list <- rep(list(list()), n_tables)
   non_aes_list <- rep(list(list()), n_tables)
   for(cur_table in seq_len(n_tables)) {
@@ -179,10 +178,15 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
     # if the data does not have any color annotation already, set color to be
     # the index of the desired layer.
     cur_col <- ifelse(is.null(col), cur_table, col)
-    cur_fill <- ifelse(is.null(fill), cur_table, fill)
-    
-    cur_colnames <- colnames(mvar_object@table[[cur_table]]@annotation)
-    all_colnames <- unlist(lapply(mvar_object@table, function(x) colnames(x@annotation)))
+    cur_fill <- fill
+    if(is.null(cur_fill)) {
+      if(cur_col != "black") {
+        cur_fill <- cur_col
+      }
+    }
+
+    cur_colnames <- colnames(mvar_table[[cur_table]]@annotation)
+    all_colnames <- unlist(lapply(mvar_table, function(x) colnames(x@annotation)))
     full_aes_list <- list(x = x, y = y, col = cur_col, fill = cur_fill, shape = shape,
                           size = size, label = label, ...)
     cur_ix <- which(full_aes_list %in% cur_colnames)
@@ -192,4 +196,51 @@ build_aes_and_non_aes_lists <- function(mvar_object, x = "axis_1", y = "axis_2",
     non_aes_list[[cur_table]][c("x", "y")] <- NULL # x and y can never have non-data-driven aesthetics
   }
   list(aes_list = aes_list, non_aes_list = non_aes_list)
+}
+
+#' @title Wrap options building process
+#' @description When building default options, a common sequence is 1) build
+#' the layers list, 2) build the aesthetics list, and then 3) build the opts
+#' list. This encapsulates this process.
+#' @param mvar_table The mvar_table that we would like to plot.
+#' @param x The column name specifying the x-axis in the ordination. Defaults
+#'  to axis_1 for each coord object in the mvar.
+#' @param y The column name specifying the y-axis in the ordination. Defaults
+#'  to axis_2 for each coord object in the mvar.
+#' @param col The color to use for points or text in the plot. This can either
+#'  be a column in one or more of the annotation objects, in which case the
+#'  values from that annotation will be used for coloring, or a string specifying
+#'  the actual color to use.
+#' @param shape The points to use for points in the plot. This can either
+#'  be a column in one or more of the annotation objects, in which case the
+#'  values from that annotation will be used for coloring, or a string specifying
+#'  the actual color to use.
+#' @param size The size of points in the plot. This can either be a column in
+#'  one or more of the annotation objects, in which case the values from that
+#'  annotation will be used for coloring, or a string specifying the actual color
+#'  to use.
+#' @param label The label to use for text in the plot. This can either be a column in
+#'  one or more of the annotation objects, in which case the values from that
+#'  annotation will be used for coloring, or a string specifying the actual color
+#'  to use.
+#' @param ... Other arguments passed on to layer. These are often aesthetics,
+#'  used to set an aesthetic to a fixed value. They may also be parameters
+#'  to the paired geom/stat.
+#' @param facet_vector A vector containing column names in the annotation data
+#'  to use for faceting.
+#' @return Two lists containing the aes and non aes options. Both lists have
+#'  length given by the number layers in the mvar object. The i^th component
+#'  contains directions for plotting the i^th layer. The aes list contains
+#'  options that are column names in the corresponding annotation, the non-aes
+#'  components are not in the data annotation.
+#' @export
+build_opts_wrapper <- function(mvar_table, layers_list = "point", x = "axis_1",
+                               y = "axis_2", col = NULL, fill = NULL,
+                               shape = NULL, size = NULL, label = NULL,
+                               facet_vector = NULL, ...) {
+  layers_list <- build_layers_list(length(mvar_table), layers_list)
+  full_list <- build_aes_and_non_aes_lists(mvar_table, x, y, col, fill,
+                                           shape, size, label, ...)
+  build_opts(length(mvar_table), layers_list, full_list$aes_list,
+             full_list$non_aes_list, facet_vector)
 }

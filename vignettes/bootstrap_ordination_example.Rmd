@@ -29,6 +29,7 @@ top5phyla = names(sort(phylum.sum, TRUE))[1:5]
 GP1 = prune_taxa((tax_table(GP1)[, "Phylum"] %in% top5phyla), GP1)
 human = get_variable(GP1, "SampleType") %in% c("Feces", "Mock", "Skin", "Tongue")
 sample_data(GP1)$human <- factor(human)
+rm(GlobalPatterns, GP, top5phyla, wh0, phylum.sum)
 ```
 
 ## Boostrap Ordination

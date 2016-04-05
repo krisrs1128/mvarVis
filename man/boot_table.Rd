@@ -4,8 +4,8 @@
 \alias{boot_table}
 \title{Bootstrap table.}
 \usage{
-boot_table(tab, n = 1, common_depth = FALSE, replace_zero = FALSE,
-  round = FALSE)
+boot_table(tab, n = 1, common_depth = FALSE, common_value = NULL,
+  replace_zero = FALSE, replace_value = 1, round_values = FALSE)
 }
 \arguments{
 \item{tab}{(Required). A matrix or data.frame of numeric counts/weights.}
@@ -13,19 +13,21 @@ boot_table(tab, n = 1, common_depth = FALSE, replace_zero = FALSE,
 \item{n}{(Optional). Default 1. An integer indicating the number of
 boostrap count tables to return.}
 
-\item{common_depth}{(Optional). Default \code{TRUE}. A logical or numeric
-scalar. If numeric or \code{TRUE} the boostrap counts are normalized so
-that the column sums are even and equal to \code{common_depth} or
-\code{median} of the \code{tab} column sums respectively.}
+\item{common_depth}{(Optional). Default \code{FALSE}. The value to which to
+normalize the boostrapped column sums. If not provided, do not normalize to
+a common depth.}
 
-\item{replace_zero}{(Optional). Default FALSE. A logical or numeric
-scalar/vector replacing the zero probability of having a read for an OTU.
-If numeric or TRUE zeros in \code{x} will be replaced
-by \code{replace_zero} or 1 respectively, i.e. we add a small positive
-weight in place of zeros. If \code{replace_zero} is a vector then each
-component corresponds to respective columns of \code{tab}.}
+\item{common_value}{(Optional) The depth to use when common_depth is TRUE.
+Defaults to the median of the column sums in tab.}
 
-\item{round}{(Optional). Default FALSE. A logical scalar. Should the
+\item{replace_zero}{(Optional) A logical specifying whether to replace
+zeros in x.}
+
+\item{replace_value}{(Optional) The value to replace zeros with, when
+replace_zero is TRUE; i.e. we add a small positive weight. Default value is
+1.}
+
+\item{round_values}{(Optional). Default FALSE. A logical scalar. Should the
 boostrap counts be rounded to the nearest integer?}
 }
 \value{
@@ -36,11 +38,8 @@ samples boostrapped from \code{tab}.
 \code{boot_table} returns samples boostrapped from table \code{tab}
 supplied. Each column of the returned table is a boostrap trial of
 the corresponding column of the \code{tab} input table.
-If the supplied table, \code{T}, is a matrix of raw counts (integers),
-the columns of the output table are multinomial samples with weights
-proportional to corresponding columns of \code{tab}, otherwise the output
-columns are samples from Dirichlet distribution with parameters equal
-to corresponding columns of \code{tab}.
+The columns of the output table are multinomial samples with weights
+proportional to corresponding columns of \code{tab}.
 }
 \examples{
 x <- matrix(sample(1:1000, 30, replace = TRUE), 5, 6)
