@@ -89,7 +89,6 @@ boot_vector <- function(x, n = 1, depth = FALSE, replace_zero = FALSE){
   if (any(x < 0))
     stop("No negative counts allowed")
   if (all(x %% 1 == 0)) return(boot_count_vector(x, n, depth, replace_zero))
-  
   if (replace_zero) {
     replace_zero <- ifelse(replace_zero == TRUE, 1, replace_zero)
     x[which(x == 0)] <- replace_zero

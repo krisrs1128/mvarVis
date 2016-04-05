@@ -52,18 +52,17 @@ bootOrd <- boot_ordination(GP1@otu_table, n = 20, method = "metaMDS",
                           rows_annot = GP1@sam_data) 
 
 plot_mvar(bootOrd, col = "SampleType", shape = "human", 
-          layers_list = "point-and-contour", bins = 5)
+          layers_list = "point-and-contour", bins = 5) + theme_bw()
 plot_mvar(bootOrd, col = "SampleType", shape = "human", 
           layers_list = "point-and-density")
 ```
 
 ```{r}
 bootOrd <- boot_ordination(t(GP1@otu_table), n = 20, method = "pco", 
-                          dist_method = "bray", common_depth = TRUE, 
-                          replace_zero = FALSE, round = FALSE, scannf = F,
-                          rows_annot = GP1@sam_data) 
-plot_mvar(bootOrd, col = "SampleType", shape = "human", 
-          layers_list = "point-and-contour", bins = 5)
+                          dist_method = "euclidean", 
+                          common_depth = TRUE, replace_zero = FALSE, 
+                          round = FALSE, scannf = F, rows_annot = GP1@sam_data) 
+plot_mvar(bootOrd, col = "SampleType",  shape = "human", layers_list = "point", bins = 5)
 plot_mvar(bootOrd, col = "SampleType", shape = "human", 
           layers_list = "point-and-density")
 ```

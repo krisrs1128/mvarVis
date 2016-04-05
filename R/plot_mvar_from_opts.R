@@ -34,8 +34,9 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
       if (!("shape" %in% names(center_opts[[cur_table]]$aes_list)))
         center_opts[[cur_table]]$non_aes_list$shape <- 21
       p <- plot_table(mvar_center@table[[cur_table]], center_opts[[cur_table]], p, cur_table) +
-        scale_shape_manual(values = c(21, 22, 23, 24, 25)) +
         guides(fill = guide_legend(override.aes = list(shape = 21)))
+      if ("shape" %in% names(center_opts[[cur_table]]$aes_list))
+        p <- p + scale_shape_manual(values = c(21, 22, 23, 24, 25))
     }
     if(!is.na(mvar_boot@eig[1])) {
       p <- add_eigenvalue_info(mvar_boot@eig, p, opts)
