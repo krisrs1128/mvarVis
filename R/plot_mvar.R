@@ -52,7 +52,7 @@ plot_mvar <- function(mvar_object, layers_list = "point", x = "axis_1",
                       y = "axis_2", col = NULL, fill = NULL, shape = NULL,
                       size = NULL, label = NULL, facet_vector = NULL, ...) {
   if (class(mvar_object) == "mvarTable")  {
-    opts <- build_opts_wrapper(mvar_object@table,x, y, col, fill, shape, size, label, ...)
+    opts <- build_opts_wrapper(mvar_object@table, layers_list, x, y, col, fill, shape, size, label, ...)
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
     mvar_boot <- mvar_boot_to_table(mvar_object)
