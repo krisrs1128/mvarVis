@@ -6,7 +6,7 @@
 #' @param ade4_object The output of a call to a function in FactoMineR.
 #' @param tables_to_include A character vector specifying which elements in
 #' the \code{FactoMineR} object to store in the mVarTable. We expect that
-#' ade4_object[[cur_table]]$coord be nonnull, for every cur_table in
+#' factominer_object[[cur_table]]$coord be nonnull, for every cur_table in
 #' tables_to_include.
 #' @examples
 #' library("FactoMineR")
@@ -102,9 +102,13 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
 #'    and species tables in the \code{table} slot and the eigenvalues in the
 #'    \code{eig} slot. The annotation slots of each mVarLayer are the row names
 #'    of the projected coordinates.
+#' @param tables_to_include A character vector specifying which elements in
+#' the \code{vegan} object to store in the mVarTable. We expect that
+#' vegan_object[[cur_table]]$coord be nonnull, for every cur_table in
+#' tables_to_include.
 #' @importFrom vegan scores
 #' @export
-vegan_to_mvar <- function(vegan_object) {
+vegan_to_mvar <- function(vegan_object, tables_to_include) {
   mvar_layer_list <- list()
   scores_list <- list()
 
@@ -124,7 +128,7 @@ vegan_to_mvar <- function(vegan_object) {
   }
 
   # Build an mvarLayer object for each
-  for(cur_table in names(scores_list)) {
+  for(cur_table in tables_to_include) {
 
     # Convert coordinates into a matrix
     vegan_subset <- scores_list[[cur_table]]
