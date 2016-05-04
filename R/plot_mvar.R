@@ -50,21 +50,23 @@
 #' @export
 plot_mvar <- function(mvar_object, layers_list = "point", x = "axis_1",
                       y = "axis_2", col = NULL, fill = NULL, shape = NULL,
-                      size = NULL, label = NULL, facet_vector = NULL, ...) {
+                      size = NULL, label = NULL, facet_vector = NULL, 
+                      coordfixed = TRUE, ...) {
   if (class(mvar_object) == "mvarTable")  {
     opts <- build_opts_wrapper(mvar_object@table, layers_list, x, y, col, fill, shape, size, label, ...)
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
     mvar_boot <- mvar_boot_to_table(mvar_object)
-
-    center_size <- ifelse(is.null(size), 3, 3 * size)
-    center_opts <- build_opts_wrapper(mvar_center@table, layers_list, x, y, "black", fill,
+    
+    if (is.null(size)) size <- 1
+    center_size <- ifelse(is.character(size), size, 3 * size)
+    center_opts <- build_opts_wrapper(mvar_center@table, "point", x, y, "black", col,
                                       shape, center_size, label)
-    boot_opts <- build_opts_wrapper(mvar_boot@table, layers_list, x, y, col, fill, shape,
-                                    size, label)
+    boot_opts <- build_opts_wrapper(mvar_boot@table, layers_list, x, y, col, fill, 
+                                    shape, size, label, ...)
     opts <- list(center = center_opts, boot = boot_opts)
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")
   }
-  plot_mvar_from_opts(mvar_object, opts)
+  plot_mvar_from_opts(mvar_object, coordfixed, opts)
 }

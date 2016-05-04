@@ -204,7 +204,7 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
     boot_mat[,, j] <- t(boot_vector(tab[, j], n, common_value, replace_zero,
                                    replace_value))
   }
-
+  
   if(round_values) {
     boot_mat <- round(boot_mat)
   }
@@ -257,23 +257,33 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
                             common_depth = FALSE, common_value = NULL,
                             replace_zero = FALSE, replace_value = 1,
                             round_values = FALSE, ...) {
-  # wrapper for ordi() using supplied options
-  ordi_ <- function(x) {
-    ordi(x, method = method, dist_method = dist_method,
-         rows_annot = rows_annot, cols_annot = cols_annot,
-         table_names = table_names, ...)
-  }
-
+  
   # generate bootstrap samples
   boot_data <- boot_table(D, n, common_depth, common_value, replace_zero,
                           replace_value, round_values)
-
+  
+  # if common_depth then normalize the original counts 
+  if (common_depth) {
+    D <- floor(D)
+    if (is.null(common_value)) common_value <- median(colSums(D))
+    D <- common_value * apply(D, 2, function(x) x/sum(x)) 
+  }
+  
+  if (round_values) D <- round(D)
+  
   # need to convert to distances matrices if dist_method is not a string
   if(class(dist_method) == "function") {
     D <- dist_method(D)
     boot_data <- alply(boot_data, 1, dist_method)
   } else {
     boot_data <- alply(boot_data, 1) # convert from array to list
+  }
+  
+  # wrapper for ordi() using supplied options
+  ordi_ <- function(x) {
+    ordi(x, method = method, dist_method = dist_method,
+         rows_annot = rows_annot, cols_annot = cols_annot,
+         table_names = table_names, ...)
   }
 
   orig_ord <- ordi_(D)
@@ -286,7 +296,8 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
       boot_coord <- mvar@table[[tab_ix]]@coord
 
       # Procustes rotation to fit the original ordination configuration
-      boot_coord <- procrustes(center_coord, boot_coord)$Yrot
+      boot_coord <- procrustes(center_coord, 
+                               boot_coord, scale = FALSE)$Yrot
       dimnames(boot_coord) <- dimnames(center_coord)
       boot_ord[[boot_ix]]@table[[tab_ix]]@coord <- boot_coord
     }
@@ -294,3 +305,63 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
 
   new("mvarBootTable", center = orig_ord, boot = boot_ord)
 }
+
+
+# boot_procrustes <- function(D, boot_dist, method, dist_method,
+#                             rows_annot, cols_annot,
+#                             table_names) {
+#   
+#   # wrapper for ordi() using supplied options
+#   ordi_ <- function(x) {
+#     ordi(x, method = method, dist_method = dist_method,
+#          rows_annot = rows_annot, cols_annot = cols_annot,
+#          table_names = table_names, ...)
+#   }
+#   
+#   orig_ord <- ordi_(D)
+#   boot_ord <- lapply(boot_dist, ordi_)
+#   
+#   for(boot_ix in seq_along(boot_ord)) {
+#     mvar <- boot_ord[[boot_ix]]
+#     for(tab_ix in seq_along(mvar@table)) {
+#       center_coord <- orig_ord@table[[tab_ix]]@coord
+#       boot_coord <- mvar@table[[tab_ix]]@coord
+#       
+#       # Procustes rotation to fit the original ordination configuration
+#       boot_coord <- procrustes(center_coord, 
+#                                boot_coord, scale = FALSE)$Yrot
+#       dimnames(boot_coord) <- dimnames(center_coord)
+#       boot_ord[[boot_ix]]@table[[tab_ix]]@coord <- boot_coord
+#     }
+#   }
+#   return(new("mvarBootTable", center = orig_ord, boot = boot_ord))
+# }
+# 
+# 
+# boot_distatis <- function(boot_dist, rows_anno, cols_annot) {
+#   
+#   if(!requireNamespace("DistatisR", quietly = TRUE)){
+#     stop("DistatisR package needed for this function to work.
+#          Please install it.", call. = FALSE)
+#   }
+#   
+#   boot_dist <- lapply(boot_dist, as.matrix)
+#   distCube  <- array(unlist(boot_dist), 
+#                     dim = c(nrow(boot_dist[[1]]), ncol(boot_dist[[1]]), 
+#                             length(boot_dist)))
+#   distatisOrdination <- DistatisR::distatis(distCube)
+#   
+#   # Coordinates of the compromise
+#   compromise <- data.frame(distatisOrdination$res4Splus$F)
+#   colnames(compromise) <- paste("Axis.", 1:ncol(compromise), sep = "")
+#   compromise$sampleID <- rownames(sample_data(physeq))
+#   compromise <- cbind(compromise, sample_data(physeq))
+#   rownames(compromise) <- rownames(sample_data(physeq))
+#   
+#   bootDistatis <- list()
+#   bootDistatis$compromise <- compromise
+#   bootDistatis$coords <- lapply(1:length(distList), function(x)
+#     distatisOrdination$res4Splus$PartialF[, , x])
+#   bootDistatis$values <- eigen(distatisOrdination$res4Splus$Splus)$values
+#   return(new("mvarBootTable", center = orig_ord, boot = boot_ord))
+# }

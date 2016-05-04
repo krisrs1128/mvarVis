@@ -11,7 +11,8 @@
 #' @return p A ggplot object mapping the layers specified in the arguments.
 #' @importFrom ggplot2 scale_shape_manual guides guide_legend
 #' @export
-plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
+plot_mvar_from_opts <- function(mvar_object, coordfixed = TRUE, opts = NULL, 
+                                opts_center = NULL) {
   if(is.null(opts)) {
     opts <- rep(list(list()), length(mvar_object@table))
   }
@@ -21,7 +22,7 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
       p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
     }
     if(!is.na(mvar_object@eig[1])) {
-      p <- add_eigenvalue_info(mvar_object@eig, p, opts)
+      p <- add_eigenvalue_info(mvar_object@eig, p, coordfixed=coordfixed, opts)
     }
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
@@ -34,12 +35,12 @@ plot_mvar_from_opts <- function(mvar_object, opts = NULL, opts_center = NULL) {
       if (!("shape" %in% names(center_opts[[cur_table]]$aes_list)))
         center_opts[[cur_table]]$non_aes_list$shape <- 21
       p <- plot_table(mvar_center@table[[cur_table]], center_opts[[cur_table]], p, cur_table) +
-        guides(fill = guide_legend(override.aes = list(shape = 21)))
+        scale_shape(solid = FALSE) + guides(fill = guide_legend(override.aes = list(shape = 21)))
       if ("shape" %in% names(center_opts[[cur_table]]$aes_list))
-        p <- p + scale_shape_manual(values = c(21, 22, 23, 24, 25))
+       p <- p + scale_shape_manual(values = c(21, 22, 23, 24, 25))
     }
     if(!is.na(mvar_boot@eig[1])) {
-      p <- add_eigenvalue_info(mvar_boot@eig, p, opts)
+      p <- add_eigenvalue_info(mvar_boot@eig, p, coordfixed=coordfixed, opts)
     }
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")

@@ -102,6 +102,8 @@ build_layers_list <- function(n_tables, layers_list = "point") {
                           "text-point" = list(list(point = FALSE, text = TRUE), list(point = TRUE)),
                           "points-and-text" = rep(list(list(point = TRUE, text = TRUE)), n_tables),
                           "point-text-arrow" = list(list(points = TRUE), list(points = FALSE, text = TRUE, arrow = TRUE)),
+                          "contour" = rep(list(list(point = FALSE, contour= TRUE)), n_tables),
+                          "density" = rep(list(list(point = FALSE, density= TRUE)), n_tables),
                           "point-and-contour" = rep(list(list(point = TRUE, contour= TRUE)), n_tables),
                           "point-and-density" = rep(list(list(point = TRUE, density= TRUE)), n_tables)
     )

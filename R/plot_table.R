@@ -32,7 +32,9 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
 
   # add the points layer
   if(opts$layers_list$point) {
-    non_aes_copy <- list(position = non_aes$position, stat = non_aes$stat)
+    non_aes_copy <- list(position = non_aes$position, stat = non_aes$stat, 
+                         size = non_aes$size, alpha = non_aes$alpha,
+                         shape = non_aes$shape)
     non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
     p <- p + do.call(geom_point, c(list(data = data, mapping = table_aes),
                                    non_aes_copy))
@@ -64,7 +66,8 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
 
     non_aes_copy <- list(geom = non_aes$geom, position = non_aes$position,
                          contour = non_aes$contour, n = non_aes$n,
-                         bins = non_aes$bins)
+                         bins = non_aes$bins, alpha = non_aes$alpha)
+
     non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
     p <- p + do.call(stat_density_2d, c(list(data = data, mapping = table_aes_copy),
                                         non_aes_copy))
