@@ -167,14 +167,16 @@ vegan_to_mvar <- function(vegan_object, tables_to_include) {
 #' mvar object. Defaults to c("li", "co").
 #' @return An mvar object with the scores and eigenvalues of \code{X_ord}.
 #' @export
-convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
+convert_to_mvar <- function(X_ord, table_names = NULL) {
   # convert to mvar class
   cur_class <- class(X_ord)
   vegan_classes <- c("rda", "cca", "isomap", "decorana", "CCorA", "metaMDS", "monoMDS")
   ade4_classes <- c("dpcoa", "procuste", "dudi")
   factominer_classes <- c("PCA", "CA", "MFA", "DMFA", "FAMD", "HMFA", "MCA",
                           "spMCA")
-
+  if (is.null(table_names)) {
+    table_names <- default_table_names(cur_class)
+  }
   if(any(ade4_classes %in% cur_class)) {
     # ade4 classes
     available_tables <- intersect(names(X_ord), table_names)
@@ -187,7 +189,7 @@ convert_to_mvar <- function(X_ord, table_names = c("li", "co")) {
     }
     X_mvar <- ade4_to_mvar(X_ord, table_names)
   } else if(any(vegan_classes %in% cur_class)) {
-    X_mvar <- vegan_to_mvar(X_ord)
+    X_mvar <- vegan_to_mvar(X_ord, table_names)
   } else if(any(factominer_classes %in% cur_class)) {
     X_mvar <- factominer_to_mvar(X_ord, table_names)
   }
