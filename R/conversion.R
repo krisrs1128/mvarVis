@@ -22,6 +22,9 @@ factominer_to_mvar <- function(factominer_object, tables_to_include) {
     factominer_subset <- factominer_object[[cur_table]]$coord
     factominer_subset <- as.matrix(factominer_subset)
     colnames(factominer_subset) <- paste0("axis_", 1:ncol(factominer_subset))
+    if (is.null(rownames(factominer_subset))) {
+      rownames(factominer_subset) <- paste0("V", 1:nrow(factominer_subset))
+    }
     cur_annotation <- data.frame(label = rownames(factominer_subset))
     mvar_layer_list[[cur_table]] <- new("mvarLayer", coord = factominer_subset,
                                         annotation = cur_annotation)
@@ -76,7 +79,9 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
     ade4_subset <- ade4_object[[cur_table]]
     ade4_subset_mat <- as.matrix(ade4_subset)
     dimnames(ade4_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(ade4_subset_mat)))
-
+    if (is.null(rownames(ade4_subset))) {
+      rownames(ade4_subset) <- paste0("V", 1:nrow(ade4_subset))
+    }
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(ade4_subset))
 
@@ -135,6 +140,9 @@ vegan_to_mvar <- function(vegan_object, tables_to_include) {
     vegan_subset_mat <- as.matrix(vegan_subset)
     dimnames(vegan_subset_mat) <- list(NULL, paste0("axis_", 1:ncol(vegan_subset_mat)))
 
+    if (is.null(rownames(vegan_subset))) {
+      rownames(vegan_subset) <- paste0("V", 1:nrow(vegan_subset))
+    }
     # Annotation defaults to projection matrix rownames
     cur_annotation <- data.frame(label = rownames(vegan_subset))
 
@@ -147,6 +155,8 @@ vegan_to_mvar <- function(vegan_object, tables_to_include) {
     cur_eig <- vegan_object$CCA$eig
   } else if(!is.null(vegan_object$Eigenvalues)) {
     cur_eig <- vegan_object$Eigenvalues
+  } else if (!is.null(vegan_object$evals)){
+    cur_eig <- vegan_object$evals
   } else {
     cur_eig <- as.numeric(NA)
   }

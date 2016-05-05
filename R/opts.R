@@ -53,7 +53,7 @@ default_table_names <- function(method) {
          "mix" = c("li", "co"),
          "nsc" = c("li", "co"),
          "dpcoa" = c("l1", "l2"),
-         "decorana" = c(), # right now we're using scores() from vegan, instead of extracting any tables
+         "decorana" = c("site", "species"),
          "metaMDS"  = c(),
          "isomap" = c(),
          "isoMDS" = c(),
@@ -61,7 +61,7 @@ default_table_names <- function(method) {
          "cca"  = c(),
          "ade4_cca" = c("li", "co"),
          "rda" = c(),
-         "CCorA" = c(),
+         "CCorA" = c("corr.X.Cx", "corr.X.Cy", "corr.Y.Cx", "corr.Y.Cy"),
          "procuste" = c("scorX", "scorY"),
          "coinertia" = c("li", "co"),
          "factominer_pca" = c("ind", "var"),
