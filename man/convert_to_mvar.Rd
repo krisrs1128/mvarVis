@@ -4,7 +4,7 @@
 \alias{convert_to_mvar}
 \title{Convert vegan and ade4 objects to class mvar}
 \usage{
-convert_to_mvar(X_ord, table_names = c("li", "co"))
+convert_to_mvar(X_ord, table_names = NULL)
 }
 \arguments{
 \item{X_ord}{The result of a call to a \code{ade4} or \code{vegan} ordination

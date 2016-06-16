@@ -182,8 +182,7 @@ convert_to_mvar <- function(X_ord, table_names = NULL) {
   cur_class <- class(X_ord)
   vegan_classes <- c("rda", "cca", "isomap", "decorana", "CCorA", "metaMDS", "monoMDS")
   ade4_classes <- c("dpcoa", "procuste", "dudi")
-  factominer_classes <- c("PCA", "CA", "MFA", "DMFA", "FAMD", "HMFA", "MCA",
-                          "spMCA")
+  factominer_classes <- c("PCA", "CA", "MFA", "DMFA", "FAMD", "HMFA", "MCA")
   if (is.null(table_names)) {
     table_names <- default_table_names(cur_class)
   }

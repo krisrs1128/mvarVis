@@ -71,8 +71,7 @@ default_table_names <- function(method) {
          "DMFA" = c("ind", "var", "group"),
          "FAMD" = c("ind", "var"),
          "HMFA" = c("ind", "quanti.var"),
-         "MCA" = c("ind", "var"),
-         "spMCA" = c("ind", "var"))
+         "MCA" = c("ind", "var"))
 }
 
 # plot-opts --------------------------------------------------------------------
@@ -192,13 +191,12 @@ build_aes_and_non_aes_lists <- function(mvar_table, x = "axis_1", y = "axis_2",
 
     cur_colnames <- colnames(mvar_table[[cur_table]]@annotation)
     all_colnames <- unlist(lapply(mvar_table, function(x) colnames(x@annotation)))
-    full_aes_list <- list(x = x, y = y, col = cur_col, fill = cur_fill, shape = shape,
+    full_aes_list <- list(col = cur_col, fill = cur_fill, shape = shape,
                           size = size, label = label, ...)
     cur_ix <- which(full_aes_list %in% cur_colnames)
     any_ix <- which(full_aes_list %in% all_colnames)
-    aes_list[[cur_table]] <- full_aes_list[cur_ix]
+    aes_list[[cur_table]] <- c(list(x = x, y = y), full_aes_list[cur_ix])
     non_aes_list[[cur_table]] <- full_aes_list[setdiff(1:length(full_aes_list), any_ix)]
-    non_aes_list[[cur_table]][c("x", "y")] <- NULL # x and y can never have non-data-driven aesthetics
   }
   list(aes_list = aes_list, non_aes_list = non_aes_list)
 }

@@ -251,12 +251,15 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
 #' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca",
 #'                            dist_method = "euclidean", scannf = F, nf = 2)
 #'
-boot_ordination <- function(D, n = 50, method = "ade4_pca",
+boot_ordination <- function(D, n = 50, method = "pco", taxa_are_rows = TRUE,
                             dist_method = "euclidean", rows_annot = NULL,
                             cols_annot = NULL, table_names = NULL,
                             common_depth = FALSE, common_value = NULL,
                             replace_zero = FALSE, replace_value = 1,
                             round_values = FALSE, ...) {
+  
+  # transpose D to make boot_table compatible
+  if (!taxa_are_rows) D <- t(D)
   
   # generate bootstrap samples
   boot_data <- boot_table(D, n, common_depth, common_value, replace_zero,
@@ -281,6 +284,14 @@ boot_ordination <- function(D, n = 50, method = "ade4_pca",
   
   # wrapper for ordi() using supplied options
   ordi_ <- function(x) {
+    if (class(x) != "dist") {
+      row_idx <- (rowSums(x) > 0)
+      col_idx <- (colSums(x) > 0)
+      x <- x[row_idx, ]; x <- x[, col_idx]
+      if (!is.null(rows_annot)) rows_annot <- rows_annot[row_idx, ]
+      if (!is.null(cols_annot)) cols_annot <- cols_annot[col_idx, ]
+      if (method %in%  c("pco", "isomap", "dpcoa")) x <- t(x)
+    }
     ordi(x, method = method, dist_method = dist_method,
          rows_annot = rows_annot, cols_annot = cols_annot,
          table_names = table_names, ...)

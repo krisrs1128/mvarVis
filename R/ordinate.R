@@ -35,7 +35,7 @@ ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
                            "metaMDS", "isomap", "isoMDS", "vegan_cca",
                            "ade4_cca", "rda", "CCorA", "procuste", "coinertia",
                            "factominer_pca", "CA", "MFA", "DMFA", "FAMD",
-                           "HMFA", "MCA", "spMCA")
+                           "HMFA", "MCA")
   method <- match.arg(method, implemented_methods)
 
   # Perform ordination

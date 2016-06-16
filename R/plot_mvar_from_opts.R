@@ -22,7 +22,7 @@ plot_mvar_from_opts <- function(mvar_object, coordfixed = TRUE, opts = NULL,
       p <- plot_table(mvar_object@table[[cur_table]], opts[[cur_table]], p, cur_table)
     }
     if(!is.na(mvar_object@eig[1])) {
-      p <- add_eigenvalue_info(mvar_object@eig, p, coordfixed=coordfixed, opts)
+      p <- add_eigenvalue_info(mvar_object@eig, p, coordfixed=coordfixed, opts[[1]])
     }
   } else if (class(mvar_object) == "mvarBootTable") {
     mvar_center <- mvar_object@center
@@ -40,7 +40,7 @@ plot_mvar_from_opts <- function(mvar_object, coordfixed = TRUE, opts = NULL,
        p <- p + scale_shape_manual(values = c(21, 22, 23, 24, 25))
     }
     if(!is.na(mvar_boot@eig[1])) {
-      p <- add_eigenvalue_info(mvar_boot@eig, p, coordfixed=coordfixed, opts)
+      p <- add_eigenvalue_info(mvar_boot@eig, p, coordfixed=coordfixed, opts[[1]])
     }
   } else {
     stop("Input object must be of class mvarTable or mvarBootTable")
