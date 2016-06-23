@@ -4,10 +4,10 @@
 \alias{boot_ordination}
 \title{Boostrap ordination.}
 \usage{
-boot_ordination(D, n = 50, method = "ade4_pca", dist_method = "euclidean",
-  rows_annot = NULL, cols_annot = NULL, table_names = NULL,
-  common_depth = FALSE, common_value = NULL, replace_zero = FALSE,
-  replace_value = 1, round_values = FALSE, ...)
+boot_ordination(D, n = 50, method = "pco", dist_method = "euclidean",
+  taxa_are_rows = TRUE, rows_annot = NULL, cols_annot = NULL,
+  table_names = NULL, common_depth = FALSE, common_value = NULL,
+  replace_zero = FALSE, replace_value = 1, round_values = FALSE, ...)
 }
 \arguments{
 \item{D}{(Required). A data frame of raw counts/weights. Raw data
@@ -22,6 +22,9 @@ ordination. See ordi()for options.}
 \item{dist_method}{(Optional). If a distance matrix is used by the specified
 method. We will call \code{vegdist} on the \code{D} using this string as
 the distance. Defaults to euclidean distance.}
+
+\item{taxa_are_rows}{(Optional) Default \code{TRUE}. Whether rows of 
+\code{D} are taxa/features.}
 
 \item{common_depth}{(Optional). Default \code{FALSE}. The value to which to
 normalize the boostrapped column sums. If not provided, do not normalize to

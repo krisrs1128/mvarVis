@@ -227,6 +227,8 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
 #' @param dist_method (Optional). If a distance matrix is used by the specified
 #'  method. We will call \code{vegdist} on the \code{D} using this string as
 #'  the distance. Defaults to euclidean distance.
+#' @param taxa_are_rows (Optional) Default \code{TRUE}. Whether rows of 
+#' \code{D} are taxa/features.
 #' @param common_depth (Optional). Default \code{FALSE}. The value to which to
 #' normalize the boostrapped column sums. If not provided, do not normalize to
 #' a common depth.
@@ -251,8 +253,8 @@ boot_table <- function(tab, n = 1, common_depth = FALSE, common_value = NULL,
 #' bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca",
 #'                            dist_method = "euclidean", scannf = F, nf = 2)
 #'
-boot_ordination <- function(D, n = 50, method = "pco", taxa_are_rows = TRUE,
-                            dist_method = "euclidean", rows_annot = NULL,
+boot_ordination <- function(D, n = 50, method = "pco", dist_method = "euclidean", 
+                            taxa_are_rows = TRUE, rows_annot = NULL,
                             cols_annot = NULL, table_names = NULL,
                             common_depth = FALSE, common_value = NULL,
                             replace_zero = FALSE, replace_value = 1,
@@ -285,12 +287,12 @@ boot_ordination <- function(D, n = 50, method = "pco", taxa_are_rows = TRUE,
   # wrapper for ordi() using supplied options
   ordi_ <- function(x) {
     if (class(x) != "dist") {
+      if (method %in%  c("pco", "isomap", "dpcoa") & taxa_are_rows) x <- t(x)
       row_idx <- (rowSums(x) > 0)
       col_idx <- (colSums(x) > 0)
       x <- x[row_idx, ]; x <- x[, col_idx]
       if (!is.null(rows_annot)) rows_annot <- rows_annot[row_idx, ]
       if (!is.null(cols_annot)) cols_annot <- cols_annot[col_idx, ]
-      if (method %in%  c("pco", "isomap", "dpcoa")) x <- t(x)
     }
     ordi(x, method = method, dist_method = dist_method,
          rows_annot = rows_annot, cols_annot = cols_annot,

@@ -81,7 +81,8 @@ plot_table <- function(table_slot, opts = list(), p = ggplot(), table_ix = 1) {
     table_aes_copy <- do.call(aes_string, aes_list)
 
     non_aes_copy <- list(geom = non_aes$geom, position = non_aes$position,
-                         contour = non_aes$contour, n = non_aes$n)
+                         contour = non_aes$contour, n = non_aes$n,
+                         bins = non_aes$bins)
     non_aes_copy <- non_aes_copy[!sapply(non_aes_copy, is.null)]
     non_aes_copy$geom <- "polygon"
     non_aes_copy$lty <- "blank"
