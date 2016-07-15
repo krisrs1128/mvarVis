@@ -34,7 +34,7 @@ factominer_to_mvar <- function(factominer_object, tables_to_include) {
   if(!is.null(factominer_object$eig)) {
     eig  <-  factominer_object$eig$eigenvalue
   } else {
-    eig <- NA
+    eig <- as.numeric(NA)
   }
 
   # Combined tables mvarTable object
@@ -95,7 +95,7 @@ ade4_to_mvar <- function(ade4_object, tables_to_include) {
   } else if(!is.null(ade4_object$d)) {
     eig  <-  ade4_object$d
   } else {
-    eig <- NA
+    eig <- as.numeric(NA)
   }
 
   new("mvarTable", table = mvar_layer_list, eig = eig)
