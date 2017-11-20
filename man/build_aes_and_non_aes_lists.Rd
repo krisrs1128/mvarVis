@@ -55,4 +55,3 @@ provides some of the default plotting options for aes lists (those whose names
 are columns in the mvar object) and non-aes lists (those that are not related
 to the data, for example, calling geom_text() with col = "red".)
 }
-

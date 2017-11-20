@@ -25,4 +25,3 @@ x <- sample(1:1000)
 boot_count_vector_(x, n = 5)
 boot_count_vector_(x, k = 100, n = 5)
 }
-

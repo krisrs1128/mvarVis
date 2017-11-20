@@ -9,4 +9,3 @@ merge_tables(mvar_tables)
 \description{
 Merge tables from the list of mvarTable objects
 }
-

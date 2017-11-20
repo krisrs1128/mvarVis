@@ -39,4 +39,3 @@ the projected coordinates.
  ade4_to_mvar(coin1, tables_to_include = c("li", "co", "aX", "aY"))
  @export
 }
-

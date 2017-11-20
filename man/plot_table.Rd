@@ -31,4 +31,3 @@ is not an aesthetic determined from data).}
 \value{
 p A ggplot object mapping the layers specified in the arguments.
 }
-

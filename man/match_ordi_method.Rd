@@ -18,7 +18,6 @@ strings, along with the functions they return, are
   mix: dudi.mix
   nsc: dudi.nsc
   vegan_cca: cca, from vegan
-  ade4_cca: cca, from ade4,
 and any other string that exactly matches a function in ade4 or vegan.}
 }
 \value{
@@ -29,4 +28,3 @@ ordi_method The function from either ade4 or vegan giving the
 Given a character string describing an ordination method
  from ade4 or vegan, return the actual function for that method.
 }
-

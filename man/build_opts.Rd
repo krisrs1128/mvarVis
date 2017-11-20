@@ -26,4 +26,3 @@ to use for faceting.}
 \value{
 opts A list that can be input into \code{plot_mvar_from_opts()}.
 }
-

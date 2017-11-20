@@ -17,9 +17,8 @@ vegan_cca and rda require a list whose first element
 is a formula and whose second element is a data set containing the
 constraining variables, as in the usual \code{cca} function in \code{vegan}.
 \code{dpcoa} requires a list whose first element is a data frame and whose
-second element is a distance between the rows on that data frame.
-\code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
-data frames.
+ second element is a distance between the rows on that data frame.
+ \code{CCorA} and \code{procuste} require a list of data frames.
 @param method The method among those listed above that will perform the
 required ordination.
 @param dist_method If a distance matrix is used by the specified method and
@@ -35,4 +34,3 @@ Given data X and a string describing a method in \code{ade4}, or
  \code{factominer}, or \code{vegan}, return the corresponding ordination
 object from those packages.
 }
-

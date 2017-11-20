@@ -10,4 +10,3 @@ check_table(object)
 A function checking if the object has a valid format
 for the table slot of mvarTable.
 }
-

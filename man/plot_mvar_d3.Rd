@@ -20,4 +20,3 @@ hobbies_mca <- ordi(hobbies[, 1:18], method = "MCA",
                     rows_annot = hobbies[, 19:23], graph = F)
 plot_mvar_d3(hobbies_mca, width = 500, asp = 1)
 }
-

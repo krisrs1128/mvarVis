@@ -50,4 +50,3 @@ boot_table(x, common_depth = 100)
 boot_table(x, common_depth = 100, n = 10, round = TRUE)
 boot_table(x, common_depth = 100, n = 10, replace_zero = 0.5)
 }
-

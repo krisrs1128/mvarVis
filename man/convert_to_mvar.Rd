@@ -21,4 +21,3 @@ An mvar object with the scores and eigenvalues of \code{X_ord}.
 Convert an \code{ade4} or \code{vegan} object to class
 \code{mvar}.
 }
-

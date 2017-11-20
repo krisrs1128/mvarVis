@@ -22,4 +22,3 @@ p The plot with eigenvalue information added, and with the aspect
 Add eigenvalue labels and rescale axes according to proportion
  of variation explained
 }
-

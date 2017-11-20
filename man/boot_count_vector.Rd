@@ -40,4 +40,3 @@ boot_count_vector(x, replace_zero = 0.5)
 
 boot_count_vector(x, depth = 100)
 }
-

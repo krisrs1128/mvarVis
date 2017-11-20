@@ -13,4 +13,3 @@ unspecified elements.}
 \value{
 opts An updated list of plotting options.
 }
-

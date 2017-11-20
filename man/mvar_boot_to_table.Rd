@@ -10,4 +10,3 @@ mvar_boot_to_table(mvar_boot_tab)
 Converts mvarBootTable object into 2 mvarTable objects
 one for center and one for bootstrap samples.
 }
-

@@ -23,4 +23,3 @@ When making a biplot, the scales of the two sets of points
    Specifically, we rescale \code{x2} so it's median radius is equal to the
    median radius of the \code{x1} points.
 }
-

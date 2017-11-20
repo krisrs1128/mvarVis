@@ -18,4 +18,3 @@ If the method is implemented in ade4, the names of the tables that
 For ade4, we need to specify the row and columns scores to
 output, depending on the method.
 }
-

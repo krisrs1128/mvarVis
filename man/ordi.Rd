@@ -19,8 +19,7 @@ is a formula and whose second element is a data set containing the
 constraining variables, as in the usual \code{cca} function in \code{vegan}.
 \code{dpcoa} requires a list whose first element is a data frame and whose
 second element is a distance between the rows on that data frame.
-\code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
-data frames.}
+ \code{CCorA} and \code{procuste} require a list of data frames.}
 
 \item{method}{The method among those listed above that will perform the
 required ordination.}
@@ -42,4 +41,3 @@ for each of the directions.}
 Perform an ordination using an ade4 or vegan function, and
  return an mvarVis object with the annotation completed.
 }
-

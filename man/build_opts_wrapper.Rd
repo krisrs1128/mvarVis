@@ -56,4 +56,3 @@ When building default options, a common sequence is 1) build
 the layers list, 2) build the aesthetics list, and then 3) build the opts
 list. This encapsulates this process.
 }
-
