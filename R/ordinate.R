@@ -14,8 +14,7 @@
 #'  constraining variables, as in the usual \code{cca} function in \code{vegan}.
 #'  \code{dpcoa} requires a list whose first element is a data frame and whose
 #'  second element is a distance between the rows on that data frame.
-#'  \code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
-#'  data frames.
+#'   \code{CCorA} and \code{procuste} require a list of data frames.
 #' @param rows_annot For one table methods, a data.frame whose j^th row
 #'  describes the j^th sample in the coordinates matrices corresponding to
 #'  row scores. For procustes and CCorA, we require a list of dataframes, one
@@ -33,7 +32,7 @@ ordi <- function(X, method = "ade4_pca", rows_annot = NULL, cols_annot = NULL,
   implemented_methods <- c("ade4_pca", "acm", "coa", "fca", "fpca", "pco",
                            "hillsmith","mix","nsc", "dpcoa", "decorana",
                            "metaMDS", "isomap", "isoMDS", "vegan_cca",
-                           "ade4_cca", "rda", "CCorA", "procuste", "coinertia",
+                           "rda", "CCorA", "procuste", "coinertia",
                            "factominer_pca", "CA", "MFA", "DMFA", "FAMD",
                            "HMFA", "MCA")
   method <- match.arg(method, implemented_methods)

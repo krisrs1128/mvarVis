@@ -59,7 +59,6 @@ default_table_names <- function(method) {
          "isoMDS" = c(),
          "vegan_cca" = c(),
          "cca"  = c(),
-         "ade4_cca" = c("li", "co"),
          "rda" = c(),
          "CCorA" = c("corr.X.Cx", "corr.X.Cy", "corr.Y.Cx", "corr.Y.Cy"),
          "procuste" = c("scorX", "scorY"),
