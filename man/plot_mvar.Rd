@@ -68,4 +68,3 @@ to the paired geom/stat.}
 \value{
 p A ggplot object mapping the layers specified in the arguments.
 }
-

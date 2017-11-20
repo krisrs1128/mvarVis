@@ -8,4 +8,3 @@
 A class for storing multiple projections of the data set and
 of its boostrap samples.
 }
-

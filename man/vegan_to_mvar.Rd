@@ -20,4 +20,3 @@ mvar_table An object of class \code{mvarTable}, storing the site
    \code{eig} slot. The annotation slots of each mVarLayer are the row names
    of the projected coordinates.
 }
-

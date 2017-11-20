@@ -12,9 +12,8 @@
 #'  is a formula and whose second element is a data set containing the
 #'  constraining variables, as in the usual \code{cca} function in \code{vegan}.
 #'  \code{dpcoa} requires a list whose first element is a data frame and whose
-#'  second element is a distance between the rows on that data frame.
-#'  \code{CCorA}, \code{ade4_cca}, and \code{procuste} all require a list of
-#'  data frames.
+#'   second element is a distance between the rows on that data frame.
+#'   \code{CCorA} and \code{procuste} require a list of data frames.
 #'  @param method The method among those listed above that will perform the
 #'  required ordination.
 #'  @param dist_method If a distance matrix is used by the specified method and
@@ -24,8 +23,8 @@
 #' \code{ade4}, \code{factominer}, or \code{vegan} classes.
 #' @importFrom vegan vegdist cca decorana metaMDS isomap rda CCorA
 #' @importFrom ade4 dudi.pca dudi.acm dudi.coa dudi.fca dudi.fpca dudi.hillsmith
-#'    dudi.mix dudi.nsc dudi.pco dpcoa procuste cca
-#' @importFrom FactoMineR PCA CA DMFA FAMD HMFA MCA 
+#'    dudi.mix dudi.nsc dudi.pco dpcoa procuste
+#' @importFrom FactoMineR PCA CA DMFA FAMD HMFA MCA
 #' @export
 ordi_wrapper <- function(X, method = "ade4_pca", dist_method = "euclidean", ...) {
   ordi_method <- match_ordi_method(method)
@@ -34,7 +33,7 @@ ordi_wrapper <- function(X, method = "ade4_pca", dist_method = "euclidean", ...)
                       "FAMD", "HMFA", "MCA")
   dist_methods <- c("pco", "isomap", "dpcoa", "metaMDS")
   formula_methods <- c("vegan_cca", "rda")
-  df_list_methods <- c("CCorA", "ade4_cca", "procuste")
+  df_list_methods <- c("CCorA", "procuste")
 
   if(method %in% direct_methods) {
     # Methods that can be called on a single data frame X
@@ -48,7 +47,7 @@ ordi_wrapper <- function(X, method = "ade4_pca", dist_method = "euclidean", ...)
       }
       X_ord <- ordi_method(X, ...)
     } else if(method  %in% "metaMDS") {
-      # This is a distance method which requires some automatic preprocessing
+      a
       X_ord <- ordi_method(X, distance = dist_method, ...)
     } else if(method %in% c("dpcoa")) {
       # Methods called on both  data frame and a distance matrix

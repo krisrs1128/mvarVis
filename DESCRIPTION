@@ -1,5 +1,6 @@
 Package: mvarVis
 Title: Visualize multivariate analysis results.
+Date: 2017-11-20
 Version: 0.0.1
 Authors@R: c(
   person("Kris", "Sankaran", email = "kriss1@stanford.edu", role = c("aut", "cre")),
@@ -19,4 +20,4 @@ Suggests:
 License: GPL
 LazyData: true
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

@@ -7,4 +7,3 @@
 \description{
 A class for storing multiple projections of a data set.
 }
-

@@ -23,4 +23,3 @@ Given an \code{mvarTable}, we may want to enrich the annotation
    the same length as the number of tables in the \code{mvarTable}, and
    \code{cbind}'s these data frames with the existing annotation slots.
 }
-

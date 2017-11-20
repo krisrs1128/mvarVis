@@ -22,4 +22,3 @@ A list copying the different annotation data frames so that if the
 i^th table in \code{X_mvar} corresponds to row scores, the i^th element in
 the list gives the rows annotation, and analogously for column annotation.
 }
-

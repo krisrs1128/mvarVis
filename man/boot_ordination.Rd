@@ -60,4 +60,3 @@ bootOrd <- boot_ordination(D, n = 50, method = "ade4_pca",
                            dist_method = "euclidean", scannf = F, nf = 2)
 
 }
-

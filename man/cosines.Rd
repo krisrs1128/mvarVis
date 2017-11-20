@@ -16,4 +16,3 @@ The squared cosines between each observation and each component.
 \references{
 Abdi and Williams "Principle Component Analysis", equation (11).
 }
-

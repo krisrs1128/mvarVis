@@ -23,4 +23,3 @@ p A ggplot object mapping the layers specified in the arguments.
 associated with an mvar object, using \code{ggplot2} with various options to
 customize the plot's appearance.
 }
-

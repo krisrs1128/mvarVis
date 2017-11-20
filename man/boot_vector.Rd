@@ -42,4 +42,3 @@ y <- runif(10)
 y <- y/sum(y)
 boot_vector(y, n = 4, replace_zero = 0.05)
 }
-

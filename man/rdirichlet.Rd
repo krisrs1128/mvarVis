@@ -23,4 +23,3 @@ Generate a sample from a dirichlet distribution with parameter
 \examples{
 rdirichlet(5, sample(1:10))
 }
-

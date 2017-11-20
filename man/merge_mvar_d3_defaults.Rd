@@ -19,4 +19,3 @@ Currently supported options are, \cr
 \value{
 A version of opts with defaults filled in.
 }
-

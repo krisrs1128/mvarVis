@@ -30,4 +30,3 @@ used. The pre-set options currently are
    point-text-arrow: This plots points for the first layer, and both text
      and arrows for the second layer.
 }
-

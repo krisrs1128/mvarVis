@@ -23,4 +23,3 @@ running_cosines(coord)
 \references{
 Abdi and Williams "Principle Component Analysis", equation (11).
 }
-

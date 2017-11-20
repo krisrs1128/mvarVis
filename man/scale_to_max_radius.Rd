@@ -16,4 +16,3 @@ scale_to_max_radius(x1, x2, q = 0.9)
 \value{
 x2_scaled The rescaled matrix \code{x2}.
 }
-

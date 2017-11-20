@@ -21,4 +21,3 @@ factominer_to_mvar(res.ca, c("row", "col"))
 example(MFA)
 factominer_to_mvar(res, c("ind", "quanti.var"))
 }
-
