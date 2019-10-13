@@ -1,5 +1,7 @@
 # mvarVis
 
+<img width=500 src="https://drive.google.com/uc?id=1HCKri-BXz0g-2sROTgS7GAu3skfH4CHE"/>
+
 `mvarVis` is an R package for making interactive versions of the exploratory multivariate statistics plots. 
 Our approach is to leverage existing packages -- currently [`FactoMineR`](factominer.free.fr), 
 [`ade4`](http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng), and [`vegan`](vegan.r-forge.r-project.org) -- to 
